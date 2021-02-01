@@ -15,9 +15,9 @@ Il completamento di questa linea tecnologica è la definizione dei Reactive Stre
 
 Negli stessi anni in cui aumentava l'interesse per ReactiveX come piattaforma, il problema del _Big Data_ diventava sempre più importante e mutava in qualcosa più difficile da trattare.
 
-L'approcio usato con i Big Data era quello di prendere un problema molto grande e distribuirlo in un numero grande di dati, permettendo di ottenere una scalabilità quasi lineare nell'esame di una mole di dati.
+L'approccio usato con i Big Data era quello di prendere un problema molto grande e distribuirlo in un numero grande di dati, permettendo di ottenere una scalabilità quasi lineare nell'esame di una mole di dati.
 
-Il problema stava combiando: da un lato le moli di dati stavano diventando più grandi di quando si potesse trattare anche con sistemi distribuiti, dall'altro il problema di elaborazione dei dati stava prendendo un carattere tale che l'esecuzione di _batch_ massivamente paralleli, non poteva più funzionare in quanto introduceva latenze superiori al periodo di utilità delle informazioni estratte.
+Il problema stava cambiando: da un lato le moli di dati stavano diventando più grandi di quando si potesse trattare anche con sistemi distribuiti, dall'altro il problema di elaborazione dei dati stava prendendo un carattere tale che l'esecuzione di _batch_ massivamente paralleli, non poteva più funzionare in quanto introduceva latenze superiori al periodo di utilità delle informazioni estratte.
 
 (Per _batch_ si elaborazione non in linea, tipicamente notturna, di dati più grandi di quanto una singola macchina possa trattare.)
 

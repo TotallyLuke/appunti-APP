@@ -113,7 +113,6 @@ Akka supporta una implementazione di Reactive Streams che può sfruttare la scal
 Riassumendi Akka permette di realizzare un sistema per l'elaborazione reattiva basato su messaggi che soddifa tutti i requisiti del Reactive Manifesto. Akka permette di usare la semantica degli stream implementata in un sistema 
 
 * in grado di crescere linearmente;
-
 * in grado di resistere al fallimento di uno o più nodi (con redistribuzione del carico tra i nodi rimanenti);
 * in cui i messaggi che non hanno ricevuto risposta possono essere individuati.
 
@@ -278,7 +277,7 @@ public class HelloWorldMain
 
 Il suo stato è il riferimento all'attore che risponde ai saluti, che crea al momento della sua costruzione.
 
-```javacontinuo passagg
+```java
 private final ActorRef< HelloWorld.Greet > greeter;
 
 public static Behavior< SayHello > create() {
