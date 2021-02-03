@@ -7,15 +7,15 @@
 
 Le astrazioni di base che abbiamo a disposizione per la comunicazione fra più JVM corrispondono direttamente alle caratteristiche del protocollo TCP/IP:
 
-* Sockets
-* Datagrams
+* **Socket**s (Connessioni TCP)
+* **Datagram**s (Pacchetti UDP)
 
 ---
 
 ## Sockets
 
 
-Un `Socket` è una astrazione per la comunicazione bidirezionale punto-punto fra due sistemi.
+Un `Socket` è un'astrazione per la comunicazione bidirezionale punto-punto fra due sistemi.
 
 
 ```java
@@ -28,6 +28,7 @@ package java.net;
 public class Socket implements Closeable;
 ```
 
+Per invocare il costruttore di un socket è necessario specificare indirizzo e porta remoti, ed è possibile indicare indirizzo e porta propri. Gli _indirizzi_ hanno tipo `InetAddress` dunque sono indirizzi IP e possibilmente host name, le _porte_ devono avere valore numerico compreso tra 0 e 65535. Possono essere lanciate eccezioni di sicurezza a causa del numero della porta o dell'indirizzo specificato. Ad esempio non è possibile utilizare una porta con indirizzo minore di 1024 se non si è un servizio privilegiato
 
 ```java
 /**
@@ -46,12 +47,10 @@ public Socket(InetAddress address, int port,
     throws IOException
 ```
 
-Note: possono essere lanciate eccezioni di sicurezza a causa del numero della porta o dell'indirizzo specificato.
-
 
 Un _client_ `Socket` è un socket per iniziare il collegamento verso un'altra macchina.
 
-Un _server_ `Socket` è un socket per attendere che un'altra macchina ci chiami.
+Un _server_ `Socket` è un socket per me che un'altra macchina ci chiami.
 
 
 ```java
@@ -80,7 +79,7 @@ public ServerSocket(int port, int backlog,
     throws IOException
 ```
 
-Note: notate che è necessario specificare l'indirizzo cui il socket è collegato; un server può avere più indirizzi IP locali, e si può specificare che sono accettati collegamenti solo per alcuni di essi.
+Notare che è necessario specificare **l'indirizzo cui il socket è collegato**. Si può specificare la lunghezza massima della coda di connessioni entranti, questo perché una connessione in attesa consuma memoria, utilizza interrupt e altro. Un server può avere più indirizzi IP locali e si può specificare che sono accettati collegamenti solo per alcuni di essi.
 
 
 Un `Socket` rappresenta un collegamento attivo.
@@ -99,10 +98,10 @@ Lato server, viene ritornato quando un collegamento viene ricevuto e completato.
 public Socket accept() throws IOException
 ```
 
-Note: questa chiamata blocca finché non viene ricevuta una connessione. Attenzione: il flusso del programma è ora in mano ad un evento esterno.
+Il metodo `accept` blocca finché non viene ricevuta una connessione. Il flusso del programma dunque non prosegue finché non avviene un determinato evento esterno. 
 
 
-Un `Socket` (sia _client_ che _server_ collegato) ci fornisce un `InputStream` ed un `OutputStream` per ricevere e trasmettere dati nel collegamento.
+Un `Socket` (sia _client_ che _server_ collegato) fornisce un `InputStream` ed un `OutputStream` per ricevere e trasmettere dati nel collegamento.
 
 
 ```java
@@ -126,15 +125,13 @@ public OutputStream getOutputStream()
 
 
 Questi stream sono sottoposti a diverse regole:
-* sono thread-safe, ma un solo thread può scrivere o leggere per volta, pena eccezioni
-* i buffer sono limitati, ed in alcuni casi i dati in eccesso possono essere silenziosamente scartati
+* sono thread-safe, ma _un solo thread può scrivere o leggere per volta_, pena eccezioni;
+* i buffer sono limitati e in alcuni casi i dati in eccesso possono essere silenziosamente scartati;
+* lettura e scrittura possono bloccare il thread (un `inputStream` può bloccare finché non c'è spazio per scrivere, un `outputStream` finché non ci sono dati da inviare);
+* alcune connessioni possono avere caratteristiche particolari (per esempio urgent data).
 
 
-* lettura e scrittura possono bloccare il thread
-* alcune connessioni possono avere caratteristiche particolari (per es. urgent data)
-
-
-Una volta terminato l'uso, il `Socket` va chiuso esplicitamente.
+Una volta terminato l'uso, il `Socket` va chiuso esplicitamente. Socket implementa `Closeable`, quindi può essere usato con la sintassi _try-with-resources_. `close` lancia una `IOException`. Quando si chiude un server socket e c'è un thread in attesa sull'`accept`, il thread riceve come risposta un'eccezione e si sblocca.
 
 
 ```java
@@ -146,15 +143,19 @@ public void close() throws IOException
 ```
 
 
-Avendo come astrazione della comunicazione gli Stream, la comunicazione via socket ha il difetto di richiedere la definizione esplicita di un confine fra richieste e risposte.
+Avendo come astrazione della comunicazione gli Stream, la comunicazione via socket ha il difetto di richiedere la definizione di un protocollo che permetta di riconoscere i confini di un messaggio. Dallo Stream non possiamo sapere se la richiesta è terminata, e non possiamo segnalare di aver inviato tutta la risposta. La chiusura di uno stream è l'interruzione della connessione.
 
-Dallo Stream non possiamo sapere se la richiesta è terminata, e non possiamo segnalare di aver inviato tutta la risposta.
+Non è semplice distinguere fra una interruzione della connessione e la sua chiusura regolare, quindi non si può usare come segnale.
 
-Note: non è semplice distinguere fra una interruzione della connessione e la sua chiusura regolare, quindi non si può usare come segnale.
 
+
+Segue un esempio di un server che legge ciò che riceve e lo stampa in system out. Per metterci in ascolto dobbiamo predisporre risorse, possiamo sfruttare il try-with-resources. 
+
+Si dichiara il `ServerSocket`, ci si mette in attesa dell'arrivo di una connessione, quando arriva si costruiscono tutti gli altri oggetti, ovvero un `printWriter` che permetta di gestire meglio la comunicazione su stream e un reader che legga i dati in arrivo.
 
 `it.unipd.app2020.sockets.HelloServer`
-```
+
+```java
 try (
   ServerSocket serverSocket = new ServerSocket(portNumber);
   Socket socket = serverSocket.accept();
@@ -162,13 +163,13 @@ try (
     socket.getOutputStream(), true);
   BufferedReader in = new BufferedReader(
   new InputStreamReader(socket.getInputStream()));
-)
+) 
 ```
 
-Note: Dichiariamo le risorse di cui abbiamo bisogno usando la sintassi `try-with-resources`. Tutte queste risorse implementano `AutoCloseable` e verranno automaticamente chiuse all'uscita dal blocco try.
+All'interno del ciclo si stampano i dati ricevuti, riga per riga. Una volta ricevuto tutto, si chiude la connessione. Tutte queste risorse implementano `AutoCloseable` e verranno automaticamente chiuse all'uscita dal blocco try.
 
 
-```
+```java
 {
   String inputLine;
   System.out.println("Received data.");
@@ -180,17 +181,13 @@ Note: Dichiariamo le risorse di cui abbiamo bisogno usando la sintassi `try-with
 }
 ```
 
-Note: Notate che entriamo nel blocco solo dopo aver ricevuto dati dal socket: la chiamata `Socket.accept()` nella dichiarazione delle risorse è bloccante, e quando arriviamo qui in realtà è sufficiente leggere dallo stream quanto ricevuto. Uscendo dal blocco, tutte le risorse, socket compreso, vengono rilasciate.
+Notare che entriamo nel blocco solo dopo aver ricevuto dati dal socket: la chiamata `Socket.accept()` nella dichiarazione delle risorse è bloccante, e quando arriviamo qui in realtà è sufficiente leggere dallo stream quanto ricevuto. Uscendo dal blocco, tutte le risorse, socket compreso, vengono rilasciate.
 
-
-Il protocollo fra client è server è  
-"linea di testo terminata da `\n`".
-
-Appena il server riceve il carattere di a capo (e non prima), `BufferedReader::readline` ritorna ed il server risponde.
-
+Il protocollo fra client è server è  "linea di testo terminata da `\n`". Appena il server riceve il carattere di a capo (e non prima), `BufferedReader::readline` ritorna ed il server risponde. Si noti che OS diversi usano diversi caratteri per indicare la nuova riga. 
 
 `it.unipd.app2020.sockets.HelloClient`
-```
+
+```java
 try (
   Socket socket = new Socket("127.0.0.1", portNumber);
   PrintWriter out = new PrintWriter(
@@ -204,7 +201,7 @@ try (
 }
 ```
 
-Note: Anche qui costruiamo le risorse per poi usarle. La chiamata bloccante è il `socket.getOutputStream()` che richiede di collegare il client socket all'indirizzo indicato. Dopodiché, all'interno del blocco implementiamo il protocollo: invio di una riga terminata da `\n`, e ricezione di una riga allo stesso modo.
+Anche nel client si costruiscono le risorse per poi usarle con il try-with-resources. La chiamata bloccante è il `socket.getOutputStream()` che richiede di collegare il client socket all'indirizzo indicato. Dopodiché all'interno del blocco si implementa il protocollo: invio di una riga terminata da `\n` e ricezione di una riga allo stesso modo.
 
 ---
 
@@ -224,7 +221,7 @@ package java.net;
 **/
 public final class DatagramPacket
 ```
-
+Implementa un singolo mesaggio
 
 ```java
 /**
@@ -236,7 +233,7 @@ public final class DatagramPacket
 public DatagramPacket(byte[] buf, int length)
 ```
 
-Note: The length argument must be less than or equal to buf.length.
+ The length argument must be less than or equal to buf.length. Si trasmettono dati, non caratteri.
 
 
 ```java
@@ -252,7 +249,7 @@ public DatagramPacket(byte[] buf, int length,
   InetAddress address, int port)
 ```
 
-Note: The length argument must be less than or equal to buf.length.
+Può essere indicato indirizzo e porta di destinazione alla costruzione.
 
 
 Un `DatagramPacket` è pur sempre un pacchetto UDP, quindi soggiace alle stesse limitazioni:
@@ -268,12 +265,12 @@ In particolare, la dimensione massima è di 64Kb.
 |IPv6|1280|
 |802.11|2304|
 
-Note: MTU: Maximum transmission unit, la dimensione massima che si può inviare in un solo pacchetto senza frammentazione. In caso di frammentazione, il pacchetto è considerato ricevuto solo se tutti i frammenti sono ricevuti. 1500 è la cifra tipica per Ethernet su rame. Il requisito di 68 bytes viene dalla RFC 791.
+La MTU (Maximum transmission unit) è la dimensione massima che si può inviare in un solo pacchetto senza frammentazione. In caso di frammentazione, il pacchetto è considerato ricevuto solo se tutti i frammenti sono ricevuti. 1500 è la cifra tipica per Ethernet su rame. Il requisito di 68 bytes viene dalla RFC 791.
 
 
-Per inviare o ricevere abbiamo una sola classe, senza distinzione di operatività.
+Per inviare o ricevere si ha una sola classe, senza distinzione di operatività.
 
-
+`DatagramSocket(port)` alloca una porta sul nodo locale per l'invio del pacchetto. 
 ```java
 package java.net;
 /**
@@ -284,9 +281,7 @@ package java.net;
 **/
 public DatagramSocket(int port) throws SocketException
 ```
-
-
-Possiamo "connettere" una `DatagramSocket` già creata ad un indirizzo, ma il significato è diverso.
+Possiamo "connettere" una `DatagramSocket` già creata ad un indirizzo, ma il significato è diverso (permette di filtrare messaggi da un mittente inaspettato). Non è un controllo di sicurezza: semplicemente l'invio ad un indirizzo diverso è un errore, ed un pacchetto ricevuto da un indirizzo diverso viene scartato.
 
 
 ```java
@@ -302,7 +297,6 @@ Possiamo "connettere" una `DatagramSocket` già creata ad un indirizzo, ma il si
 public void connect(InetAddress address, int port)
 ```
 
-Note: non è un controllo di sicurezza: semplicemente l'invio ad un indirizzo diverso è un errore, ed un pacchetto ricevuto da un indirizzo diverso viene scartato.
 
 
 ```java
@@ -317,6 +311,7 @@ Note: non è un controllo di sicurezza: semplicemente l'invio ad un indirizzo di
 public void send(DatagramPacket p) throws IOException
 ```
 
+`receive`  blocca fino alla ricezione del messaggio. Se il messaggio è più lungo del buffer, viene troncato.
 
 ```java
 /**
@@ -331,7 +326,7 @@ public void send(DatagramPacket p) throws IOException
 public void receive(DatagramPacket p) throws IOException
 ```
 
-Note: blocca fino alla ricezione del messaggio. Se il messaggio è più lungo del buffer, viene troncato.
+Come tutte le risorse di questo tipo, va chiusa in quanto occupa risorse di sistema operativo.
 
 
 ```java
@@ -346,20 +341,20 @@ Note: blocca fino alla ricezione del messaggio. Se il messaggio è più lungo de
 public void close()
 ```
 
-Note: come tutte le risorse di questo tipo, va chiusa in quanto occupa risorse di sistema operativo.
-
 
 Con i Datagram la logica del protocollo è differente. Abbiamo a disposizione:
 
-* la dimensione del messaggio nota (e quindi l'informazione di ricezione completa)
-* la possibilità di inviare messaggi a più indirizzi contemporaneamente (multicast)
+* la dimensione del messaggio nota (e quindi l'informazione di ricezione completa);
+* la possibilità di inviare messaggi a più indirizzi contemporaneamente (multicast).
 
 
 Ma rispetto ai Socket, perdiamo:
 
-* l'affidabilità: non c'è né garanzia né segnale di consegna
-* la reciprocità: c'è una sola direzione; la risposta richiede mettersi in ascolto
-* la dimensione: messaggi lunghi subiscono una forte penalità di affidabilità
+* l'affidabilità: non c'è né garanzia né segnale di consegna;
+* la reciprocità: c'è una sola direzione; la risposta richiede mettersi in ascolto;
+* la dimensione: messaggi lunghi subiscono una forte penalità di affidabilità.
+
+Nell'esempio sotto si crea un server e si mette in ascolto. Lo si implementa come un `Runnable`, per poterne ripetere l'esecuzione. Si prepara il datagramPacket dove viene scritto quanto ricevuto, ci si pone in ascolto, viene stampato il contenuto del pacchetto.
 
 
 `it.unipd.app2020.sockets.EchoServer`
@@ -378,8 +373,7 @@ public void run() {
 }
 ```
 
-Note: Implementando la ricezione come un `Runnable`, possiamo ripeterne l'esecuzione.
-
+Il client costruisce una `DatagramSocket`, ottiene i byte della stringa ricevuta in ingresso, ottiene l'indirizzo a cui inviare il `DatagramPacket`, lo invia e chiude la connessione. Non si preoccupa di specificare la porta all'atto della costruzione del `DatagramSocket`.
 
 `it.unipd.app2020.sockets.EchoClient`
 ```java
@@ -392,16 +386,12 @@ socket.send(packet);
 socket.close();
 ```
 
-Note: Il client è molto più semplice, anche perché non deve attendere una risposta.
-
 ---
 
 ## URL
 
 
-Già dalla prima versione Java include nativamente una classe per interagire con risorse web.
-
-Note: molto del suo design riflette il tempo in cui è stata pensata, e non è più pratico ad oggi.
+Già dalla prima versione Java include nativamente una classe per interagire con risorse web. Molto del suo design riflette il tempo in cui è stata pensata, e non è più pratico ad oggi.
 
 
 ```java
@@ -414,7 +404,7 @@ public final class URL
 ```
 
 
-Una URL ha un formato complesso ed in grado di esprimere molte cose (protocolli, porte richieste, indirizzi remoti, file, jar, ecc.)
+Una URL ha un formato complesso ed in grado di esprimere molte cose (protocolli, porte richieste, indirizzi remoti, file, jar, ecc.) Un oggetto di tipo URL rappresenta una risorsa (l'idea era quella di rappresentare lo schema _Uniform Resources Locator_).
 
 
 ```java
@@ -425,7 +415,7 @@ public URL(String spec) throws MalformedURLException
 ```
 
 
-Possiamo ottenere da una URL direttamente lo stream ottenuto dalla richiesta GET
+Possiamo ottenere da una URL direttamente lo stream ottenuto dalla richiesta GET all'URL specificato:
 
 
 ```java
@@ -436,6 +426,7 @@ Possiamo ottenere da una URL direttamente lo stream ottenuto dalla richiesta GET
 public InputStream openStream() throws IOException
 ```
 
+Il codice seguente costruisce una URL, lo passa all `InputStreamReader` per trasformarlo in caratteri e a un `BufferedReader` per trasformarlo in righe, dopodiché stampa le linee del reader. Il sito https://httpbin.org/ ritorna info utili sulla richiesta effettuata, in formato JSON.
 
 `it.unipd.app2020.sockets.UrlGet`
 ```java
@@ -480,6 +471,7 @@ public abstract class URLConnection;
 public void setDoOutput(boolean dooutput)
 ```
 
+La chiusura con `getOutputStream` segnala che abbiamo completato la costruzione della richiesta. Non significa necessariamente che siano stati inviati i byte scritti finora, o che comincino ad essere inviati solo ora.
 
 ```java
 /**
@@ -488,8 +480,8 @@ public void setDoOutput(boolean dooutput)
 public OutputStream getOutputStream() throws IOException
 ```
 
-Note: la chiusura di questo stream segnala che abbiamo completato la costruzione della richiesta. Non significa necessariamente che siano stati inviati i byte scritti finora, o che comincino ad essere inviati solo ora.
 
+Esempio:
 
 `it.unipd.app2020.sockets.UrlPost`
 ```java
@@ -501,10 +493,7 @@ PrintWriter writer = new PrintWriter(
   connection.getOutputStream());
 writer.println("test=val");
 writer.close();
-```
 
-
-```
 BufferedReader reader = new BufferedReader(
   new InputStreamReader(connection.getInputStream()));
 String line;
@@ -526,8 +515,6 @@ Realizzare quindi un client che gioca scegliendo una casella libera a caso.
 Il server deve:
 * rispondere alla prima connessione salutando il primo giocatore
 * rispondere alla seconda connessione salutando il secondo giocatore
-
-
 * richiedere la mossa da ciascun giocatore al suo turno mostrandogli lo stato del gioco
 * individuare la conclusione della partita e chiudere le connessioni
 
@@ -538,7 +525,7 @@ Il client deve:
 * effettuare una mossa a caso fra quelle legali
 
 
-![TicTacToe](imgs/l15/tictactoe.png)<!-- .element: style="width: 50%" -->
+![TicTacToe](imgs/l15/tictactoe.png)
 
 
 `it.unipd.app2020.sockets.ToeClient`
@@ -556,10 +543,10 @@ new InputStreamReader(socket.getInputStream()));) {
   while (!done && (line = in.readLine()) != null) {
 ```
 
-Note: dopo il setup delle risorse, iniziamo un loop che verrà ripetuto fino a conclusione della partita.
+Dopo il setup delle risorse, iniziamo un loop che verrà ripetuto fino a conclusione della partita.
 
 
-```
+```java
   if (line.startsWith("PLAYER")) {
   // gestiamo una mossa
     line = in.readLine(); // prima riga
@@ -572,10 +559,10 @@ Note: dopo il setup delle risorse, iniziamo un loop che verrà ripetuto fino a c
     out.flush();
 ```
 
-Note: Il protocollo con il server prevede che al giocatore che deve muovere siano presentate uno schema del piano di gioco in tre righe e un elenco di mosse disponibili separato da spazi. Il client usa quest'ultima informazione per scegliere a caso una fra le mosse disponibili.
+Il protocollo con il server prevede che al giocatore che deve muovere siano presentate uno schema del piano di gioco in tre righe e un elenco di mosse disponibili separato da spazi. Il client usa quest'ultima informazione per scegliere a caso una fra le mosse disponibili.
 
 
-```
+```java
   } else if (line.startsWith("Hello")) {
     // partita iniziata
     System.out.println(line);
@@ -586,7 +573,7 @@ Note: Il protocollo con il server prevede che al giocatore che deve muovere sian
   }
 ```
 
-Note: gli altri casi del protocollo sono il saluto iniziale che comincia con `"Hello"`, e la conclusione della partita che comincia con un messaggio differente dai due precedenti.
+Gli altri casi del protocollo sono il saluto iniziale che comincia con `"Hello"`, e la conclusione della partita che comincia con un messaggio differente dai due precedenti.
 
 
 `it.unipd.app2020.sockets.ToeServer`
@@ -600,10 +587,10 @@ BufferedReader[] ins = new BufferedReader[2];
 Game game = new Game();
 ```
 
-Note: Dichiariamo le risorse necessarie: due socket e due coppie di stream.
+Dichiariamo le risorse necessarie: due socket e due coppie di stream.
 
 
-```
+```java
 try (ServerSocket serverSocket = new ServerSocket(port);) {
   // attendi che i giocatori si colleghino
   connectPlayers(serverSocket);
@@ -613,10 +600,10 @@ try (ServerSocket serverSocket = new ServerSocket(port);) {
   outs[0].flush();
 ```
 
-Note: creiamo il collegamento iniziale, attendendo il primo giocatore.
+Creiamo il collegamento iniziale, attendendo il primo giocatore.
 
 
-```
+```java
 // finché la partita non è conclusa...
 while (!status.end) {
   // attendi la mossa dal giocatore
@@ -631,10 +618,10 @@ while (!status.end) {
 }
 ```
 
-Note: la classe Game guida la selezione del giocatore corrente, agendo sullo stream corrispondente. Si ripete finché la partita non è conclusa.
+La classe Game guida la selezione del giocatore corrente, agendo sullo stream corrispondente. Si ripete finché la partita non è conclusa.
 
 
-```
+```java
 // comunica il risultato
 System.out.println(status);
 if (status.valid) {
@@ -649,10 +636,10 @@ if (status.valid) {
 }
 ```
 
-Note: alla conclusione, si comunica il risultato ad entrambi gli stream.
+Alla conclusione, si comunica il risultato ad entrambi gli stream.
 
 
-```
+```java
 // chiudi le risorse
 outs[0].close();
 outs[1].close();
@@ -662,4 +649,4 @@ sockets[0].close();
 sockets[1].close();
 ```
 
-Note: e si chiudono tutte le risorse.
+E si chiudono tutte le risorse.
