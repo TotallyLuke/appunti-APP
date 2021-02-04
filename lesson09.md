@@ -5,7 +5,7 @@
 ## Threads
 
 
-Approfondiamo la struttura del modello dei Thread in Java e quali operazioni si possono fare su di essi.
+Approfondiamo la struttura del modello dei Thread in Java e quali operazioni si possono fare su di essi. La descrizione delle varie classi, funzioni, metodi è presente nei commenti del codice. Dunque leggere con attenzione i commenti.
 
 ---
 
@@ -26,7 +26,7 @@ public Thread(ThreadGroup group,
   long stackSize)
 ```
 
-Note: Questo è la forma più completa del costruttore di un Thread. Il parametro `group` può essere soggetto a
+La volta scorsa è stato mostrato come creare un Thread con un parametro. Questo è la forma più completa del costruttore di un Thread. Il parametro `group` può essere soggetto a
 restrizioni di sicurezza, perché è usato da alcuni meccanismi di abilitazione di capabilities. Il supporto del parametro
 `stackSize` è a discrezione della specifica implementazione della JVM.
 
@@ -40,8 +40,7 @@ restrizioni di sicurezza, perché è usato da alcuni meccanismi di abilitazione 
 void start()
 ```
 
-Note: come abbiamo già visto, questo metodo ritorna immediatamente al chiamante, e contemporaneamente il metodo `run()`
-dell'oggetto (o il `Runnable` passato alla costruzione) viene avviato su di una linea di esecuzione separata.
+Come abbiamo già visto, questo metodo ritorna immediatamente al chiamante, e contemporaneamente il metodo `run()` dell'oggetto (o il `Runnable` passato alla costruzione) viene avviato su di una linea di esecuzione separata.
 
 
 ```java
@@ -51,7 +50,7 @@ dell'oggetto (o il `Runnable` passato alla costruzione) viene avviato su di una 
 public String getName()
 ```
 
-Note: per gestire una popolazione di thread, e per rendere più facili da leggere i log, ogni thread ha un nome, che
+Per gestire una popolazione di thread, e per rendere più facili da leggere i log, ogni thread ha un nome, che
 viene impostato o dal costruttore o automaticamente.
 
 
@@ -62,8 +61,7 @@ viene impostato o dal costruttore o automaticamente.
 public boolean isAlive()
 ```
 
-Note: Come vedremo, "alive" è una semplificazione: un thread può trovarsi in diversi stati a seconda del momento in cui
-si trova la sua esecuzione.
+Un thread può trovarsi in diversi stati a seconda del momento in cui si trova la sua esecuzione, "alive" non è l'unico stato possibile.
 
 
 ```java
@@ -75,9 +73,9 @@ si trova la sua esecuzione.
 public void run()
 ```
 
-Note: al contrario di `start()`, questo metodo non ritorna: esegue il contenuto dell'oggetto thread all'interno del
-chiamante. Di solito, non è questo quello che si desidera.
+Al contrario di `start()`, questo metodo non ritorna: esegue il contenuto dell'oggetto thread all'interno del chiamante. Di solito il metodo non fa altro che richiamare il costruttore del runnable, e non è questo quello che si desidera.
 
+`start()` chiama `run()`, si può ridefinire `run()` e fargli stampare stringhe a video per fini di tracciamento.
 
 ```java
 /**
@@ -88,7 +86,7 @@ chiamante. Di solito, non è questo quello che si desidera.
 public static Thread currentThread()
 ```
 
-Note: questo metodo consente di ottenere il riferimento al thread di esecuzione per effettuare operazioni introspettive.
+Questo metodo consente di ottenere il riferimento al thread correntemente di esecuzione per effettuare operazioni introspettive.
 
 
 ```java
@@ -105,7 +103,7 @@ public static void sleep(long millis)
   throws InterruptedException
 ```
 
-Note: negli esempi, è un modo molto comodo per rendere più visibili (non instantanee) le interazioni fra i thread.
+Negli esempi, è un modo molto comodo per rendere più visibili (non istantanee) le interazioni fra i thread.
 
 ---
 
@@ -130,7 +128,7 @@ final Thread observer = new Thread(() -> {
 });
 ```
 
-Note: costruiamo un thread che osserva lo stato di un altro thread. Lo fa per 10 volte, ogni 100ms.
+Costruiamo un thread `observer` che osserva lo stato di un altro thread. Passiamo una lambda a `observer`. Viene verificato subito che il thread osservato sia vivo. Lo stato viene controllato per 10 volte, ogni 100ms.
 
 
 ```java
@@ -144,7 +142,9 @@ public static void main(String[] args) {
 }
 ```
 
-Note: Il thread osservato attende 800ms prima di uscire, quindi dovremmo notare il campbio di stato. Ancora osserviamo che la JVM non termina dopo l'avvio dei Thread.
+Il thread osservato `tgt` attende 800ms prima di uscire, quindi dovremmo notare il cambio di stato. 
+
+Ancora osserviamo che la JVM non termina dopo l'avvio dei Thread.
 
 ---
 
@@ -157,51 +157,54 @@ java.lang.Thread.State
 
 ### NEW
 
-Il Thread è stato creato.<!-- .element: style=" float: left; width: 50%" -->
+Il Thread è stato creato.
 
-![Thread States-F1](imgs/l09/ThreadStates-f1.png)<!-- .element: style="width: 40%" -->
+![Thread States-F1](imgs/l09/ThreadStates-f1.png)
 
 
 ### RUNNABLE
 
-È stato richiamato start(). Il metodo run() del Thread o del Runnable contenuto può essere messo in esecuzione. <!-- .element: style="float: left; width: 50%" -->
+È stato richiamato `start()`. Il metodo `run()` del Thread o del Runnable contenuto può essere messo in esecuzione.
 
-![Thread States-F1](imgs/l09/ThreadStates-f2.png) <!-- .element: style="width: 40%" -->
+N.B. non confondere un thread in stato Runnable con un oggetto della classe Runnable!
+
+![Thread States-F1](imgs/l09/ThreadStates-f2.png)
 
 
 ### RUNNING
 
-Il Thread è effettivamente in esecuzione, ha a disposizione la CPU finché non gli viene sottratta o passa ad altro stato. <!-- .element: style="float: left; width: 50%" -->
+Il Thread è effettivamente in esecuzione, ha a disposizione la CPU. Può uscire da questo stato quando gli viene sottratta la CPU o quando passa ad altro stato (se si mette in attesa di un'altra risorsa o se chiama un'operazione di IO bloccante).
 
-![Thread States-F1](imgs/l09/ThreadStates-f3.png) <!-- .element: style="width: 40%" -->
+![Thread States-F1](imgs/l09/ThreadStates-f3.png)
 
 
 ### BLOCKED
 
-Il Thread ha richiesto accesso ad una risorsa monitorata (per es. un canale di I/O) e sta aspettando la disponibilità di dati. <!-- .element: style="float: right; width: 50%" -->
+Il Thread ha richiesto accesso ad una risorsa monitorata (per es. un canale di I/O) e sta aspettando la disponibilità di dati. Il thread può tornare Runnable quando ha ottenuto la risorsa o è terminata l'operazione di IO.
 
-![Thread States-F1](imgs/l09/ThreadStates-f3.png) <!-- .element: style="width: 40%" -->
+![Thread States-F1](imgs/l09/ThreadStates-f3.png)
 
 
 ### WAITING
 
-Il Thread si è posto in attesa di una risorsa protetta da un lock chiamando wait(object) e sta aspettando il suo turno. <!-- .element: style="float: right; width: 50%" -->
+Il Thread si è posto in attesa di una risorsa protetta da un _lock_ (vedremo cos'è...) chiamando `wait(object)` e sta aspettando il suo turno. Il thread può tornare Runnable quando viene chiamato `notify(object)`
 
-![Thread States-F1](imgs/l09/ThreadStates-f3.png) <!-- .element: style="width: 40%" -->
+![Thread States-F1](imgs/l09/ThreadStates-f3.png) 
 
 
 ### TIMED_WAITING
 
-Il Thread si è posto in attesa di un determinato periodo di tempo (per es. con sleep(millis)) scaduto il quale ritornerà RUNNABLE. <!-- .element: style="float: right; width: 50%" -->
+Il Thread si è posto in attesa di un determinato periodo di tempo (per es. con `sleep(millis)`) scaduto il quale ritornerà Runnable. Una struttura della JVM si occupa di controllare il tempo rimanente alla scadenza per ciascun thread in timed_waiting.
+Il thread lancia timed_exception quando viene interrotto prima di aver atteso il tempo specificato.
 
-![Thread States-F1](imgs/l09/ThreadStates-f3.png) <!-- .element: style="width: 40%" -->
+![Thread States-F1](imgs/l09/ThreadStates-f3.png)
 
 
 ### TERMINATED
 
-Il metodo run() è completato (correttamente o meno) ed il Thread ha concluso il lavoro. <!-- .element: style="float: left; width: 50%" -->
+Il metodo run() è completato (correttamente o meno) ed il Thread ha concluso il lavoro. Se non c'è più alcun riferimento al thread terminato, tutte le sue strutture possono essere raccolte dalla Garbage Collection.
 
-![Thread States-F1](imgs/l09/ThreadStates-f4.png) <!-- .element: style="width: 40%" -->
+![Thread States-F1](imgs/l09/ThreadStates-f4.png)
 
 ---
 
@@ -216,7 +219,7 @@ Il metodo run() è completato (correttamente o meno) ed il Thread ha concluso il
 public void interrupt()
 ```
 
-Note: Come abbiamo appena detto, un thread può concludere la sua esecuzione correttamente o meno. Fra i modi non corretti abbiamo il lancio di una eccezione all'interno della sua esecuzione, oppure il metodo interrupt che può  essere invocato anche da un altro thread.
+Come abbiamo appena detto, un thread può concludere la sua esecuzione correttamente o meno. Fra i modi non corretti abbiamo il lancio di una eccezione all'interno della sua esecuzione, oppure il metodo interrupt che può essere invocato anche da un altro thread.
 
 
 `it.unipd.app2020.threads.ThreadInterrupter`
@@ -238,7 +241,7 @@ Note: Come abbiamo appena detto, un thread può concludere la sua esecuzione cor
 }
 ```
 
-Note: creiamo una classe `Interrupter` che implementa `Runnable` in questo modo.
+Creiamo una classe `Interrupter` che implementa `Runnable` in questo modo.
 
 
 ```java
@@ -251,7 +254,7 @@ public static void main(String[] args) {
 }
 ```
 
-Note: interrompere un thread che non è vivo non porta a nessun risultato.
+Osserviamo che interrompere un thread che non è vivo non porta a nessun risultato.
 
 
 ```java
@@ -263,7 +266,7 @@ public void setUncaughtExceptionHandler(
     Thread.UncaughtExceptionHandler eh)
 ```
 
-Note: possiamo impostare, per uno specifico thread, un gestore delle eccezioni che riceve le eccezioni non intercettate e può quindi modificare il modo in cui un thread termina in modo non previsto.
+Possiamo impostare, per uno specifico thread, un gestore delle eccezioni che riceve le eccezioni non intercettate e può quindi modificare il modo in cui un thread termina in modo non previsto.
 
 
 `it.unipd.app2020.threads.RethrowingThread`
@@ -283,9 +286,9 @@ public Thread get() {
     } 
   }); 
 }
-``` 
+```
 
-Note: creiamo uno specifico supplier per farci fornire dei threads che rilanciano l'eccezione di interruzione invece di gestirla. A tutti gli effetti, se interrotti questi thread lanciano una eccezione non gestita. 
+Creiamo uno specifico supplier per farci fornire dei threads che rilanciano l'eccezione di interruzione invece di gestirla. A tutti gli effetti, se interrotti questi thread lanciano una eccezione non gestita. 
 
 
 ```java
@@ -300,7 +303,7 @@ interrupter.start();
 tgt.start();
 ```
 
-Note: Impostiamo l'exception handler sul thread bersaglio: vedremo che l'handler viene richiamato e gestisce l'eccezione.
+Impostiamo l'exception handler sul thread bersaglio: vedremo che l'handler viene richiamato e gestisce l'eccezione.
 
 ---
 
@@ -352,7 +355,7 @@ threads.limit(10).forEach((r) -> executor.execute(r));
 out.println("Done scheduling.");
 ```
 
-Note: Notate come in questo caso la JVM sia rimasta attiva: l'ExecutorService rimane in attesa di nuovi compiti da eseguire, anche se il metodo `main` è concluso.
+Notate come in questo caso la JVM sia rimasta attiva: l'ExecutorService rimane in attesa di nuovi compiti da eseguire, anche se il metodo `main` è concluso.
 
 
 `it.unipd.app2020.threads.SingleThreadPool`
@@ -366,7 +369,7 @@ threads.limit(10).forEach((r) -> executor.execute(r));
 out.println("Done scheduling.");
 ```
 
-Note: Dal nome e dal comportamento possiamo osservare come i compiti accodati siano eseguiti da un solo thread.
+Dal nome e dal comportamento possiamo osservare come i compiti accodati siano eseguiti da un solo thread.
 
 
 Esempi di esecutori:
@@ -391,7 +394,7 @@ Esempi di esecutori:
 | -- | -- |
 | ForkJoinPool | Punta ad usare tutti i processori disponibili. Specializzato per il framework di fork/join |
 
-Note: Usa un algoritmo detto di _work stealing_ per gestire il caso in cui le attività eseguite avviino ulteriori sotto-attività. Interessante l'annotazione: `This implementation restricts the maximum number of running threads to 32767`
+Usa un algoritmo detto di _work stealing_ per gestire il caso in cui le attività eseguite avviino ulteriori sotto-attività. Interessante l'annotazione: `This implementation restricts the maximum number of running threads to 32767`
 
 ---
 
@@ -436,7 +439,7 @@ public interface ExecutorService
   extends Executor
 ```
 
-Note: Diversi `Executor` comunque implementano anche questa interfaccia.
+Diversi `Executor` comunque implementano anche questa interfaccia.
 
 
 ```java
@@ -529,7 +532,7 @@ Con a disposizione una lista di `Callables`, un `ExecutorService` ci permette di
   Collection < ? extends Callable< T > > tasks)
 ```
 
-Note: quando questa chiamata ritorna, non tutti i `Callable` hanno completato l'esecuzione.
+Quando questa chiamata ritorna, non tutti i `Callable` hanno completato l'esecuzione.
 
 
 ```java
@@ -543,7 +546,7 @@ Note: quando questa chiamata ritorna, non tutti i `Callable` hanno completato l'
   invokeAll(Collection< ? extends Callable< T > > tasks)
 ```
 
-Note: questa chiamata ritorna solo dopo che almeno uno dei `Future` ha completato.
+Questa chiamata ritorna solo dopo che almeno uno dei `Future` ha completato.
 
 
 `it.unipd.app2020.AllFutures`

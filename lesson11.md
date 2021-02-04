@@ -89,7 +89,7 @@ La soluzione è impedire a più Thread di trovarsi insieme nella sezione critica
 
 `syncronized` è una parola chiave che applicata ad un blocco di istruzioni impedisce che sia percorso contemporaneamente da più di un Thread.
 
-Note: non è sufficiente una classe o una libreria, abbiamo bisogno di una parola chiave nel linguaggio; quello che avviene è un cambiamento nelle istruzioni emesse dal compilatore.
+Non è sufficiente una classe o una libreria, abbiamo bisogno di una parola chiave nel linguaggio; quello che avviene è un cambiamento nelle istruzioni emesse dal compilatore.
 
 
 `it.unipd.app2020.sync.SyncCounter`
@@ -109,7 +109,7 @@ class SyncCounter implements SimpleCounter {
 }
 ```
 
-Note: sostituire questa classe alla precedente nel metodo main per verificare come il comportamento diventa ora corretto. La sezione critica, cioè il metodo in cui viene modificato lo stato, è ora protetta.
+Sostituire questa classe alla precedente nel metodo main per verificare come il comportamento diventa ora corretto. La sezione critica, cioè il metodo in cui viene modificato lo stato, è ora protetta.
 
 
 `syncronized` può decorare due tipi di raggruppamenti di istruzioni:
@@ -167,7 +167,7 @@ class SimpleFriend {
 }
 ```
 
-Note: syncronized non è la soluzione a tutti i mali. In questo esempio, intendiamo modellare un attore che riceve un saluto e ricambia. Per evitare che due attori si salutino contemporaneamente (sbattendo la testa), rendiamo `syncronized` i metodi di saluto, così un attore può essere salutato (metodo `bow()` da un solo thread alla volta.
+Syncronized non è la soluzione a tutti i mali. In questo esempio, intendiamo modellare un attore che riceve un saluto e ricambia. Per evitare che due attori si salutino contemporaneamente (sbattendo la testa), rendiamo `syncronized` i metodi di saluto, così un attore può essere salutato (metodo `bow()` da un solo thread alla volta.
 
 
 `it.unipd.app2020.sync.SimpleFriend`
@@ -183,7 +183,7 @@ public class SimpleFriends {
 }
 ```
 
-Note: tuttavia, il risultato non è quello che ci aspettavamo. In realtà, due attori che si salutano si bloccano l'uno con l'altro in un deadlock assolutamente classico. Cfr: https://docs.oracle.com/javase/tutorial/essential/concurrency/deadlock.html Quello che succede è che Alphonse ottiene il lock su Gaston chiamando il suo `gason.bow()`. Ma quando cercha di chiamare il metodo `bowBack()` su se stesso, non può farlo perché Gaston a sua volta ha ottenuto il lock su di lui chiamando `alphonse.bow()`. Gaston è nella stessa situazione, e quindi i tue thread sono in deadlock.
+Tuttavia il risultato non è quello che ci aspettavamo. In realtà due attori che si salutano si bloccano l'uno con l'altro in un deadlock assolutamente classico. Cfr: https://docs.oracle.com/javase/tutorial/essential/concurrency/deadlock.html Quello che succede è che Alphonse ottiene il lock su Gaston chiamando il suo `gason.bow()`. Ma quando cercha di chiamare il metodo `bowBack()` su se stesso, non può farlo perché Gaston a sua volta ha ottenuto il lock su di lui chiamando `alphonse.bow()`. Gaston è nella stessa situazione, e quindi i tue thread sono in deadlock.
 
 
 ![Deadlock solutions](imgs/l11/Deadlock.png)
@@ -214,7 +214,7 @@ Un Thread può farlo:
 * eseguendo un blocco `synchronized` all'interno dell'oggetto
 * se l'oggetto una `Class`, eseguendone un metodo `synchronized static`
 
-Note: perchè queste condizioni?
+Perché queste condizioni?
 
 
 ```java
@@ -259,11 +259,11 @@ synchronized void perform() throws InterruptedException {
 }
 ```
 
-Note: Un solo thread alla volta può entrare in questo metodo. Se il flag è falso, viene posto a vero ed il thread si mette in attesa su questo oggetto (liberando il monitor). Se il flag è vero, viene posto a falso e un thread in attesa viene notificato che può proseguire.
+Un solo thread alla volta può entrare in questo metodo. Se il flag è falso, viene posto a vero ed il thread si mette in attesa su questo oggetto (liberando il monitor). Se il flag è vero, viene posto a falso e un thread in attesa viene notificato che può proseguire.
 
 
 `it.unipd.app2020.sync.Waiter`
-```
+```java
 class Waiter implements Runnable {
   private final Named first, second;
 
@@ -273,7 +273,7 @@ class Waiter implements Runnable {
   }
 ```
 
-Note: Il `Runnable` `Waiter` usa due risorse.
+Il `Runnable` `Waiter` usa due risorse.
 
 
 ```java
@@ -311,12 +311,12 @@ try {
 
 ```
 
-Note: il main crea quattro risorse e tre threads, che condividono la quarta risorsa. Esegue `perform()` sulle risorse una dopo l'altra, andando a liberare i thread che erano in attesa di sincronizzazione. Infine, richiama `performAll()` sull'ultima risorsa, liberando i thread che erano là bloccati.
+Il main crea quattro risorse e tre threads, che condividono la quarta risorsa. Esegue `perform()` sulle risorse una dopo l'altra, andando a liberare i thread che erano in attesa di sincronizzazione. Infine, richiama `performAll()` sull'ultima risorsa, liberando i thread che erano là bloccati.
 
 
 ![NamedWaiter](imgs/l11/NamedWaiter.png)
 
-Note: L'ordine delle operazioni, quando non mediato dai `syncronize`, è assolutamente casuale. I Waiter si appropriano della prima risorsa, ma devono aspettare Main che li fa avanzare. A questo punto, uno di loro ottiene la seconda risorsa mentre
+L'ordine delle operazioni, quando non mediato dai `syncronize`, è assolutamente casuale. I Waiter si appropriano della prima risorsa, ma devono aspettare Main che li fa avanzare. A questo punto, uno di loro ottiene la seconda risorsa mentre
 
 
 Attenzione: [la documentazione avvisa esplicitamente](https://docs.oracle.com/en/java/javase/15/docs/api/java.base/java/lang/Object.html#wait%28long,int%29) che un thread può essere svegliato da un `wait()` senza nessun `notify()`. Viene detto "Spurious wakeup".
@@ -326,7 +326,7 @@ Attenzione: [la documentazione avvisa esplicitamente](https://docs.oracle.com/en
 ## Locks
 
 
-`syncronized` crea un blocco implicito.  
+`syncronized` crea un blocco implicito. 
 `wait()` ci costringe a gestire lo stato del blocco.
 
 A volte abbiamo bisogno di controllare esplicitamente le condizioni di blocco e sblocco della sezione critica.
@@ -337,23 +337,21 @@ A volte abbiamo bisogno di controllare esplicitamente le condizioni di blocco e 
 * Lock implementations provide more extensive locking
 * operations than can be obtained using synchronized
 * methods and statements.
-*
 */
 public interface Lock;
 ```
 
-Note: l'uso di un `Lock` ci permette di slegare l'acquisizione ed il rilascio di una risorsa dalla struttura lessicale in cui questo avviene. Questo perché non è legato all'esecuzione di un blocco di codice come sono invece `syncronize` e `wait()`.
+L'uso di un `Lock` ci permette di slegare l'acquisizione ed il rilascio di una risorsa dalla struttura lessicale in cui questo avviene. Questo perché non è legato all'esecuzione di un blocco di codice come sono invece `syncronize` e `wait()`.
 
 
 ```java
 /**
 * Acquires the lock.
-*
 */
 void lock();
 ```
 
-Note: questa chiamata ovviamente blocca se il lock non è disponibile.
+Questa chiamata ovviamente blocca se il lock non è disponibile.
 
 
 ```java
@@ -364,7 +362,7 @@ Note: questa chiamata ovviamente blocca se il lock non è disponibile.
 void unlock();
 ```
 
-Note: questa chiamata ha l'effetto di sbloccare un thread (tipicamente, uno a caso) fra quelli che attendevano di acquisire il lock.
+Questa chiamata ha l'effetto di sbloccare un thread (tipicamente, uno a caso) fra quelli che attendevano di acquisire il lock.
 
 
 ```java
@@ -392,7 +390,7 @@ class LockedFriend {
   }
 ```
 
-Note: risolviamo il problema dei due attori che si salutano.
+Risolviamo il problema dei due attori che si salutano.
 
 
 ```java
@@ -411,7 +409,7 @@ public boolean impendingBow(LockedFriend bower) {
 }
 ```
 
-Note: proviamo ad acquisire entrambi i lock; siamo ora in grado di rilasciarli in caso di acquisizione parziale.
+Proviamo ad acquisire entrambi i lock; siamo ora in grado di rilasciarli in caso di acquisizione parziale.
 
 
 ```java
@@ -430,7 +428,7 @@ public void bow(LockedFriend bower) {
 }
 ```
 
-Note: Se `impendingBow()` ritorna `true`, abbiamo entrambi i lock (e quindi dobbiamo rilasciarli). Notate come non siamo legati ai monitor impliciti o a lavorare all'interno di un solo blocco di codice. Se `impendingBow()` ha ritornato falso, abbiamo evitato un deadlock: avendo rilasciato l'acquisizione parziale, abbiamo probabilmente permesso all'altro thread di completare la sua.
+Se `impendingBow()` ritorna `true`, abbiamo entrambi i lock (e quindi dobbiamo rilasciarli). Notate come non siamo legati ai monitor impliciti o a lavorare all'interno di un solo blocco di codice. Se `impendingBow()` ha ritornato falso, abbiamo evitato un deadlock: avendo rilasciato l'acquisizione parziale, abbiamo probabilmente permesso all'altro thread di completare la sua.
 
 
 ```java
@@ -442,7 +440,7 @@ public static void main(String[] args) {
 }
 ```
 
-Note: Questo esempio proviene [dal tutorial sui lock](https://docs.oracle.com/javase/tutorial/essential/concurrency/newlocks.html).
+Questo esempio proviene [dal tutorial sui lock](https://docs.oracle.com/javase/tutorial/essential/concurrency/newlocks.html).
 
 ---
 
@@ -498,7 +496,7 @@ public class PrintQueue implements Printer {
 }
 ```
 
-Note: rispetto all'esempio con la `BlockingQueue`, gestiamo direttamente l'accesso alla sezione critica.
+Rispetto all'esempio con la `BlockingQueue`, gestiamo direttamente l'accesso alla sezione critica.
 
 
 ```java
@@ -511,9 +509,9 @@ public static void main(String args[]) {
   for (int i=0; i < 10; i++) { 
     thread[i].start(); } 
   } 
-``` 
+```
 
-Note: il metodo `main()` non è cambiato di molto. 
+Il metodo `main()` non è cambiato di molto. 
 
 ---
 
@@ -533,9 +531,9 @@ Una `Condition` permette di separare l'accodamento in attesa dal possesso del lo
  * 
  */ 
 public Condition newCondition() 
-``` 
+```
 
-Note: una Condition ci viene fornita dal lock su cui deve sussistere. Ciascuna `Condition` di uno stesso lock consente di gestire un insieme distinto di Thread in attesa. 
+Una Condition ci viene fornita dal lock su cui deve sussistere. Ciascuna `Condition` di uno stesso lock consente di gestire un insieme distinto di Thread in attesa. 
 
 
 ```java 
@@ -545,7 +543,7 @@ Note: una Condition ci viene fornita dal lock su cui deve sussistere. Ciascuna `
  * 
  */ 
 public void await() 
-``` 
+```
 
 
 ```java 
@@ -554,7 +552,7 @@ public void await()
  * 
  */ 
 public void signal() 
-``` 
+```
 
 
 ```java 
@@ -563,7 +561,7 @@ public void signal()
 * 
 */ 
 public void signalAll() 
-``` 
+```
 
 
 `it.unipd.app2020.sync.CharSource` 
@@ -577,7 +575,7 @@ public void signalAll()
   public Optional< String > getLine()
 ```
 
-Note: questa è una sorgente di linee di testo.
+Questa è una sorgente di linee di testo.
 
 
 `it.unipd.app2020.sync.Buffer`
@@ -599,7 +597,7 @@ private LinkedList< String > buffer;
   }
 ```
 
-Note: questo è un Buffer. Crea un lock, per bloccare l'accesso alle zone critiche, e ne ottiene due `Condition`: una sarà usata per attendere la presenza di nuove linee, l'altra per mettere in attesa i thread che non trovano dati da consumare.
+Questo è un Buffer. Crea un lock, per bloccare l'accesso alle zone critiche, e ne ottiene due `Condition`: una sarà usata per attendere la presenza di nuove linee, l'altra per mettere in attesa i thread che non trovano dati da consumare.
 
 
 ```java
@@ -619,7 +617,7 @@ public void insert(String line) {
 }
 ```
 
-Note: per inserire una linea, prima di tutto acquisiamo il lock per la sezione critica; se non c'è spazio, ci mettiamo in attesa anche sul lock dello spazio. Infine, aggiungiamo la riga al buffer e segnaliamo chi attendeva linee che ce ne sono di disponibili.
+Per inserire una linea, prima di tutto acquisiamo il lock per la sezione critica; se non c'è spazio, ci mettiamo in attesa anche sul lock dello spazio. Infine, aggiungiamo la riga al buffer e segnaliamo chi attendeva linee che ce ne sono di disponibili.
 
 
 ```java
@@ -639,7 +637,7 @@ public Optional< String > get() {
 }
 ```
 
-Note: per ottenere una riga, prima di tutto acquisiamo il lock per la sezione critica; se non ci sono linee, attendiamo sulla condizione che ci siano righe a disposizione. Se ce ne sono, ne otteniamo una; potrebbe però essere vuota, perché un altro thread l'ha presa prima di noi. Infine, segnaliamo disponibilità di spazio e rilasciamo il lock critico.
+Per ottenere una riga, prima di tutto acquisiamo il lock per la sezione critica; se non ci sono linee, attendiamo sulla condizione che ci siano righe a disposizione. Se ce ne sono, ne otteniamo una; potrebbe però essere vuota, perché un altro thread l'ha presa prima di noi. Infine, segnaliamo disponibilità di spazio e rilasciamo il lock critico.
 
 
 ```java
@@ -652,7 +650,7 @@ public void setPendingLines(boolean pendingLines) {
 }
 ```
 
-Note: questi due metodi ci permettono di controllare se ci sono linee pendenti, o di impostare la loro disponibilità.
+Questi due metodi ci permettono di controllare se ci sono linee pendenti, o di impostare la loro disponibilità.
 
 
 `it.unipd.app2020.sync.Producer`
@@ -674,7 +672,7 @@ class Producer implements Runnable {
 }
 ```
 
-Note: il producer è un `Runnable` che prende una riga dalla sorgente, e la mette nel buffer, segnalando la presenza di nuove righe. E la loro assenza quando la sorgente è consumata. Il flag `pendingLines` del `Buffer` permette al produttore di segnalare la propria presenza ai consumatori, in modo che siano rassicurati dell'arrivo di nuove linee.
+Il producer è un `Runnable` che prende una riga dalla sorgente, e la mette nel buffer, segnalando la presenza di nuove righe. E la loro assenza quando la sorgente è consumata. Il flag `pendingLines` del `Buffer` permette al produttore di segnalare la propria presenza ai consumatori, in modo che siano rassicurati dell'arrivo di nuove linee.
 
 
 `it.unipd.app2020.sync.Consumer`
@@ -695,7 +693,7 @@ class Consumer implements Runnable {
 }
 ```
 
-Note: il consumer è un altro `Runnable` che prende una riga dal buffer e ci spende sopra un breve lasso di tempo. Quando non trova più la segnalazione di nuove righe (che include sia linee presenti nel buffer, sia la presenza di un produttore che ne aggiunga) chiude l'esecuzione.
+Il consumer è un altro `Runnable` che prende una riga dal buffer e ci spende sopra un breve lasso di tempo. Quando non trova più la segnalazione di nuove righe (che include sia linee presenti nel buffer, sia la presenza di un produttore che ne aggiunga) chiude l'esecuzione.
 
 
 `it.unipd.app2020.sync.LockedBuffer`
@@ -715,12 +713,9 @@ public static void main(String[] args) {
 }
 ```
 
-Note: infine, il main fa partire tutti i thread. Notate che, siccome non usiamo `Executor`, l'algoritmo viene eseguito e la JVM termina quando tutti i thread terminano.
+Infine, il main fa partire tutti i thread. Poiché non usiamo `Executor`, l'algoritmo viene eseguito e la JVM termina quando tutti i thread terminano.
 
-
-Come sempre succede, da grandi poteri derivano grandi responsabilità.
-
-Maneggiando direttamente i `Lock` si chiede al sistema di delegarci un notevole potere, ed insieme ne riceviamo una corrispondente responsabilità.
+Come sempre succede, da grandi poteri derivano grandi responsabilità. Maneggiando direttamente i `Lock` si chiede al sistema di delegarci un notevole potere, ed insieme ne riceviamo una corrispondente responsabilità.
 
 
 ![Signal](imgs/l11/Signal.jpg)
@@ -868,7 +863,7 @@ class MultiPrintQueue implements Printer {
   }
 ```
 
-Note: Questa implementazione di `Printer` si basa su di un semaforo per contare le stampanti libere ed un array di boolean per mantenere lo stato delle singole stampanti.
+Questa implementazione di `Printer` si basa su di un semaforo per contare le stampanti libere ed un array di boolean per mantenere lo stato delle singole stampanti.
 
 
 ```java
@@ -884,7 +879,7 @@ public void printJob(Object document) {
 }
 ```
 
-Note: L'esecuzione di una stampa richiede di acquisire il semaforo (che attende una stampante libera se non ce n'è), ottenere la stampante da assegnare, effettuare il lavoro, liberare la stampante e quindi il semaforo.
+L'esecuzione di una stampa richiede di acquisire il semaforo (che attende una stampante libera se non ce n'è), ottenere la stampante da assegnare, effettuare il lavoro, liberare la stampante e quindi il semaforo.
 
 
 ```java
@@ -902,6 +897,6 @@ int getPrinter() {
   } finally { lockPrinters.unlock(); }
   return res;
 } 
-``` 
+```
 
-Note: La selezione di una stampante libera richiede, all'interno di una sezione critica, di cercare un valore `true` nell'array dello stato delle stampanti. Abbiamo la garanzia che ce ne sia almeno uno perché siamo protetti dal semaforo. Trovata la stampante libera, la segnamo occupata e ritorniamo il suo indice al chiamante uscendo dalla sezione critica.
+La selezione di una stampante libera richiede, all'interno di una sezione critica, di cercare un valore `true` nell'array dello stato delle stampanti. Abbiamo la garanzia che ce ne sia almeno uno perché siamo protetti dal semaforo. Trovata la stampante libera, la segnamo occupata e ritorniamo il suo indice al chiamante uscendo dalla sezione critica.

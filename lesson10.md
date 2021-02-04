@@ -14,7 +14,7 @@ Ma è meglio evitarlo, quando possibile.
 ## Problema
 
 
-Qual'è il problema che incontriamo ponendoci nel quadrante dati mutabili/stato condiviso?
+Qual è il problema che incontriamo ponendoci nel quadrante (lezione 08) dati mutabili/stato condiviso?
 
 
 `it.unipd.app2020.safe.AdderTest`
@@ -34,7 +34,7 @@ public void add() {
 ```
 
 
-I thread sono uguali e così definiti:
+I 3 thread avviati sono uguali e così definiti:
 
 ```java
 var t1 = new Thread(() -> {
@@ -42,8 +42,9 @@ var t1 = new Thread(() -> {
 }); 
 var t2=... 
 var t3=... 
-``` 
-Note: allo scopo di questo test, è più semplice ripetere la definizione per ciascun thread perché l'obiettivo è riferire alla stessa variabile condivisa. Le tre lambda scritte in questo modo sono _closures_ (cioè, si _chiudono_) sulla variabile `target` lessicalmente identica. 
+```
+
+Si noti che allo scopo di questo test è più semplice ripetere la definizione per ciascun thread perché l'obiettivo è riferire alla stessa variabile condivisa. Le tre lambda scritte in questo modo sono _closures_ (cioè, si _chiudono_) sulla variabile `target` lessicalmente identica. 
 
 
 Test: 
@@ -55,27 +56,32 @@ Test:
   Thread.sleep(1000); 
   assertEquals(300000, adder.target); 
 } 
-``` 
+```
 
-Cosa fallisce? 
+
+Ci si aspetta che il risultato sia 300000. Il test fallisce perché più thread cercano di incrementare uno stesso dato contemporaneamente e scrivono nella variabile `target` lo stesso valore.
 
 
 ![Adder](imgs/l10/adder.png) <!-- .element: style="width: 70%" -->
 
 
-La concorrenza ci porta al non determinismo.
+La concorrenza ci porta al _non determinismo_.
 
 Il problema di condividere l'accesso a dati non è quindi solo quello del deadlock, ma anche quello della correttezza del risultato.
 
-Note: va notato come già i passaggi di compilazione, interpretazione e JITting introducono una indeterminatezza sul reale ordine di esecuzione delle istruzioni, anche nel caso del singolo thread. Inoltre, lo stesso hardware spesso riordina l'esecuzione delle istruzioni per ottimizzare l'uso delle risorse. Quindi, in linea generale non ci si può basare sul codice sorgente per interpretare alcuni dettagli del comportamento di un programma, tantomeno in ambiente concorrente.
+Va notato come già i passaggi di compilazione, interpretazione e JITting introducono indeterminatezza sul reale ordine di esecuzione delle istruzioni, anche nel caso del singolo thread. Inoltre, lo stesso hardware spesso riordina l'esecuzione delle istruzioni per ottimizzare l'uso delle risorse. In linea generale non ci si può basare sul codice sorgente per interpretare alcuni dettagli del comportamento di un programma, tantomeno in ambiente concorrente.
 
 
-Una struttura dati non thread-safe non consente a più thread di operare contemporaneamente.
-  * nel migliore dei casi lancia una `java.util.ConcurrentModificationException`
-  * nel caso intermedio lo stato diventa inconsistente
-  * nel peggiore dei casi ottengo un'altra eccezione
+Una struttura dati non thread-safe non consente a più thread di operare contemporaneamente:
+  * nel migliore dei casi lancia una `java.util.ConcurrentModificationException`;
+  * nel caso intermedio lo stato diventa inconsistente;
+  * nel peggiore dei casi ottengo un'altra eccezione. Ad esempio in determinati (rari) casi `HashMap#put` può lanciare un `IndexOutOfBound`(!).
 
-Note: per es. in determinati (rari) casi `HashMap#put` è in grado di lanciare un IndexOutOfBound.
+
+
+Definiamo in questo modo un `Runnable` che percorre una lista.
+
+
 
 
 `it.unipd.app2020.safe.ListTraverser`
@@ -91,8 +97,7 @@ list.iterator().forEachRemaining(el -> {
 });
 ```
 
-Note: poniamo di definire in questo modo un `Runnable` che percorre una lista.
-
+In questo modo invece definiamo un `Runnable` che aggiunge un elemento ad una lista.
 
 `it.unipd.app2020.safe.ListUpdater`
 
@@ -105,10 +110,8 @@ try {
 list.add("d");
 ```
 
-Note: in questo modo invece definiamo un `Runnable` che aggiunge un elemento ad una lista.
 
-
-`it.unipd.app2020.safe.ListTest`
+Creiamo una lista `list`con 3 elementi, invochiamo `ListTraverser(list)` e `ListUpdater(list)`. Ci aspettiamo che a questo punto `list` abbia 4 elementi.
 
 ```java
 List< String > list = new ArrayList< String >();
@@ -123,21 +126,16 @@ Thread.sleep(1000);
 assertEquals(4, list.size());
 ```
 
-Note: `ArrayList` dichiara ([nella documentazione](https://docs.oracle.com/en/java/javase/15/docs/api/java.base/java/util/ArrayList.html)) che il suo iteratore lancia una `java.util.concurrentModificationException` se la collezione viene modificata durante l'attraversamento
+Ma `ArrayList`non è thread-safe e dichiara ([nella documentazione](https://docs.oracle.com/en/java/javase/15/docs/api/java.base/java/util/ArrayList.html)) che il suo iteratore lancia una `java.util.concurrentModificationException` se la collezione viene modificata durante l'attraversamento. A lezione è stato eseguito una volta il codice ed è stato superato con jsuccesso il test, ma è stata anche lanciata un'eccezione. Questo insegna che alcuni strumenti di testing non sono adatti a testare ambiente concorrente.
 
 
-Approfondimenti:
+Video di approfondimento consigliati:
 
-A Crash Course in Modern Hardware by Cliff Click
-https://www.youtube.com/watch?v=OFgxAFdxYAQ
-
-Adventures with concurrent programming in Java
-https://www.youtube.com/watch?v=929OrIvbW18
+* (A Crash Course in Modern Hardware by Cliff Click)[https://www.youtube.com/watch?v=OFgxAFdxYAQ]
+* (Adventures with concurrent programming in Java)[https://www.youtube.com/watch?v=929OrIvbW18]
 
 
-In conclusione:
-
-Se abbiamo la necessità di condividere dati fra più thread, abbiamo bisogno di strutture dati thread-safe.
+In conclusione se abbiamo la necessità di condividere dati fra più thread, abbiamo bisogno di **strutture dati thread-safe**.
 
 ---
 
@@ -166,10 +164,9 @@ Queste classi garantiscono:
 * che la modifica (quasi sempre) non blocchi il thread che la sta eseguendo
 
 
-_Quasi sempre_: la funzionalità richiede la disponibilità del supporto dell'hardware attraverso istruzioni *CAS*: Compare-and-swap
+Abbiamo scritto _quasi sempre_ perché la funzionalità richiede la disponibilità del supporto dell'hardware attraverso istruzioni *CAS* (Compare-and-swap), e in mancanza di queste l'implementazione ripiega su metodi più convenzionali (meno efficienti, che bloccano il thread).
 
-In mancanza di queste l'implementazione ripiega su metodi più convenzionali (meno efficienti, che bloccano il thread).
-
+Vediamo come si implementa la classe `Adder` vista a inizio lezione con un `Atomic Integer`:
 
 `it.unipd.app2020.safe.AtomicAdder`
 
@@ -190,14 +187,14 @@ var t1 = new Thread(() -> {
 for (int i = 0; i < 100000; i++) {
   target.incrementAndGet(); } 
 }); 
-``` 
-
-Note: ora l'istruzione appare anche nel sorgente come unitaria: incrementa e ritorna il nuovo valore. La documentazione spiega le garanzie di atomicità che sono fornite.
+```
 
 
-![Adder](imgs/l10/atomicAdder.png) <!-- .element: style="width: 70%" -->
 
-Note: la terza chiamata di `incrementAndGet` potenzialmente potrebbe rimanere bloccata, ma nella pratica la risposta è talmente veloce che è estremamente difficile (praticamente impossibile, se l'esecuzione viene implementata con un solo opcode) che le due `incrementeAndGet` si accavallino. Qualora anche avvenisse, a livello hardware il costo di sincronizzazione sarebbe molto basso. Confrontate con il diagramma della prima lezione.
+
+![Adder](imgs/l10/atomicAdder.png) 
+
+Si noti che la terza chiamata di `incrementAndGet` potenzialmente potrebbe rimanere bloccata, ma nella pratica la risposta è talmente veloce che è estremamente difficile che le due `incrementeAndGet` si accavallino. Qualora avvenisse, a livello hardware il costo di sincronizzazione sarebbe molto basso. Si confronti con il diagramma della prima lezione.
 
 
 ```java
