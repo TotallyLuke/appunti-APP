@@ -12,39 +12,40 @@ L'enfasi è sul fatto che i processi condividono le stesse risorse, sullo stesso
 
 ## Motivazioni storiche della Programmazione Concorrente
 
+La macchina di Von Neumann è un modello utile nella ricerca teorica. Dal punto di vista tecnologico essa fornisce un'implementazione tecnicamente efficace della macchina di Turing (che è un fondamentale risultato teorico), ma presto è stata distanziata dalla realizzazione tecnica. Essa esegue una istruzione alla volta, e questo diventa molto rapidamente poco efficiente. Inoltre la singola CPU è chiaramente un collo di bottiglia, che la tecnica ha presto individuato e cercato di rimuovere.
 
-La macchina di Von Neumann è un modello utile nella ricerca teorica. Dal punto di vista tecnologico essa fornisce un'implementazione tecnicamente efficace della macchina di Turing (che è un fondamentale risultato teorico), ma è presto è stata distanziata dalla realizzazione tecnica. Essa esegue una istruzione alla volta, e questo diventa molto rapidamente poco efficiente. Inoltre la singola CPU è chiaramente un collo di bottiglia, che la tecnica ha presto individuato e cercato di rimuovere. Emergono molto presto opportunità per raggiungere una maggiore efficienza al costo di complessità architetturale e allontanamento dalla teoria. 
+Emergono molto presto opportunità per raggiungere una maggiore efficienza al costo di complessità architetturale e allontanamento dalla teoria. 
 
 ![Von Neumann](imgs/l08/VonNeumann.jpg) 
 
-All'inizio degli anni sessanta, l'innovazione dei "channels" nei mainframe IBM permette di avere operazioni di I/O senza occupare la CPU: le periferiche diventano "intelligenti" e possono leggere i nastri o stampare risultati mentre la CPU fa altre operazioni. Meno tempi di attesa di I/O significa maggiore sfruttamento della CPU ed in definitiva prestazioni migliori a parità di tempo; in un regime di noleggio questo è un incentivo economico diretto.
+All'inizio degli anni sessanta, l'innovazione dei "channels" nei mainframe IBM permette di avere operazioni di I/O senza occupare la CPU: le periferiche diventano "intelligenti" e possono leggere i nastri o stampare risultati mentre la CPU fa altre operazioni. Meno tempi di attesa di I/O significa maggiore sfruttamento della CPU e in definitiva prestazioni migliori a parità di tempo; in un regime di noleggio questo è un incentivo economico non indifferente.
 
 
 Il modello economico spinge quindi ad affrontare il problema del coordinamento fra parti attive che lavorano contemporaneamente per ottenere una maggiore efficienza.
 
 
-I Sistemi Operativi si trovano così nella necessità di gestire più attività contemporanee o in rapida successione. Le risorse disponibili vanno distribuite fra queste attività ed utilizzate al meglio.
+I Sistemi Operativi si trovano così nella necessità di gestire più attività contemporanee o in rapida successione. Le risorse disponibili vanno distribuite fra queste attività e utilizzate al meglio.
 
-La concorrenza diventa quindi una funzione di alto livello in carico al sistema operativo, vista anche la necessità di lavorare a strettissimo contatto con la gestione delle risorse. Per esempio: mentre un programma attende un caricamento da nastro alla memoria, un altro può effettuare un calcolo che impegna la CPU. Il risultato finale è che la CPU è efficace per un tempo maggiore, invece di dover attendere l'esecuzione delle operazioni di comunicazione.
+La concorrenza diventa quindi una funzione di alto livello in carico al sistema operativo, vista anche la necessità di lavorare a strettissimo contatto con la gestione delle risorse. Per esempio: mentre un programma attende un caricamento da nastro alla memoria, un altro può effettuare un calcolo che impegna la CPU. Il risultato finale è che la CPU è efficace per un tempo maggiore, invece di dover attendere l'esecuzione delle operazioni di comunicazione.  Attenzione che portare questo modello all'estremo crea altri problemi come per esempio l'[attacco NetCat](https://www.vusec.net/projects/netcat/).
 
-Si noti il sistema operativo mantiene la contabilità, in modo a letterale: analogamente al costo dei servizi cloud odierni, la tariffa era oraria; del resto si trattava in modo analogo di "ferro" non di proprietà dell'utente finale. Attenzione che portare questo modello alle estreme conseguenze, crea altri problemi come per esempio l'[attacco NetCat](https://www.vusec.net/projects/netcat/)
+N.B.: il sistema operativo mantiene la contabilità: la tariffa era oraria (analogamente al costo dei servizi cloud odierni); del ressto le macchine non erano proprietà dell'utente finale.
 
 
-La legge di Moore (1965) afferma che "Il numero di transistor per chip raddoppia ogni anno". Questo principio fornisce risorse sempre crescenti (ma sempre più asimmetriche). Leggere il paper originale di Moore in `papers/l1`.)
+La legge di Moore (1965) afferma che "Il numero di transistor per chip raddoppia ogni anno". Questo principio fornisce risorse sempre crescenti (ma sempre più asimmetriche). Leggere il paper originale di Moore in `papers/l1`.
 
-Questa legge ha, da qualche anno, raggiunto i limiti fisici del silicio (agli attuali 7nm ci si scontra con la compensazione degli effetti quantistici, oltre con le problematiche energetiche e termiche), e viene rincorsa attraverso la moltiplicazione dei core sullo stesso chip, l'ottimizzazione della concorrenza fra attività in aree diverse del chip, le tecniche di esecuzione predittiva, e così via. 
+Questa legge ha, da qualche anno, raggiunto i limiti fisici del silicio (agli attuali 7nm ci si scontra con la compensazione degli effetti quantistici e con le problematiche energetiche e termiche). Viene ancora rincorsa attraverso la moltiplicazione dei core sullo stesso chip, l'ottimizzazione della concorrenza fra attività in aree diverse del chip, le tecniche di esecuzione predittiva, e così via. 
 
 
 ![Moore](imgs/l08/Transistor_Count_and_Moore's_Law_-_2011.svg)
 
 
-Tutto questo però richiede sempre maggiore gestione della concorrenza e dell'accesso contemporaneo alle stesse risorse. Inoltre, alcune di queste tecniche (l'esecuzione predittiva e la gestione speculativa delle cache) si sono rivelate problematiche dal punto di vista della sicurezza (cfr. Spectre, [Meltdown]( https://meltdownattack.com/) e tutti i lavori successivi).
+Tutto questo però richiede sempre una sempre migliore gestione della concorrenza e dell'accesso contemporaneo alle stesse risorse. Inoltre alcune di queste tecniche (l'esecuzione predittiva e la gestione speculativa delle cache) si sono rivelate problematiche dal punto di vista della sicurezza (cfr. Spectre, [Meltdown]( https://meltdownattack.com/) e tutti i lavori successivi).
 
 La legge di Amhdal (1967) individua i limiti matematici della possibile efficienza che si può ottenere dalla parallelizzazione. Essa ci insegna che "Lo speedup dipende dalla parte parallelizzabile del programma da eseguire". Un riassunto dell'intervento di Amdhal in cui viene enunciata la legge è presente in `papers/l1`.
 
 ![Amdhal](imgs/l08/AmdahlsLaw.svg)
 
-**Parallelism is using more resources to get  the answer faster**
+**Parallelism is using more resources to get the answer faster**
 
 *Corollary:* Only useful if it really does get  the answer faster
 
@@ -80,7 +81,6 @@ Creare, mettere da parte e portare in esecuzione un Processo sono operazione rel
 ![CPU Cycles](imgs/l08/part101_infographics_v08.png) 
 
 Notare che la scala del grafico (preso da http://ithare.com/infographics-operation-costs-in-cpu-clock-cycles/ ) è logaritmica: ogni colonna corrisponde ad un ordine di grandezza. Le operazioni di cambio di contesto fra thread sono costose, quelle di cambio di contesto fra processi possono esserlo ancora di più perché possono includere spostamenti di ampie porzioni della RAM, molteplici chiamate al kernel e altro.
-
 
 Per gestire più linee di esecuzione all'interno dello stesso processo è stato ideato il concetto di thread.
 I **thread** condividono le risorse di uno stesso processo, rendendo più economico il costo di passaggio da un ramo di esecuzione all'altro.
@@ -161,7 +161,7 @@ Tradotto dal punto di vista delle risorse, questo significa che un Deadlock *pu�
 * la risorsa non deve essere condivisibile;
 * il processo deve cercare risorse usate da altri;
 * non ci dev'essere modo di sottrarre una risorsa ad un processo che l'ha ottenuta;
-* la catena delle attese fra i processi è circolare () cioè P1 attende una risorsa che ha P2, che attende una risorsa che ha P3, che attende anche lui una risorsa che ha P1)
+* la catena delle attese fra i processi è circolare ( cioè P1 attende una risorsa che ha P2, che attende una risorsa che ha P3, che attende anche lui una risorsa che ha P1)
 
 Sfortunatamente, sono condizioni molto comuni in quanto semplificano la realizzazione dell'ambiente di esecuzione.
 
@@ -172,14 +172,13 @@ Rimuovere anche una sola delle condizioni rende impossibile entrare in un Deadlo
 Rimuovere la _mutua esclusione_ può non essere fattibile per certe risorse. Richiede algoritmi specifici detti _lock-free_ o _wait-free_. Alcune tecniche di programmazione sono molto interessanti per introdurre alcune tipologie di mutua esclusione; per esempio alcune tecniche di programmazione funzionale come la modellazione degli effetti collaterali tramite monadi.
 
 
-Rimuovere _l'attesa_ può portare a situazioni di starvation o attesa indefinita.Richiede un qualche sistema transazionale per ottenere più risorse contemporaneamente. Programmare tutte le possibili casistiche di attesa e prenotazione di multiple risorse, e le varie modalità di fallimento, può diventare più complesso del compito che si sta cercando di parallelizzare, e molto più difficile da dimostrare corretto.
-
+Rimuovere _l'attesa_ può portare a situazioni di starvation o attesa indefinita. Richiede un qualche sistema transazionale per ottenere più risorse contemporaneamente. Programmare tutte le possibili casistiche di attesa e prenotazione di multiple risorse, e le varie modalità di fallimento, può diventare più complesso del compito che si sta cercando di parallelizzare, e molto più difficile da dimostrare corretto.
 
 Introdurre _la pre-emption_ può essere estremamente costoso o impossibile. Oltre agli algoritmi lock- e wait-free una soluzione può essere l'uso di una forma di _optimistic concurrency control_.
 Il costo computazionale e di comunicazione per realizzare un sistema transazionale di questo tipo lo rende economico non a livello di sistema operativo, ma a livello applicativo specializzato: un esempio classico sono i database relazionali, dove vari tipi di controllo della concorrenza permettono di scegliere con continuità fra performance e correttezza. Si tratta comunque di costi in termini di performance; cospicui, all'interno di una singola macchina, enormi in un sistema distribuito.
 
 
-Rimuovere _la circolarità_ richiede imporre un'ordinamento fra le risorse e la sequenza di acquisizione. Non sempre è facile da individuare o creare (Dijkstra propone un algoritmo). Ma questo significa anche che il sistema ed i threads devono essere coscienti gli uni degli altri, e delle rispettive caratteristiche: questo non sempre è possibile a priori, e può essere molto complesso da risolvere nel caso generale.
+Rimuovere _la circolarità_ richiede imporre un'ordinamento fra le risorse e la sequenza di acquisizione	. Non sempre è facile da individuare o creare (Dijkstra propone un algoritmo). Ma questo significa anche che il sistema ed i threads devono essere coscienti gli uni degli altri, e delle rispettive caratteristiche: questo non sempre è possibile a priori, e può essere molto complesso da risolvere nel caso generale.
 
 ---
 

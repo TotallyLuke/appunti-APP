@@ -1,4 +1,4 @@
-# 9: Threads
+# : Threads
 
 ---
 
@@ -219,8 +219,7 @@ Il metodo run() è completato (correttamente o meno) ed il Thread ha concluso il
 public void interrupt()
 ```
 
-Come abbiamo appena detto, un thread può concludere la sua esecuzione correttamente o meno. Fra i modi non corretti abbiamo il lancio di una eccezione all'interno della sua esecuzione, oppure il metodo interrupt che può essere invocato anche da un altro thread.
-
+Come abbiamo appena detto, un thread può concludere la sua esecuzione correttamente o meno. Fra i modi non corretti abbiamo il lancio di una eccezione all'interno della sua esecuzione, oppure il metodo `interrupt` che può essere invocato anche da un altro thread.
 
 `it.unipd.app2020.threads.ThreadInterrupter`
 
@@ -254,7 +253,7 @@ public static void main(String[] args) {
 }
 ```
 
-Osserviamo che interrompere un thread che non è vivo non porta a nessun risultato.
+Osserviamo che interrompere un thread che non è vivo non porta nessun effetto.
 
 
 ```java
@@ -266,7 +265,7 @@ public void setUncaughtExceptionHandler(
     Thread.UncaughtExceptionHandler eh)
 ```
 
-Possiamo impostare, per uno specifico thread, un gestore delle eccezioni che riceve le eccezioni non intercettate e può quindi modificare il modo in cui un thread termina in modo non previsto.
+Possiamo impostare, per uno _specifico_ thread, un gestore delle eccezioni che riceve le eccezioni non intercettate e può quindi modificare il modo in cui un thread termina in modo non previsto.
 
 
 `it.unipd.app2020.threads.RethrowingThread`
@@ -288,7 +287,9 @@ public Thread get() {
 }
 ```
 
-Creiamo uno specifico supplier per farci fornire dei threads che rilanciano l'eccezione di interruzione invece di gestirla. A tutti gli effetti, se interrotti questi thread lanciano una eccezione non gestita. 
+Creiamo uno specifico supplier per farci fornire dei threads che _rilanciano_ l'eccezione di interruzione invece di gestirla. A tutti gli effetti, se interrotti questi thread lanciano una eccezione non gestita.
+
+N.B. non si può omettere il catch, perché Java non permette a un Runnable di lanciare eccezioni. Possiamo però rilanciare una RuntimeException.
 
 
 ```java
@@ -303,16 +304,14 @@ interrupter.start();
 tgt.start();
 ```
 
-Impostiamo l'exception handler sul thread bersaglio: vedremo che l'handler viene richiamato e gestisce l'eccezione.
+Impostiamo l'exception handler sul thread bersaglio: vedremo che l'handler viene richiamato e gestisce l'eccezione. Rispetto all'esempio `ThreadInterrupter` non viene stampato lo stackTrace di default, ma viene chiamato l'handler che abbiamo definito.
 
 ---
 
 ## Executors
 
 
-Creare un nuovo Thread per ogni operazione da fare può velocemente diventare costoso.
-
-L'amministrazione dei Thread impegnati, allo stesso modo, si complica al crescere del numero degli oggetti.
+Creare un nuovo Thread per ogni operazione da fare può velocemente diventare costoso. L'amministrazione dei Thread impegnati, allo stesso modo, si complica al crescere del numero degli oggetti.
 
 
 La soluzione è cedere parte del controllo al sistema, in cambio di maggiore semplicità ed efficienza.
@@ -355,7 +354,7 @@ threads.limit(10).forEach((r) -> executor.execute(r));
 out.println("Done scheduling.");
 ```
 
-Notate come in questo caso la JVM sia rimasta attiva: l'ExecutorService rimane in attesa di nuovi compiti da eseguire, anche se il metodo `main` è concluso.
+Notare come in questo caso la JVM sia rimasta attiva: l'ExecutorService rimane in attesa di nuovi compiti da eseguire, anche se il metodo `main` è concluso.
 
 
 `it.unipd.app2020.threads.SingleThreadPool`
@@ -376,35 +375,26 @@ Esempi di esecutori:
 
 | Tipo | Funzionamento |
 | -- | -- |
-| CachedThreadPool | Riusa thread già creati, ne crea nuovi se necessario |
+| CachedThreadPool | Riusa thread già creati, ne crea nuovi se necessario. Ha un'utilità limitata perché è difficile controllare l'occupazione della cache. |
 | FixedThreadPool | Riusa un insieme di thread di dimensione fissa|
-
-
-Esempi di esecutori:
-
-| Tipo | Funzionamento |
-| -- | -- |
 | ScheduledThreadPool | Esegue i compiti con una temporizzazione |
 | SingleThreadExecutor | Usa un solo thread per tutti i compiti |
+| ForkJoinPool | Punta ad usare tutti i processori disponibili. Specializzato per il framework di fork/join (che sta dietro alle implementazioni di _reduce_ e _collect_ degli `stream`, leggere _Modern Java in Action_ per approfondire) |
 
-
-Esempi di esecutori:
-
-| Tipo | Funzionamento |
-| -- | -- |
-| ForkJoinPool | Punta ad usare tutti i processori disponibili. Specializzato per il framework di fork/join |
-
-Usa un algoritmo detto di _work stealing_ per gestire il caso in cui le attività eseguite avviino ulteriori sotto-attività. Interessante l'annotazione: `This implementation restricts the maximum number of running threads to 32767`
+`ForkJoinPool` usa un algoritmo detto di _work stealing_ per gestire il caso in cui le attività eseguite avviino ulteriori sotto-attività. La documentazione specifica che: `This implementation restricts the maximum number of running threads to 32767`
 
 ---
 
 ## Callables
 
 
-Finora abbiamo usato come lavoro da eseguire dei `Runnable`, cioè dei blocchi privi di risultato.
-
+Finora abbiamo usato come lavoro da eseguire dei `Runnable`, cioè dei blocchi di codice che non ritornano un risultato. In alcuni casi potrebbe servire un risulatato.
 
 L'interfaccia `Callable` ci permette di definire dei compiti che producono un risultato.
+
+È un'interfaccia simile a `Runnable`, ma è parametrizzata su un tipo. Questo tipo è il tipo di ritorno dell'esecuzione. 
+
+Questa interfaccia permette di modellare un blocco si vuole eseguire parallelamente, ottenendo un valore di ritorno. Il metodo `call` è in grado di lanciare eccezioni (si ricorda che Runnable non è in grado). Quindi non è necessario gestire tutte le eccezioni di un Callable
 
 
 ```java
@@ -425,7 +415,7 @@ public interface Callable < V > {
 ```
 
 
-Un semplice `Executor` non esegue `Callable`: è necessario scegliere un `ExecutorService`, che espone i metodi necessari.
+Un semplice `Executor` non gestisce un'esecuzione che ritorna un risultato: è necessario scegliere un `ExecutorService`.
 
 
 ```java
@@ -439,7 +429,7 @@ public interface ExecutorService
   extends Executor
 ```
 
-Diversi `Executor` comunque implementano anche questa interfaccia.
+Il problema è: come si ottiene il risultato di una `Callable` e come lo si sottomette a un `ExecutorService`? La soluzione sta nell'utilizzo di un `Future` per rappresentare il valore che _verrà_ ritornato dall'esecuzione di un Callable.
 
 
 ```java
@@ -458,7 +448,7 @@ Diversi `Executor` comunque implementano anche questa interfaccia.
 ```
 
 
-Un `Future` è rappresenta un calcolo che prima o poi ritornerà un valore. È possibile verificare se il calcolo è stato completato, ottenere il valore risultante, o controllare se sia ancora in corso.
+Un `Future` rappresenta un calcolo che prima o poi ritornerà un valore. È possibile verificare se il calcolo è stato completato e ottenere il valore risultante, o controllare se sia ancora in corso.
 
 
 ```java
@@ -480,18 +470,16 @@ public interface Future< V >
  *
 */
 T get()
-```
 
-
-```java
 /**
  * Returns true if this task completed.
  *
  */
 boolean isDone()
 ```
+Il metodo `get()` è bloccante, il metodo `isDone()` ritorna true se e solo se il task è stato completato, altrimenti ritorna false.
 
-
+Nell'esempio si crea un `FixedThreadPool`. Il Supplier ritorna thread che calcolano fattoriali e ritornano un risultato. Si predispone una lista di `Future` in cui si inserire tutti i fattori che calcoliamo.
 `it.unipd.app2020.ScheduledFuture`
 
 ```java
@@ -503,7 +491,6 @@ List< Future< Integer > > futures =
   new ArrayList< Future< Integer > >();
 ```
 
-
 ```java
 for (int i = 0; i < 10; i++) 
   futures.add(executor.submit(supplier.get())); 
@@ -514,13 +501,10 @@ while (executor.getCompletedTaskCount() < futures.size()) {
   TimeUnit.MILLISECONDS.sleep(50); 
 }
 ```
-
+Si noti che in questo caso quando tutti i compiti sono completati stiamo ancora osservando, dunque l'executor non termina. Bisogna invocare `executor.shutdown()` per terminare.
 
 Con a disposizione una lista di `Callables`, un `ExecutorService` ci permette di: 
-* ottenere un risultato di un `Future` che ha terminato (non necessariamente il primo, ma probabilmente uno dei primi) 
-* ottenere una lista di `Future` nel momento in cui sono tutti completati 
-
-
+* ottenere un risultato di un `Future` che ha terminato (non necessariamente il primo, ma probabilmente uno dei primi) . Questo comportamento può essere ottenuto con la chiamata `invokeAny()`. Quando `invokeAny()` ritorna non tutti i `Callable` hanno completato l'esecuzione.
 ```java 
 /** 
  * Executes the given tasks, returning the 
@@ -532,9 +516,8 @@ Con a disposizione una lista di `Callables`, un `ExecutorService` ci permette di
   Collection < ? extends Callable< T > > tasks)
 ```
 
-Quando questa chiamata ritorna, non tutti i `Callable` hanno completato l'esecuzione.
 
-
+* ottenere una lista di `Future` nel momento in cui sono tutti completati (risparmiando il busy-waiting).  Questo comportamento può essere ottenuto con la chiamata `invokeAll()`.
 ```java
 /**
  * Executes the given tasks, returning a list of Futures
@@ -545,9 +528,6 @@ Quando questa chiamata ritorna, non tutti i `Callable` hanno completato l'esecuz
 < T > List< Future< T > >
   invokeAll(Collection< ? extends Callable< T > > tasks)
 ```
-
-Questa chiamata ritorna solo dopo che almeno uno dei `Future` ha completato.
-
 
 `it.unipd.app2020.AllFutures`
 

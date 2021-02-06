@@ -12,37 +12,23 @@ In particolare, rappresenta l'iterazione su di un insieme di cardinalità non no
 
 In cambio di alcune restrizioni sulle operazioni possibili e della cessione del controllo sull'ordine di iterazione otteniamo:
 
-
-* una API per comporre passi di elaborazione riusabili su di una successione di oggetti
-* una reificazione della trasformazione, che ne permette il riuso su sorgenti diverse ed il test in isolamento
-* la promozione di un approccio funzionale al trattamento iterativo dei dati
-* la disponibilità di uno stile espressivo e dichiarativo per descrivere una ampia classe di elaborazioni
-* un modello di esecuzione in cui esecuzione sequenziale e parallela non richiedono modifiche al codice
+* una API per comporre passi di elaborazione _riusabili_ su di una successione di oggetti. A differenza del contenuto di un ciclo for che è molto difficile da riusare perché dipende dalla struttura dati in cui si sta iterando;
+* una reificazione della trasformazione, che ne permette il riuso su sorgenti diverse ed il test in isolamento;
+* la promozione di un_ approccio funzionale_ al trattamento iterativo dei dati;
+* la disponibilità di uno stile _espressivo e dichiarativo_ per descrivere una ampia classe di elaborazioni;
+* un modello di esecuzione in cui esecuzione sequenziale e parallela non _richiedono modifiche al codice_.
 
 
 ![Devoxx](imgs/l12/devoxx.jpg) <!-- .element: style="width: 80%" -->
 
-Note: https://twitter.com/mariofusco/status/927819214920081409 (Devoxx 2017)
 
+In cosa sono differenti gli Stream dalle Collezioni? Nell'enfasi che danno alla conservazione dei dati rispetto alla loro manipolazione. Gli Stream enfatizzano di più la manipolazione.
 
+La caratteristica principale di una Collezione è la performance dell'accesso ai contenuti. L'algoritmo che usa quei contenuti è completamente estraneo a queste considerazioni. Una lista non si preoccupa di cosa viene effettuato con i suoi elementi, ma si occupa di accedere rapidamente in testa o in coda.
 
+Uno Stream richiede la definizione dell'algoritmo di calcolo che avverrà sopra i suoi elementi. Questi ultimi non possono essere acceduti direttamente, e l'algoritmo non ha nessun controllo sul loro recupero.
 
-In cosa sono differenti gli Stream dalle Collezioni?
-
-Note: nell'enfasi che danno alla conservazione dei dati rispetto alla loro manipolazione.
-
-
-La caratteristica principale di una Collezione è la performance dell'accesso ai contenuti.
-
-L'algoritmo che usa quei contenuti è completamente estraneo a queste considerazioni.
-
-
-Uno Stream richiede la definizione dell'algoritmo di calcolo che avverrà sopra i suoi elementi.
-
-Questi ultimi non possono essere acceduti direttamente, e l'algoritmo non ha nessun controllo sul loro recupero.
-
-
-Lo Stream perciò ha un certo il controllo sull'algoritmo, e può usare questo controllo per prendere decisioni su come eseguirlo.
+Lo Stream perciò ha un certo il controllo sull'algoritmo, e può usare questo controllo per prendere decisioni su come eseguirlo. Su quali basi può prendere decisioni su come eseguirlo? Si basa sui flag impostati dalla sorgenti.
 
 ---
 
@@ -51,25 +37,14 @@ Lo Stream perciò ha un certo il controllo sull'algoritmo, e può usare questo c
 
 La sorgente di uno Stream può dichiarare alcune *caratteristiche* che gli operatori intermedi possono verificare e che l'operazione terminale usa per prendere decisioni sulla esecuzione.
 
-Note: che non avviene mai prima dell'attivazione dell'operazione terminale.
-
-
 |Flag|Caratteristica|
 |-|-|
 |CONCURRENT|Parallelizzabile|
 |DISTINCT|Elementi distinti|
 |IMMUTABLE|Immutabile durante il consumo|
-
-
-|Flag|Caratteristica|
-|-|-|
 |NONNULL|Elementi non nulli|
 |ORDERED|Elementi ordinati|
 |SIZED|Dimensione nota|
-
-
-|Flag|Caratteristica|
-|-|-|
 |SORTED|Ordinamento definito|
 |SUBSIZED|Suddivisioni di dimensione nota|
 
@@ -88,7 +63,7 @@ long cnt = IntStream.range(1, 20)
 System.out.println(">" + cnt);
 ```
 
-Note: Notate come, se l'esecuzione è seriale o parallela, il risultato è differente: l'operazione terminale `count()` decide che non ha bisogno di eseguire le operazioni `map` e ricava direttamente il conteggio.
+Notate come, se l'esecuzione è seriale o parallela, il risultato è differente: l'operazione terminale `count()` decide che non ha bisogno di eseguire le operazioni `map` e ricava direttamente il conteggio.
 Ovviamente, l'effetto collaterale della stampa dell'indice corrente è illegale, quindi non abbiamo nessuna garanzia sulla sua esecuzione.
 
 
@@ -126,18 +101,17 @@ S parallel()
 S sequential()
 ```
 
-Note: Attenzione: l'ultimo elemento lungo la catena vince: non si possono costruire pipeline di concorrenza mista.
+Attenzione: l'ultimo elemento lungo la catena vince: non si possono costruire pipeline di concorrenza mista.
 O meglio, è così attualmente. Un aggiornamento della libreria potrebbe cambiare le cose.
 
 
 Una pipeline **ORDERED** garantisce di ritornare gli elementi nell'ordine in cui sono stati emessi.
 
 I passi intermedi che mantengono questa caratteristica non modificano l'ordine.
+Attenzione: SORTED è un'altra cosa
 
-Note: Attenzione SORTED è un'altra cosa
 
-
-L'ordinamento è conservato, se possibile, anche dopo una esecuzione parallela
+L'ordinamento è conservato, se possibile, anche dopo una esecuzione parallela.
 
 
 `it.unipd.app2020.streams.OrderedStream`
@@ -151,7 +125,7 @@ IntStream.range(1, 20).parallel().map((i) -> {
 });
 ```
 
-Note: si può notare come il lavoro viene distribuito a più thread, ma il risultato finale sia comunque ordinato
+Si può notare come il lavoro viene distribuito a più thread, ma il risultato finale sia comunque ordinato
 
 
 Una pipeline **SORTED** mantiene gli elementi ordinati secondo il loro ordinamento naturale o dato da un `Comparator`.
@@ -169,8 +143,7 @@ Le operazioni che passiamo ai passi intermedi devono essere:
 * (nella maggior parte dei casi) prive di stato interno: devono essere cioè _funzioni pure_
 
 
-Alcune operazioni sono identificate come  
-*short-circuiting*: significa che possono interrompere l'esecuzione della pipeline prima dell'esame di tutti gli elementi.
+Alcune operazioni sono identificate come  *short-circuiting*: significa che possono interrompere l'esecuzione della pipeline prima dell'esame di tutti gli elementi.
 
 
 ```java
@@ -195,7 +168,7 @@ boolean anyMatch(Predicate< ? super T > predicate)
 Optional< T > findAny()
 ```
 
-Note: il comportamento di `findAny()` è pensato per la massima performance negli stream paralleli.
+Il comportamento di `findAny()` è pensato per la massima performance negli stream paralleli.
 
 
 `it.unipd.app2020.streams.CandidateNumber`
@@ -211,7 +184,7 @@ public class CandidateNumber {
 }
 ```
 
-Note: una struttura dati per verificare se un numero può essere candidato ad essere primo.
+Una struttura dati per verificare se un numero può essere candidato ad essere primo.
 
 
 `it.unipd.app2020.streams.Divisors`
@@ -229,7 +202,7 @@ public class Divisors implements
 }
 ```
 
-Note: questa funzione produce, da un intero, un `CandidateNumber` con tutti i suoi divisori che può così essere controllato.
+Questa funzione produce, da un intero, un `CandidateNumber` con tutti i suoi divisori che può così essere controllato.
 
 
 `it.unipd.app2020.streams.Perfect`
@@ -246,7 +219,7 @@ public class Perfect implements Predicate< CandidateNumber > {
 }
 ```
 
-Note: questa classe è un predicato, cioè una funzione booleana su di un oggetto. Ci dice quando un `CandidateNumber` è un numero perfetto.
+Questa classe è un predicato, cioè una funzione booleana su di un oggetto. Ci dice quando un `CandidateNumber` è un numero perfetto.
 
 
 `it.unipd.app2020.streams.PerfectStream`
@@ -259,12 +232,12 @@ List< CandidateNumber > match = IntStream.range(30, 100000)
 match.forEach(x -> { System.out.println(x); });
 ```
 
-Note: otteniamo così una ricerca, parallela, che si ferma al primo risultato trovato.
+Otteniamo così una ricerca, parallela, che si ferma al primo risultato trovato.
 
 
 Altre operazioni sono dette _stateful_: può necessitare di consumare tutto o gran parte dell'input per poter emettere l'output mantenendo le caratteristiche desiderate (per es. ordinamento).
 
-Note: questo può rendere alcune operazioni apparentemente semplici in realtà molto costose.
+Questo può rendere alcune operazioni apparentemente semplici in realtà molto costose.
 
 
 ```java
@@ -276,7 +249,7 @@ Note: questo può rendere alcune operazioni apparentemente semplici in realtà m
 Stream< T > limit(long maxSize)
 ```
 
-Note: attenzione che limit è _stateful_ perché deve ritornare i **primi** elementi.
+Attenzione che limit è _stateful_ perché deve ritornare i **primi** elementi.
 
 
 `it.unipd.app2020.streams.AllPerfectStream`
@@ -288,7 +261,7 @@ IntStream.range(10, 10000).boxed().parallel()
   });
 ```
 
-Note: vengono ritornati i primi due elementi, in ordine. E non viene ritornato 8128.
+Vengono ritornati i primi due elementi, in ordine. E non viene ritornato 8128.
 
 ---
 
@@ -311,8 +284,7 @@ public interface Spliterator< T >
 ```
 
 
-Il metodo di avanzamento diventa `tryAdvance()`, che ribalta il funzionamento dell'iterator:  
-non è l'utilizzatore che ottiene il nuovo elemento, ma è lo stream che fornisce l'elemento al codice che deve operarci sopra.
+Il metodo di avanzamento diventa `tryAdvance()`, che ribalta il funzionamento dell'iterator: non è l'utilizzatore che ottiene il nuovo elemento, ma è lo stream che fornisce l'elemento al codice che deve operarci sopra.
 
 
 ```java
@@ -331,7 +303,7 @@ boolean tryAdvance(Consumer< ? super T > action)
 * attraversare in massa gli elementi rimanenti
 * suddividere l'iterazione in più rami
 
-Note: manca invece (coerentemente con la definizione di Stream) l'operazione di rimozione di un elemento
+Manca invece (coerentemente con la definizione di Stream) l'operazione di rimozione di un elemento
 
 
 ```java
@@ -357,7 +329,7 @@ long estimateSize()
 int characteristics()
 ```
 
-Note: notare il tipo di ritorno. Ci si attende che ogni chiamata a questo metodo dia lo stesso risultato; eventualmente, il risultato può cambiare dopo la separazione.
+Notare il tipo di ritorno. Ci si attende che ogni chiamata a questo metodo dia lo stesso risultato; eventualmente, il risultato può cambiare dopo la separazione.
 
 
 ```java
@@ -370,7 +342,7 @@ Note: notare il tipo di ritorno. Ci si attende che ogni chiamata a questo metodo
 default void forEachRemaining(Consumer< ? super T > action)
 ```
 
-Note: l'implementazione di default chiama tryAdvance per ogni elemento
+L'implementazione di default chiama tryAdvance per ogni elemento
 
 
 ```java
@@ -387,7 +359,7 @@ Note: l'implementazione di default chiama tryAdvance per ogni elemento
 Spliterator< T > trySplit()
 ```
 
-Note: le condizioni che questa chiamata deve rispettare sono molto complesse.
+Le condizioni che questa chiamata deve rispettare sono molto complesse.
 
 
 Con il supporto di queste funzioni, lo stream può pianificare efficientemente l'esecuzione delle operazioni terminali.
@@ -461,7 +433,7 @@ String res = IntStream.range(1, 1001).boxed()
 System.out.println(">>>> " + res);
 ```
 
-Note: ogni passo di riduzione produce una nuova stringa, sempre più grande, creando una forte pressione per il Garbage Collector.
+Ogni passo di riduzione produce una nuova stringa, sempre più grande, creando una forte pressione per il Garbage Collector.
 
 
 L'interfaccia `Collector` permette di gestire una riduzione dove l'accumulatore è un oggetto mutabile per ragioni di efficienza.
@@ -507,7 +479,7 @@ String res = IntStream.range(1, 1001).boxed()
 System.out.println(">>>> " + res);
 ```
 
-Note: applicazione classica del pattern Template Method
+Applicazione classica del pattern Template Method
 
 ---
 
@@ -523,7 +495,7 @@ Lo Stream tuttavia di default decide autonomamente quanto parallelismo usare, at
 
 Quanto parallelismo possiamo richiedere?
 
-Note: ForkJoinPool di standard usa #core-1 threads.
+ForkJoinPool di standard usa #core-1 threads.
 
 
 **Blocking factor**:  

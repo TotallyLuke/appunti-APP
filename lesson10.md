@@ -345,9 +345,9 @@ Nel package `java.util.concurrent` si trovano le versioni ottimizzate per la con
 collezioni più comuni.
 
 In generale, sono pensate per essere più efficienti della versione sincronizzata delle loro controparti, per
-es. `Collections.syncronizedMap(new HashMap())`
+esempio rispetto a `Collections.syncronizedMap(new HashMap())`
 
-Note: rispetto alla sincronizzazione della completa struttura dati, queste classi limitano la
+Si noti che rispetto alla sincronizzazione della completa struttura dati, queste classi limitano la
 sincronizzazione alle sole sezioni critiche, in modo da ottenere complessivamente una maggiore efficienza.
 
 
@@ -396,8 +396,7 @@ V replace(K key, V oldValue, V newValue)
 ```
 
 
-Analogamente `ConcurrentNavigableMap` con `NavigableMap`.
-
+Analogamente `ConcurrentNavigableMap` è la versione concorrente di `NavigableMap`.
 
 Alcune implementazioni, come `ConcurrentHashMap`, offrono metodi come `reduce`, `search` e `foreach` che
 possono operare su tutte le chiavi suddividendo autonomamente il lavoro in più thread.
@@ -418,8 +417,9 @@ public < U > U reduce(long parallelismThreshold,
   BiFunction< ? super U,? super U,? extends U> reducer)
 ```
 
-Note: `reduce` riduce la mappa ad un risultato unico. Vanno fornite due funzioni: una per trasformare le coppie chiave, valore nel tipo del risultato, e l'altra per sommare i risultati parziali. Il tipo del risultato deve quindi essere dotato di un'operazione di somma con le consuete proprietà commutativa e associativa.
+Possiamo invocare `reduce` su una `ConcurrentHashMap`, al fine di ridurre la mappa ad un risultato unico. Vanno fornite due funzioni: una per trasformare le coppie chiave-valore nel tipo del risultato, e l'altra per sommare i risultati parziali. Il tipo del risultato deve quindi essere dotato di un'operazione di somma con le consuete proprietà commutativa e associativa.
 
+Per provare il funzionamento di queste istruzioni, costruiamo una mappa di long casuali.
 
 `it.unipd.app2020.safe.ReducePerf`
 
@@ -432,8 +432,7 @@ IntStream.range(0, 10000)
     new Long(rnd.nextInt(1000))));
 ```
 
-Note: Per provare il funzionamento di queste istruzioni, costruiamo una mappa di long casuali.
-
+Impostiamo un parallelism threshold molto basso per suggerire un'esecuzione parallela.
 
 ```java
 long start = System.currentTimeMillis();
@@ -442,8 +441,7 @@ Long parres = map.reduceEntries(500,
 long partime = System.currentTimeMillis() - start;
 ```
 
-Note: Avviamo la sua riduzione, suggerendo tramite l'apposito parametro di usare il parallelismo.
-
+Per fare un confronto, verifichiamo il tempo usato se suggeriamo di non usare il parallelismo.
 
 ```java
 long start = System.currentTimeMillis();
@@ -451,9 +449,7 @@ Long parres = map.reduceEntries(10000001,
   entry -> entry.getValue(), (a, b) -> a + b);
 long partime = System.currentTimeMillis() - start;
 ```
-
-Note: Per fare un confronto, verifichiamo il tempo usato se suggeriamo di non usare il parallelismo.
-
+Questa operazione ha una complessità così bassa che l'esecuzione parallela non è conveniente.
 
 *Quiz*: costruire un esempio in cui è l'implementazione parallela la più efficace.
 
@@ -474,7 +470,7 @@ public < U > U search(long parallelismThreshold,
   BiFunction< ? super K,​? super V,​? extends U> searchFunction)
 ```
 
-Note: la funzione `search` permette di applicare una ricerca parallela nella mappa. Il risultato è il primo non nullo ritornato dalla funzione di chiave e valore. La ricerca è parallela, ma trovato il risultato tutti i thread di ricerca vengono fermati.
+La funzione `search` permette di applicare una ricerca parallela nella mappa. Il risultato è il primo non nullo ritornato dalla funzione di chiave e valore. La ricerca è parallela, ma trovato il risultato tutti i thread di ricerca vengono fermati. Un'esecuzione parallela di search non garantisce di trovare il _primo_ risultato.
 
 
 ```java
@@ -488,16 +484,16 @@ public void forEach(long parallelismThreshold,
   BiConsumer< ? super K,? super V> action)
 ```
 
-Note: infine la funzione `forEach` permette di eseguire un effetto collaterale per ciascuna coppia chiave, valore.
+Infine la funzione `forEach` permette di eseguire un _effetto collaterale_ (side-effects) per ciascuna coppia chiave-valore.
 
 
 Le funzioni usate nei metodi di trasformazione delle mappe devono:
 * non dipendere dall'ordinamento
 * non dipendere da uno stato condiviso durante il calcolo
 
-Inoltre, per i metodi diversi da `forEach` _non devono avere effetti collaterali_
+Inoltre, i metodi diversi da `forEach` _non devono avere effetti collaterali_.
 
-Note: Ovviamente, in `forEach` l'effetto collaterale è lo scopo della funzione. Le prime due condizioni sono invece indispensabili per garantire, in termini generali, la corretta esecuzione dell'operazione parallela.
+Ovviamente, in `forEach` l'effetto collaterale è lo scopo della funzione. Le prime due condizioni sono invece indispensabili per garantire, in termini generali, la corretta esecuzione dell'operazione parallela.
 
 
 Per ogni algoritmo vi sono varie versioni:
@@ -506,7 +502,7 @@ Per ogni algoritmo vi sono varie versioni:
 * con risultati primitivi (`int`, `double` ecc.)
 
 
-Le operazioni di riduzione, ricerca ed esecuzione di effetti non sono atomiche nel loro complesso, ma ogni coppia chiave-valore non nulla ha una garanzia di  `happens-before` con il suo uso nell'iterazione.
+Le operazioni di riduzione, ricerca ed esecuzione di effetti non sono atomiche nel loro complesso, ma ogni coppia chiave-valore non nulla ha una garanzia di  `happens-before` con il suo uso nell'iterazione (nel senso che prima viene trasformata, poi viene utilizzata nel calcolo).
 
 
 ### BlockingQueue
@@ -516,19 +512,19 @@ L'interfaccia `BlockingQueue` aggiunge alla classica `Queue` metodi con cui è p
 Diventa così possibile richiedere il comportamento desiderato all'interno di una esecuzione concorrente.
 
 
-Accodamento
+#### Accodamento
 
 |metodo|risultato negativo|
 |--|----|
 |`add(e)`|eccezione|
 |`offer(e)`|`false`|
-|`put(e)`|attesa|
+|`put(e)`|attesa (finché non c'è spazio)|
 |`offer(e, time, unit)`|attesa limitata|
 
-Note: si intende "risultato negativo" quando un elemento non è disponibile per l'accodamento o il prelievo
+Si intende "risultato negativo" quando un elemento non è disponibile per l'accodamento o il prelievo
 
 
-Prelievo
+#### Prelievo
 
 |metodo|risultato negativo|
 |--|----|
@@ -537,10 +533,10 @@ Prelievo
 |`take()`|attesa|
 |`poll(time, unit)`|attesa limitata|
 
-Note: il primo metodo ritorna immediatamente con un'eccezione se non ci sono elementi da rimuovere. Il secondo ritorna immediatamente con un valore speciale. Il terzo ed il quarto attendono, per un periodo indefinito o specificato.
+Come sopra il primo metodo ritorna immediatamente con un'eccezione se non ci sono elementi da rimuovere. Il secondo ritorna immediatamente con un valore speciale. Il terzo ed il quarto attendono, per un periodo indefinito o specificato.
 
 
-Lettura
+#### Lettura
 
 |metodo|risultato negativo|
 |--|----|
@@ -561,15 +557,14 @@ Lettura
 int drainTo(Collection< ? super E > c)
 ```
 
-Note: attenzione che il risultato non è definito (non interviene un'eccezione) se la coda viene modificata durante l'operazione: gli elementi accodati potrebbero essere riportati nella collezione, oppure ignorati. Questa operazione è più efficiente che un ciclo di `poll` fino ad esaurimento, ma non è atomica.
+Il metodo drainTo "scarica" la coda in una collezione.  Questa operazione è più efficiente che un ciclo di `poll` fino ad esaurimento, ma non è atomica. Attenzione che il risultato non è definito (non interviene un'eccezione) se la coda viene modificata durante l'operazione: gli elementi accodati potrebbero essere riportati nella collezione, oppure ignorati.
 
 
 Le varie implementazioni di `BlockingQueue`, ciascuna con le sue specifiche caratteristiche, sono la scelta naturale per implementare sistemi Produttore-Consumatore.
 
 
 ![Producer Consumer](imgs/l10/ProdCons.svg) <!-- .element: style="background: white; width:80%" -->
-
-Note: Implementiamo per esempio un sistema costruito in questo modo: la Main class carica comandi nella classe Printer; la classe Printer mantiene una coda dei lavori da effettuare, ed istanzia un numero di Driver che pescano dalla coda ed eseguono i lavori.
+Implementiamo per esempio un sistema costruito in questo modo: la Main class carica comandi nella classe Printer; la classe Printer mantiene una coda dei lavori da effettuare, ed istanzia un numero di Driver che pescano dalla coda ed eseguono i lavori.
 
 
 `it.unipd.app2020.safe.PrinterOperator`
@@ -588,7 +583,7 @@ out.println("Starting.");
 for (int i = 0; i < 10; i++) { thread[i].start(); }
 ```
 
-Note: la classe main crea la stampante, e una decina di thread che accodano un job sulla stampante stessa.
+La classe main crea la stampante, e una decina di thread che accodano un job sulla stampante stessa.
 
 
 `it.unipd.app2020.safe.ConcurrentPrinter`
@@ -607,7 +602,7 @@ ConcurrentPrinter(int printers) {
 }
 ```
 
-Note: La stampante inizializza nel costruttore la coda, l'Executor e avvia i driver.
+La stampante inizializza nel costruttore la coda, l'Executor e avvia i driver.
 
 
 `it.unipd.app2020.safe.ConcurrentPrinter`
@@ -623,7 +618,7 @@ public void printJob(Object document) {
 }
 ```
 
-Note: un `PrintJob` è una semplice value class che tiene il tempo di quando è stata creata per poter misurare il tempo di attesa in coda.
+Un `PrintJob` è una semplice value class che tiene il tempo di quando è stata creata per poter misurare il tempo di attesa in coda.
 
 
 `it.unipd.app2020.safe.PrinterDriver`
@@ -643,7 +638,7 @@ public void run() {
 }
 ```
 
-Note: il driver si mette in attesa di un elemento dalla coda, e simula la sua esecuzione in stampa. I messaggi danno conto del tempo d'attesa del job in coda.
+Il driver si mette in attesa di un elemento dalla coda, e simula la sua esecuzione in stampa. I messaggi danno conto del tempo d'attesa del job in coda.
 
 
 *Quiz*: usare `TimeUnit.X.wait` al posto di `Thread.sleep()` nella classe precedente genera un'eccezione: quale e perché?
@@ -673,27 +668,18 @@ Nota: questo è un esercizio di design; non è detto che sia risolvibile nel des
 
 Altre varianti:
 
-* `TransferQueue`: interfaccia per una coda in cui i produttori aspettano i consumatori
-* `BlockingDeque`: interfaccia che permette di prendere un elemento dalla coda o dalla testa
-
-Note: Deque è una interfaccia di j.u.collection, Transfer no.
-
-
-* `ArrayBlockingQueue`: implementazione basata su array, con possibilità di _fairness_
-* `LinkedBlockingDeque`, `LinkedBlockingQueue`, `LinkedTransferQueue`: implementazioni basate su liste collegate
-
-Note: cercare la dimensione su di una lista collegata non è un'operazione nè O(1) nè tantomeno precisa
-
-
-* `PriorityBlockingQueue`: coda ordinata per priorità
-* `DelayQueue`: un elemento non può essere preso prima di un ritardo impostato
-* `SynchronousQueue`: ogni produttore deve attendere un consumatore (capacità nulla)
+* `TransferQueue`: interfaccia per una coda in cui i produttori aspettano i consumatori;
+* `BlockingDeque`: interfaccia che permette di prendere un elemento dalla coda o dalla testa.  Deque è una interfaccia di java.util.collection, Transfer no;
+* `ArrayBlockingQueue`: implementazione basata su array, con possibilità di _fairness_;
+* `LinkedBlockingDeque`, `LinkedBlockingQueue`, `LinkedTransferQueue`: implementazioni basate su liste collegate. N.B. cercare la dimensione su di una lista collegata non è un'operazione nè O(1) nè tantomeno precisa;
+* `PriorityBlockingQueue`: coda ordinata per priorità;
+* `DelayQueue`: un elemento non può essere preso prima di un ritardo impostato;
+* `SynchronousQueue`: ogni produttore deve attendere un consumatore (capacità nulla).
 
 
 Altre strutture dati interessanti:
 
-Disruptor  
-http://lmax-exchange.github.io/disruptor/
+Disruptor http://lmax-exchange.github.io/disruptor/ (buffer circolare estremamente efficiente)
 
 
 Altri Esempi:
@@ -721,7 +707,7 @@ public class ThreadLocal< T >
 ```
 
 
-Una variabile `ThreadLocal` esiste in una copia differente ed indipendente per ciascun Thread che attraversa la sua dichiarazione.
+Una variabile `ThreadLocal` esiste in una copia differente ed indipendente per ciascun Thread che attraversa la sua dichiarazione. Dunque sintatticamente abbiamo un campo solo di un oggetto, ma ogni Thread vede un valore diverso.
 
 
 ```java
@@ -735,7 +721,7 @@ static < S > ThreadLocal< S >
   withInitial(Supplier< ? extends S > supplier)
 ```
 
-Note: il `Supplier` permette l'inizializzazione a partire da una strategia esterna.
+Il `Supplier` permette l'inizializzazione a partire da una strategia esterna.
 
 
 ```java
@@ -749,7 +735,7 @@ Note: il `Supplier` permette l'inizializzazione a partire da una strategia ester
 public T get()
 ```
 
-Note: questa chiamata, sulla stessa variabile lessicale, avrà un risultato differente per ogni thread.
+Questa chiamata, sulla stessa variabile lessicale, avrà un risultato differente per ogni thread.
 
 
 ```java
@@ -797,7 +783,7 @@ class LocalVar {
 }
 ```
 
-Note: il valore `nextId` è globale; ogni thread accede sempre allo stesso. Il contatore `counter` invece è privato di ciascun thread.
+Il valore `nextId` è globale; ogni thread accede sempre allo stesso. Il contatore `counter` invece è privato di ciascun thread.
 
 
 `it.unipd.app2020.safe.LocalReader`
@@ -815,7 +801,7 @@ class LocalReader implements Runnable {
 }
 ```
 
-Note: questo `Runnable` legge e stampa il valore della variabile threadlocal.
+Questo `Runnable` legge e stampa il valore della variabile ThreadLocal.
 
 
 `it.unipd.app2020.safe.LocalMain`
@@ -827,9 +813,7 @@ IntStream.range(0, 20).forEach((a) ->
 executor.shutdown();
 ```
 
-Note: questo main lancia diversi `Runnable` che condividono la medesima istanza di `LocalVar`. Eppure, ciascuno di loro vi legge un valore diverso da un oggetto che, sintatticamente, dovrebbe essere lo stesso per tutti. È invece, tramite la classe `ThreadLocal`, garantito come separato per ciascun thread.
+Questo main lancia diversi `Runnable` che condividono la medesima istanza di `LocalVar`. Eppure, ciascuno di loro vi legge un valore diverso da un oggetto che, sintatticamente, dovrebbe essere lo stesso per tutti. È invece, tramite la classe `ThreadLocal`, garantito come separato per ciascun thread.
 
 
-Le variabili `ThreadLocal` hanno la cattiva abitudine di assomigliare molto a delle variabili globali.
-
-Usare con cautela.
+Le variabili `ThreadLocal` hanno il difetto di assomigliare molto a delle variabili globali. Usare con cautela.
