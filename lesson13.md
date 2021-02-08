@@ -37,7 +37,7 @@ A partire dalla quinta mossa, è possibile che un giocatore abbia vinto o che la
 
 Dobbiamo quindi filtrare le partite terminate da quelle che possono proseguire.
 
-Note: la parità in realtà richiede almeno sei mosse.
+La parità in realtà richiede almeno sei mosse.
 
 
 ```java
@@ -55,7 +55,7 @@ class CountStatus {
 }
 ```
 
-Note: prepariamoci un contatore per sommare i risultati.
+Ci prepariamo un contatore per sommare i risultati.
 
 
 ```java
@@ -104,9 +104,9 @@ Come realizzare una versione della stessa ricerca che sfrutti la concorrenza per
 Sopratutto, come realizzarla in modo da dare alla libreria standard il compito di gestire efficacemente la distribuzione del lavoro?
 
 
-La risposta è, ovviamente, implementanto l'attraversamento dell'albero come uno `Spliterator`.
+La risposta è, ovviamente, implementando l'attraversamento dell'albero come uno `Spliterator`.
 
-Con tale componente possiamo costruire uno Stream e aprofittare della gestione automatica della concorrenza.
+Con tale componente possiamo costruire uno Stream e approfittare della gestione automatica della concorrenza.
 
 
 ```java
@@ -246,7 +246,7 @@ Score res = StreamSupport
   );
 ```
 
-Note: in modo tutt'altro che sorprendente, non abbiamo un reale speedup rispetto all'altro caso.
+In modo tutt'altro che sorprendente, non abbiamo un reale speedup rispetto all'altro caso.
 
 
 Possiamo introdurre un "trucco" per sommare i risultati senza passare per un oggetto.
@@ -278,7 +278,7 @@ System.out.println(
       (end - start)));
 ```
 
-Note: tuttavia, non è sufficiente ad ottenere una velocità particolarmente superiore.
+Tuttavia non è sufficiente ad ottenere una velocità particolarmente superiore.
 
 ---
 
@@ -287,6 +287,4 @@ Note: tuttavia, non è sufficiente ad ottenere una velocità particolarmente sup
 
 Maurice Naftalin & Dmitry Vyazelenko, Devoxx 2019:  
   
-*What lies beneath*
-
-https://www.youtube.com/watch?v=5AFgNuGwLos
+[What lies beneath](https://www.youtube.com/watch?v=5AFgNuGwLos)

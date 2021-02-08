@@ -12,11 +12,11 @@ In particolare, rappresenta l'iterazione su di un insieme di cardinalità non no
 
 In cambio di alcune restrizioni sulle operazioni possibili e della cessione del controllo sull'ordine di iterazione otteniamo:
 
-* una API per comporre passi di elaborazione _riusabili_ su di una successione di oggetti. A differenza del contenuto di un ciclo for che è molto difficile da riusare perché dipende dalla struttura dati in cui si sta iterando;
+* una API per comporre passi di elaborazione _riusabili_ su di una successione di oggetti (ad esempio il contenuto di un ciclo for è molto difficile da riusare perché dipende dalla struttura dati in cui si sta iterando);
 * una reificazione della trasformazione, che ne permette il riuso su sorgenti diverse ed il test in isolamento;
-* la promozione di un_ approccio funzionale_ al trattamento iterativo dei dati;
+* la promozione di un _approccio funzionale_ al trattamento iterativo dei dati;
 * la disponibilità di uno stile _espressivo e dichiarativo_ per descrivere una ampia classe di elaborazioni;
-* un modello di esecuzione in cui esecuzione sequenziale e parallela non _richiedono modifiche al codice_.
+* un modello di esecuzione in cui esecuzione _sequenziale e parallela non richiedono modifiche al codice_.
 
 
 ![Devoxx](imgs/l12/devoxx.jpg) <!-- .element: style="width: 80%" -->
@@ -53,7 +53,7 @@ L'operazione terminale ha piena visibilità, prima di cominciare a lavorare, di 
 
 
 `it.unipd.app2020.streams.CountStream`
-```
+```java
 long cnt = IntStream.range(1, 20)
   // .parallel()
   .map((i) -> {
@@ -116,7 +116,7 @@ L'ordinamento è conservato, se possibile, anche dopo una esecuzione parallela.
 
 `it.unipd.app2020.streams.OrderedStream`
 ```java
-IntStream.range(1, 20).parallel().map((i) -> {
+IntStream.range(1, 20).paraltempo l'uso dello Stream come modello di calcolo può grandemente semplificare l'aspetto e quindi la leggibilità e la manutenibilità del nostro codice:lel().map((i) -> {
   System.out.println(i + " " +
     Thread.currentThread().getName());
   return i * 2;
@@ -184,7 +184,7 @@ public class CandidateNumber {
 }
 ```
 
-Una struttura dati per verificare se un numero può essere candidato ad essere primo.
+Una struttura dati per verificare se un numero è candidato ad essere primo.
 
 
 `it.unipd.app2020.streams.Divisors`
@@ -235,7 +235,7 @@ match.forEach(x -> { System.out.println(x); });
 Otteniamo così una ricerca, parallela, che si ferma al primo risultato trovato.
 
 
-Altre operazioni sono dette _stateful_: può necessitare di consumare tutto o gran parte dell'input per poter emettere l'output mantenendo le caratteristiche desiderate (per es. ordinamento).
+Altre operazioni sono dette _stateful_: possono necessitare di consumare tutto o gran parte dell'input per poter emettere l'output mantenendo le caratteristiche desiderate (per es. ordinamento).
 
 Questo può rendere alcune operazioni apparentemente semplici in realtà molto costose.
 
@@ -298,10 +298,10 @@ boolean tryAdvance(Consumer< ? super T > action)
 
 
 `Splititerator` aumenta l'espressività di `Iterator` aggiungendo metodi per:
-* stimare gli elementi rimanenti
-* esplicitare le caratteristiche della sorgente
-* attraversare in massa gli elementi rimanenti
-* suddividere l'iterazione in più rami
+* stimare gli elementi rimanenti;
+* esplicitare le caratteristiche della sorgente;
+* attraversare in massa gli elementi rimanenti;
+* suddividere l'iterazione in più rami.
 
 Manca invece (coerentemente con la definizione di Stream) l'operazione di rimozione di un elemento
 
@@ -342,7 +342,7 @@ Notare il tipo di ritorno. Ci si attende che ogni chiamata a questo metodo dia l
 default void forEachRemaining(Consumer< ? super T > action)
 ```
 
-L'implementazione di default chiama tryAdvance per ogni elemento
+L'implementazione di default di `forEachRemaining` chiama `tryAdvance` per ogni elemento
 
 
 ```java
@@ -385,7 +385,7 @@ T reduce(T identity, BinaryOperator< T > accumulator)
 
 
 `it.unipd.app2020.streams.StreamReduce`
-```
+```java
 int res = IntStream.range(1, 1001).parallel().
   reduce(0, (a, b) -> {
     System.out.println(a + "+" + b + "=" + (a + b)
@@ -422,7 +422,7 @@ System.out.println(">>>> " + res);
 ## Collector
 
 
-Nell'operazione di riduzione gestita da `reduce` l'accumulazione del risultato avviene creando nuovi valori. Questo però in certi casi non è efficiente.
+Nell'operazione di riduzione gestita da `reduce` l'accumulazione del risultato avviene creando nuovi valori. Questo in alcuni casi non è efficiente.
 
 
 `it.unipd.app2020.streams.StringReduce`
@@ -433,7 +433,7 @@ String res = IntStream.range(1, 1001).boxed()
 System.out.println(">>>> " + res);
 ```
 
-Ogni passo di riduzione produce una nuova stringa, sempre più grande, creando una forte pressione per il Garbage Collector.
+Nell'esempio sopra ogni passo di riduzione produce una nuova stringa, sempre più grande, creando una forte pressione per il Garbage Collector.
 
 
 L'interfaccia `Collector` permette di gestire una riduzione dove l'accumulatore è un oggetto mutabile per ragioni di efficienza.
@@ -493,19 +493,15 @@ Il nostro codice può essere eseguito in parallelo con un semplice cambio di con
 
 Lo Stream tuttavia di default decide autonomamente quanto parallelismo usare, attraverso il `ForkJoinPool`.
 
-Quanto parallelismo possiamo richiedere?
-
-ForkJoinPool di standard usa #core-1 threads.
-
+Per calcolare quanto parallelismo possiamo richiedere `ForkJoinPool` usa #core-1 threads di default.
 
 **Blocking factor**:  
+
 Intensità del calcolo di un algoritmo
 
-Un algoritmo con `BF=0`  
-occupa costantemente la CPU.
+Un algoritmo con `BF=0`  occupa costantemente la CPU.
 
-Un algoritmo con `BF=1`  
-è costantemente in attesa di I/O.
+Un algoritmo con `BF=1`  è costantemente in attesa di I/O.
 
 
 ```
@@ -518,11 +514,8 @@ Un algoritmo con `BF=1`
 Se il nostro algoritmo effettua molta I/O può essere utile modificare l'impostazione standard del `ForkJoinPool` per aumentare il numero di thread disponibili.
 
 
-Dr. Venkat Subramaniam: The Power and Perils of Parallel Streams
+Il seguente video è la registrazione di un meetup del [Virtual Java User Group](https://virtualjug.com/): [Dr. Venkat Subramaniam: The Power and Perils of Parallel Streams](https://www.youtube.com/watch?v=0-f-1Cx0HaU)
 
-https://www.youtube.com/watch?v=0-f-1Cx0HaU
-
-Note: il video è la registrazione di un meetup del (Virtual Java User Group)[https://virtualjug.com/]
 
 
 Allo stesso tempo l'uso dello Stream come modello di calcolo può grandemente semplificare l'aspetto e quindi la leggibilità e la manutenibilità del nostro codice:

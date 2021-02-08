@@ -252,7 +252,7 @@ La sincronizzazione di più linee di esecuzione richiede l'uso di primitive appo
 * **Locks**, **Conditions**
 * **Semaphores**
 
-Note: il codice che le usa richiede una particolare attenzione per garantire la correttezza in ogni possibile caso.
+Il codice che le usa richiede una particolare attenzione per garantire la correttezza in ogni possibile caso.
 
 ---
 
@@ -275,9 +275,7 @@ Le problematiche principali del paradigma sono:
 
 La comunicazione fra diversi nodi può essere modellata come uno scambio di messaggi.
 
-Vari metodi cercano, con alterni successi, di avvicinare questo modello alla chiamata di un metodo di un altro oggetto.
-
-Note: solo il modello ad Attori ci riesce con completezza.
+Vari metodi cercano, con alterni successi, di avvicinare questo modello alla chiamata di un metodo di un altro oggetto. Solo il modello ad Attori ci riesce con completezza.
 
 
 ### Socket
@@ -322,9 +320,7 @@ Le chiamate sono completamente asincrone, e richiedono di propagare manualmente 
 
 ### Fallacies
 
-Le difficoltà insite nel paradigma distribuito sono a volte ingannevoli, e portano a fare ipotesi che sono in realtà pesantemente false. La pratica ha suggerito 8 di queste ipotesi su cui è molto comune cadere in errore.
-
-
+Le difficoltà insite nel paradigma distribuito sono a volte ingannevoli, e portano a fare ipotesi che sono in realtà pesantemente false. La pratica ha suggerito 8 di queste ipotesi su cui è molto comune cadere in errore:
 
 * The network is reliable.
 * Latency is zero.
