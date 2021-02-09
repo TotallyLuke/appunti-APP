@@ -284,7 +284,7 @@ public interface Spliterator< T >
 ```
 
 
-Il metodo di avanzamento diventa `tryAdvance()`, che ribalta il funzionamento dell'iterator: non è l'utilizzatore che ottiene il nuovo elemento, ma è lo stream che fornisce l'elemento al codice che deve operarci sopra.
+Il metodo di avanzamento diventa `tryAdvance()`, che ribalta il funzionamento dell'iterator: non è l'utilizzatore che ottiene il nuovo elemento, ma è lo stream che fornisce l'elemento al codice che deve operarci sopra. 
 
 
 ```java
@@ -303,7 +303,7 @@ boolean tryAdvance(Consumer< ? super T > action)
 * attraversare in massa gli elementi rimanenti;
 * suddividere l'iterazione in più rami.
 
-Manca invece (coerentemente con la definizione di Stream) l'operazione di rimozione di un elemento
+Manca invece l'operazione di rimozione di un elemento. Ciò è coerente con la definizione di Stream, che non è pensato per "conservare" elementi, dunque la rimozione di un elemento non è necessaria.
 
 
 ```java
@@ -417,9 +417,6 @@ int res = IntStream.range(1, 1001).boxed().parallel()
 System.out.println(">>>> " + res);
 ```
 
----
-
-## Collector
 
 
 Nell'operazione di riduzione gestita da `reduce` l'accumulazione del risultato avviene creando nuovi valori. Questo in alcuni casi non è efficiente.
@@ -436,7 +433,7 @@ System.out.println(">>>> " + res);
 Nell'esempio sopra ogni passo di riduzione produce una nuova stringa, sempre più grande, creando una forte pressione per il Garbage Collector.
 
 
-L'interfaccia `Collector` permette di gestire una riduzione dove l'accumulatore è un oggetto mutabile per ragioni di efficienza.
+L'interfaccia `Collector` permette di gestire una riduzione dove l'accumulatore è un oggetto mutabile per ragioni di efficienza.  Non crea un nuovo oggetto, ma modifica lo stato di un oggetto.
 
 
 ```java

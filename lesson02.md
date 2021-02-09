@@ -1,4 +1,4 @@
-# 2: Classi e Tipi (1/2)
+## 2: Classi e Tipi (1/2)
 
 ---
 
@@ -22,9 +22,7 @@ class App {
 }
 ```
 
-Per convenzione, le classi Java sono denominate in _Pascal Case_ con l'iniziale maiuscola.
-
-Note: noto anche come _Camel Case_. È considerato pessima pratica deviare da questa convenzione. Altri stili di denominazione sono _snake case_ (underscore come separatore; C, kernel linux) e _lisp case_ (trattino come separatore: Lisp, Forth, COBOL)
+Per convenzione, le classi Java sono denominate in _Pascal Case_ (noto anche come _Camel Case_.) con l'iniziale maiuscola.
 
 
 Una classe appartiene ad un _Package_, che permette di organizzare le classi in gruppi gerarchici.
@@ -37,26 +35,23 @@ class App {
 }
 ```
 
-La parola chiave `package` se presente **deve** essere la prima riga di codice del file;
-
-Note: Se è assente, la classe di dice appartenente al package `default`. In caso di codice sperimentale o di prova non è un problema, ma alcuni strumenti o librerie vedono di cattivo occhio classi nel package di default; è assolutamente sconsigliato in caso di codice condiviso con altri o distribuito.
+La parola chiave `package` se presente **deve** essere la prima riga di codice del file. Se è assente, la classe di dice appartenente al package `default`. In caso di codice "di prova" non è un problema, ma alcuni strumenti o librerie vedono di cattivo occhio classi nel package di default. È assolutamente sconsigliato in caso di codice condiviso con altri o distribuito.
 
 
-Se la classe pubblica `App` viene definita all'interno del package `it.unipd.app2020`, il suo file sorgente **deve** trovarsi all'interno della directory <br/>`it/unipd/app2020` rispetto al CLASSPATH:
+Se la classe pubblica `App` viene definita all'interno del package `it.unipd.app2020`, il suo file sorgente **deve** trovarsi all'interno della directory `it/unipd/app2020` rispetto al CLASSPATH:
 
 ```
 it/unipd/app2020/App.java
 ```
 
 
-Per convenzione, i _package_ sono denominati con nomi di dominio, in ordine inverso, per es.:
+Per convenzione, i _package_ sono denominati con nomi di dominio, in ordine inverso (_org.apache.commons_)
 
-* _org.apache.commons_
-* _com.oracle.jdbc_
+Seguire questa convenzione è critico in caso di codice pubblico, cioè distribuito per la condivisione e l'uso da parte di terze parti. il riferimento ad un nome DNS permette di garantire l'unicità del nome stesso.
 
 I package `java`, `javax` sono riservati.
 
-Note: Seguire questa convenzione è critico in caso di codice pubblico, cioè distribuito per la condivisione e l'uso da parte di terze parti; il riferimento ad un nome DNS permette di garantire l'unicità del nome stesso. Nel caso di codice privato, aderire a questa convenzione è poco rilevante.
+
 
 ---
 
@@ -66,8 +61,6 @@ Note: Seguire questa convenzione è critico in caso di codice pubblico, cioè di
 Una classe non può usare un'altra classe qualsiasi: deve averne visibilità e, in certi casi, deve dichiarare l'intenzione di usarla.
 
 Una configurazione della JVM può impedire l'accesso a determinati insiemi di classi per motivi di sicurezza; essendo questo controllo applicato al runtime, il codice può compilare regolarmente, ma fallire con un errore durante l'esecuzione.
-
-Note: Storicamente, la principale applicazione di questo sistema era rispettare le restrizioni sull'esportazione di algoritmi crittografici che una volta erano in vigore negli Stati Uniti: la distribuzione della JVM "internazionale" includeva una configurazione che limitava l'uso delle classi di sicurezza più complesse.
 
 
 ### Visibilità di default
@@ -104,7 +97,9 @@ public class App {
 }
 ```
 
-Note: La classe importata deve essere disponibile al momento della compilazione. Le direttive `import` devono trovarsi immediatamente dopo la direttiva `package`. Se vengono usate due classi con lo stesso nome, una sola potrà essere importata; l'altra andrà richiamata per esteso. Il package `java.lang` si considera sempre importato.
+La classe importata deve essere disponibile al momento della compilazione. Le direttive `import` devono trovarsi immediatamente dopo la direttiva `package`. Se vengono usate due classi con lo stesso nome, una sola potrà essere importata; l'altra andrà richiamata per esteso.
+
+Il package `java.lang` si considera sempre importato.
 
 ---
 
@@ -113,10 +108,10 @@ Note: La classe importata deve essere disponibile al momento della compilazione.
 
 Una classe può contenere:
 
-* variabili
-* metodi
-* altre classi
-* blocchi di codice anonimi
+* variabili;
+* metodi;
+* altre classi;
+* blocchi di codice anonimi.
 
 
 ### Variabili
@@ -132,14 +127,11 @@ public class App {
 }
 ```
 
+Una variabile viene dichiarata con il nome del suo tipo, il suo nome e un punto e virgola a chiudere la dichiarazione. 
 
-Una variabile viene dichiarata con il nome del suo tipo, il suo nome e un punto e virgola a chiudere la dichiarazione.
-
-Può essere presente un'espressione che inizializza la variabile con un valore.
+Può essere presente un'espressione che inizializza la variabile con un valore. In assenza di espressione di inizializzazione, il valore di default dipende dal tipo della variabile.
 
 Più variabili dello stesso tipo possono essere dichiarate di seguito separando i nomi con una virgola.
-
-Note: in assenza di espressione di inizializzazione, il valore di default dipende dal tipo della variabile.
 
 
 ```java
@@ -154,7 +146,7 @@ public class App {
 
 Le variabili si dividono principalmente in due categorie:
 
-* _statiche_: ne esiste una sola copia, legata alla classe.
+* _statiche_: ne esiste una sola copia, legata alla classe;
 * _di istanza_: ogni oggetto ha la propria e fa parte del suo stato.
 
 
@@ -176,17 +168,15 @@ La vita delle variabili statiche è legata alla vita della classe; quella delle 
 
 Le variabili statiche vengono allocate ed inizializzate nel momento in cui la classe viene caricata dal `ClassLoader` e preparata per l'uso.
 
-Questo può avvenire, a volte, in momenti sorprendenti.
-
-Note: per esempio, la JVM non è obbligata a dare garanzie sull'ordine di inizializzazione delle classi, quindi JVM di versione o produttori differenti potrebbero usare strategie diverse; oppure in alcune configurazioni molto particolari, la stessa classe potrebbe essere caricata da più Classloaders e quindi avere più copie delle variabili statiche.
+Questo può avvenire, a volte, in momenti sorprendenti. Ad esempio, la JVM non è obbligata a dare garanzie sull'ordine di inizializzazione delle classi, quindi JVM di versione o produttori differenti potrebbero usare strategie diverse; oppure in alcune configurazioni molto particolari, la stessa classe potrebbe essere caricata da più Classloaders e quindi avere più copie delle variabili statiche.
 
 
 Le variabili hanno più classi di visibilità:
 
-* `public`: possono essere lette e scritte da ogni classe
-* `protected`: possono essere lette e scritte da classi che estendono la classe
-* default: possono essere lette e scritte da classi del package
-* `private`: possono essere lette e scritte solo da codice della classe
+* `public`: possono essere lette e scritte da ogni classe;
+* `protected`: possono essere lette e scritte da classi che estendono la classe;
+* `default`: possono essere lette e scritte da classi del package;
+* `private`: possono essere lette e scritte solo da codice della classe.
 
 
 ```java
@@ -210,23 +200,23 @@ Note: `private` non significa irraggiungibile: significa soltanto non accessibil
 |_nessuno_|✅|✅|❌|❌|
 |`private`|✅|❌|❌|❌|
 
-Note: cfr: https://docs.oracle.com/javase/tutorial/java/javaOO/accesscontrol.html ERRATA: una prima versione indicava con ✅ l'incrocio protected/Package
+Note: cfr: https://docs.oracle.com/javase/tutorial/java/javaOO/accesscontrol.html 
 
 
 Altri modificatori che influiscono sulle variabili:
 
-* `final`: il valore della variabile non può essere modificato dopo l'assegnamento; inoltre, un valore **deve** essere assegnato alla costruzione.
-* `transient`: la variabile va ignorata in sede di serializzazione
-* `volatile`: la variabile ha un comportamento particolare in relazione all'accesso concorrente
+* `final`: il valore della variabile non può essere modificato dopo l'assegnamento; inoltre, un valore **deve** essere assegnato alla costruzione;
+* `transient`: la variabile va ignorata in sede di serializzazione;
+* `volatile`: la variabile ha un comportamento particolare in relazione all'accesso concorrente.
 
-Note: `transient` è elencato qui solo per completezza. Il suo caso d'uso è nella pratica scomparso. Il compilatore è in grado di analizzare i possibili percorsi del codice, e considera un errore sintattico la presenza di situazioni in cui si possa giungere al termine dell'inizializzazione con una variabile `final` non assegnata.
+`transient` è elencato qui solo per completezza. Il suo caso d'uso è nella pratica scomparso. 
+
+Il compilatore è in grado di analizzare i possibili percorsi del codice, e considera un errore sintattico la presenza di situazioni in cui si possa giungere al termine dell'inizializzazione con una variabile `final` non assegnata.
 
 
 Le variabili hanno sempre un nome in Camel Case con l'iniziale minuscola.
 
 Fanno eccezione le variabili `static final`: esse sono, a tutti gli effetti, costanti; il loro nome si scrive solitamente in MAIUSCOLO, con parole eventualmente separate da underscore "_".
-
-Note: Il Camel Case minuscolo è anche detto Dromedary Case per evitare confusione. Questo uso differisce, per esempio, dalla consuetudine di C#. Deviare da questo standard è molto malvisto nella pratica.
 
 ---
 
@@ -236,14 +226,14 @@ Note: Il Camel Case minuscolo è anche detto Dromedary Case per evitare confusio
 Una classe organizza il codice in Metodi.
 
 Un metodo è definito da:
-* **alcuni modificatori** (opzionali)
-* **un tipo di ritorno** (richiesto, con una eccezione)
-* **un nome** (minuscolo, con una eccezione)
-* **un elenco di parametri** (richiesto)
-* **un elenco di eccezioni** (opzionale)
-* **un blocco di codice da eseguire** (opzionale)
+* **alcuni modificatori** (opzionali);
+* **un tipo di ritorno** (richiesto, con una eccezione);
+* **un nome** (minuscolo, con una eccezione);
+* **un elenco di parametri** (richiesto);
+* **un elenco di eccezioni** (opzionale);
+* **un blocco di codice da eseguire** (opzionale).
 
-Note: é possibile che un metodo venga dichiarato senza implementazione. Vedremo che significato e che uso ha in seguito. L'elenco di parametri può essere vuoto, ma le parentesi devono sempre essere presenti.
+È possibile che un metodo venga dichiarato senza implementazione.  L'elenco di parametri può essere vuoto, ma le parentesi devono sempre essere presenti.
 
 
 ```java
@@ -264,31 +254,28 @@ public class App {
 
 Una classe può avere uno o più metodi denominati come la classe stessa che sono detti _costruttori_.
 
-Un _costruttore_ viene chiamato quando si richiede la creazione di un oggetto della classe.
-
-Note: ed è l'unico metodo che deve avere l'iniziale maiuscola. Tutti gli altri è uso abbiano iniziale minuscola.
+Un _costruttore_ viene chiamato quando si richiede la creazione di un oggetto della classe. È l'unico metodo che deve avere l'iniziale maiuscola. Tutti gli altri è uso abbiano iniziale minuscola.
 
 
 La tupla formata da:
-* nome del metodo
-* parametri di tipo
-* elenco dei tipi degli argomenti
+* nome del metodo;
+* parametri di tipo;
+* elenco dei tipi degli argomenti;
 
 è detta _firma_ (_signature_) del metodo. Una classe non può avere più metodi con la stessa firma.
 
-Note: tecnicamente, una classe può avere una variabile ed un metodo con lo stesso nome: il compilatore è in grado di distinguere i due usi; tuttavia questo è fortemente scoraggiato a livello stilistico. ERRATA: una prima versione erroneamente elencava come parte della firma il tipo di ritorno.
+Tecnicamente, una classe può avere una variabile ed un metodo con lo stesso nome: il compilatore è in grado di distinguere i due usi; tuttavia questo è fortemente scoraggiato a livello stilistico.
 
 
-Il tipo di ritorno `void` indica al compilatore che il metodo non ritorna nessun risulato.
+Il tipo di ritorno `void` indica al compilatore che il metodo non ritorna nessun risultato.
 
 Se il metodo ha un tipo di ritorno, il compilatore considera un errore la presenza di un percorso del codice in cui non venga ritornato al chiamante nessun valore, o un valore di tipo non compatibile con quello dichiarato.
 
-
 Un metodo dichiarato `static` è legato alla classe: non può essere richiamato su di un oggetto, e non ha accesso alle variabili di istanza.
 
-I metodi seguono le stesse classi di visibilità delle variabili: `public`, `protected`, `default`, `private`.
+In realtà un metodo `static` può essere richiamato su di un oggetto ma viene normalmente segnalato come minimo come cattiva pratica. Potrebbe diventare in futuro un errore sintattico.
 
-Note: in realtà un metodo `static` può essere richiamato su di un oggetto ma viene normalmente segnalato come minimo come cattiva pratica. Potrebbe diventare in futuro un errore sintattico.
+I metodi seguono le stesse classi di visibilità delle variabili: `public`, `protected`, `default`, `private`.
 
 
 I metodi vengono richiamati con la notazione `valore.nomemetodo(parametri)` dove `valore` è un oggetto della classe che li ha definiti, oppure la classe stessa per i metodi statici.
@@ -310,7 +297,7 @@ Se non ha un costruttore dichiarato esplicitamente, il compilatore genera un cos
 
 Attenzione che _se_ un costruttore viene dichiarato, non viene generato quello di default.
 
-Note: Alcune librerie e strumenti richiedono espressamente la presenza di un costruttore di default: se viene dichiarato un costruttore esplicito, va quindi dichiarato anche uno privo di argomenti altrimenti questi strumenti non possono funzionare.
+Alcune librerie e strumenti richiedono espressamente la presenza di un costruttore di default: se viene dichiarato un costruttore esplicito, va quindi dichiarato anche uno privo di argomenti altrimenti questi strumenti non possono funzionare.
 
 ---
 
@@ -329,15 +316,11 @@ Oggi l'effettiva utilità dei tipi di eccezione è molto dibattuta. Molte metodo
 
 Tutte le eccezioni derivano dalla classe `Throwable`. Una prima suddivisione avviene fra le due sottoclassi di `Throwable`:
 
-* `Exception`: gli errori nonostante i quali il programma dovrebbe essere in grado di proseguire
+* `Exception`: gli errori nonostante i quali il programma dovrebbe essere in grado di proseguire;
 * `Error`: gli errori dai quali il programma non è in grado di proseguire.
 
 
-Una particolare sottoclasse di `Exception` è `RuntimeException`: essa rappresenta ogni errore che può avvenire durante la normale valutazione di espressioni.
-
-Viene lanciata direttamente dalla JVM, e quindi non necessita di essere dichiarata.
-
-Note: perché ogni metodo in realtà è potenzialmente in grado di lanciarla.
+Una particolare sottoclasse di `Exception` è `RuntimeException`: essa rappresenta ogni errore che può avvenire durante la normale valutazione di espressioni. Viene lanciata direttamente dalla JVM, e quindi non necessita di essere dichiarata, perché ogni metodo in realtà è potenzialmente in grado di lanciarla.
 
 
 Eccezioni derivate da `RuntimeException` e `Error` sono dette _unchecked exceptions_ e non necessitano dichiarazione nella definizione di un metodo.
@@ -347,9 +330,7 @@ Tutte le altre, discendenti da `Exception` o `Throwable` direttamente, sono dett
 
 La disciplina di OOP che ha ispirato questa parte di Java incoraggia la definizione di classi di eccezione legate al dominio del problema che il programma rappresenta, per esplicitare maggiormente il significato di tali condizioni di errore.
 
-Questo approccio è oggi molto dibattuto, e nella pratica creare eccezioni di dominio è una decisione che va accuratamente ponderata.
-
-Note: È ancora considerato tutto sommato pratica normale nella realizzazione di codice "di libreria" o comunque molto genrico, ma generalmente evitato in codice applicativo e più specifico. Molto si gioca sulla definizione di "eccezionalità" delle possibili condizioni di errore.
+Questo approccio è oggi molto dibattuto, e nella pratica creare eccezioni di dominio è una decisione che va accuratamente ponderata. È ancora considerata pratica normale nella realizzazione di codice "di libreria" o comunque molto generico, ma generalmente evitato in codice applicativo e più specifico. Molto si gioca sulla definizione di "eccezionalità" delle possibili condizioni di errore.
 
 ---
 
@@ -360,12 +341,12 @@ Una classe può dichiarare come membro una o più classi; queste vengono dette _
 
 Come variabili e metodi possono essere statiche o meno, e una delle quattro visibilità.
 
-Note: Le classi interne sono un argomento dove non mancano comportamenti anomali, peculiari o sorprendenti. Non lo approfondiremo più di quanto il suo buon uso nella pratica necessiti.
+Le classi interne sono un argomento dove non mancano comportamenti anomali, peculiari o sorprendenti. Non lo approfondiremo più di quanto il suo buon uso nella pratica necessiti.
 
 
 La visibilità si comporta in modo analogo agli altri casi.
 
-Classi interne statiche e non hanno invece comportamenti profondamente differenti, tanto da avere due nomi distinti: _static nested classes_ per le prime, e _inner classes_ le seconde
+Classi interne statiche e non statiche hanno comportamenti profondamente differenti, tanto da avere due nomi distinti: _static nested classes_ per le prime, e _inner classes_ le seconde.
 
 
 ### Static nested classes
@@ -387,7 +368,7 @@ public class App {
 }
 ```
 
-Note: `App.Foo` non ha un accesso privilegiato alla variabile `s`: la chiama `App.s` come ogni altra classe del package.
+`App.Foo` non ha un accesso privilegiato alla variabile `s`: la chiama `App.s` come ogni altra classe del package.
 
 
 ### Inner classes
@@ -412,14 +393,12 @@ App a = new App();
 App.Bar b = a.new Bar();
 ```
 
-Note: in questo caso, un oggetto di `App.Bar` non può esistere (non può essere creato) senza che ci sia un oggetto di `App` che lo contiene.
+In questo caso, un oggetto di `App.Bar` non può essere creato senza che ci sia un oggetto di `App` che lo contiene.
 
 
 Le classi _static nested_ sono spesso legate a qualche design pattern (per es. Builder o Factory). Sebbene possano anche essere scritte al di fuori della classe ospitante, può essere più chiaro a volte includerle per rendere più apparente il legame esistente.
 
-Le classi _inner_ sono il segnale di un modello dati particolarmente complesso. Usatele con particolare cautela.
-
-Note: Vale a dire: se vi trovate ad usarle, fermatevi a verificare di avere un valido motivo per farlo.
+Le classi _inner_ sono il segnale di un modello dati particolarmente complesso. Usatele con particolare cautela. Vale a dire: se vi trovate ad usarle, fermatevi a verificare di avere un valido motivo per farlo.
 
 ---
 
@@ -435,7 +414,7 @@ Vengono eseguiti in sede di _inizializzazione_ di una classe o di un oggetto.
 
 I blocchi di inizializzazione dichiarati `static` vengono eseguiti, in ordine lessicale, al caricamento della classe.
 
-Note: Quando avviene il caricamento della classe? Dipende dall'ambiente di esecuzione, dalla JVM usata, a volte anche dal sistema operativo. L'unica cosa certa è che avviene _prima_ che venga inizializzata una classe che la usa. Cfr: https://docs.oracle.com/javase/specs/jls/se14/html/jls-12.html#jls-12.4.2
+Quando avviene il caricamento della classe? Dipende dall'ambiente di esecuzione, dalla JVM usata, a volte anche dal sistema operativo. L'unica cosa certa è che avviene _prima_ che venga inizializzata una classe che la usa. Cfr: https://docs.oracle.com/javase/specs/jls/se14/html/jls-12.html#jls-12.4.2
 
 
 ```java
@@ -458,18 +437,14 @@ L'uso dei blocchi statici non è comune, ma nemmeno inconsueto.
 
 Va posta attenzione a scrivere codice veloce, che non possa fallire, e legato strettamente alla preparazione della classe per l'uso.
 
-Note: questo perché una eccezione farebbe fallire il caricamento della classe (e quindi di tutte le classi che ne dipendono) e una inizializzazione troppo lunga causerebbe performance imprevedibili all'avvio dell'applicazione.
+Questo perché una eccezione farebbe fallire il caricamento della classe (e quindi di tutte le classi che ne dipendono) e una inizializzazione troppo lunga causerebbe performance imprevedibili all'avvio dell'applicazione.
 
 
 ### Inizializzatori di istanza
 
 I blocchi di inizializzazione privi di indicazioni sono eseguiti, in ordine lessicale, durante la creazione di ciascuna istanza di oggetto della classe.
 
-In particolare, sono eseguiti _dopo_ il supercostruttore ma _prima_ di _qualsiasi_ costruttore.
-
-Note: Vedremo fra poco cos'è un supercostruttore.
-
-
+In particolare, sono eseguiti _dopo_ il supercostruttore (vedremo cos'è...) ma _prima_ di _qualsiasi_ costruttore.
 
 ```java
 package it.unipd.app2020;
@@ -488,12 +463,12 @@ public class App {
 ```
 
 
-Valgono, ancora di più, le note per gli inizializzatori statici.
+Valgono le note per gli inizializzatori statici.
 
-Inoltre, le interazioni con l'ereditarietà ed i costruttori raccomandano ancora maggiore cautela.
+Inoltre, le interazioni con l'ereditarietà e i costruttori raccomandano ancora maggiore cautela.
 
 
-Scrivere codice che dipende dall'ordine di inizializzazione delle classi o delle istanze è una ricetta sicura per ottenere errori inattesi nei momenti meno opportuni.
+Scrivere codice che dipende dall'ordine di inizializzazione delle classi o delle istanze è una ricetta _sicura_ per ottenere _errori inattesi_ nei momenti meno opportuni.
 
 ---
 
@@ -520,27 +495,25 @@ class Foo extends App {
 }
 ```
 
-Note: Foo ha visibilità su App::b, ma non su App::a.
+Nell'esempio sopra `Foo` ha visibilità su `App::b`, ma non su `App::a`.
 
 
-Limitandosi all'ereditarietà singola, Java ha evitato (in passato) il "Diamond Problem": è immediatamente individuabile a quale classe della gerarchia fornisce l'implementazione di un metodo.
+Limitandosi all'ereditarietà singola, Java ha evitato (in passato) il "Diamond Problem"  (https://en.wikipedia.org/wiki/Multiple_inheritance#The_diamond_problem): è immediatamente individuabile a quale classe della gerarchia fornisce l'implementazione di un metodo.
 
 Parte dei vantaggi dell'ereditarietà multipla viene recuperata con altri meccanismi.
 
-Note: https://en.wikipedia.org/wiki/Multiple_inheritance#The_diamond_problem L'introduzione dei metodi di default nelle interfacce, necessaria per alcune innovazioni di Java 8 e successivi, ha però fatto rientrare il Diamond Problem, realizzando una ereditarietà multipla dove in caso di ambiguità viene lanciato un errore di compilazione.
+L'introduzione dei metodi di default nelle interfacce, necessaria per alcune innovazioni di Java 8 e successivi, ha però fatto rientrare il Diamond Problem, realizzando una ereditarietà multipla dove in caso di ambiguità viene lanciato un errore di compilazione.
 
 
 Una sottoclasse è anche un _sottotipo_ della classe che estende. Può cioè essere usata in ogni posto in cui viene richiesta la classe superiore.
 
 
-Per costruzione, tutti i metodi in Java sono "virtual" nel senso che ha il termine in C++. Vale a dire, il codice che realmente viene eseguito alla chiamata di un metodo è noto con certezza esclusivamente al runtime.
-
-Note: Non solo, con certi strumenti può essere sintetizzato al momento del runtime.
+Per costruzione, tutti i metodi in Java sono "virtual" nel senso che ha il termine in C++. Vale a dire, il codice che realmente viene eseguito alla chiamata di un metodo è noto con certezza esclusivamente al runtime. Non solo: con certi strumenti può essere sintetizzato al momento del runtime.
 
 
 Una classe dichiara di essere sottoclasse di un'altra con la parola chiave `extends` dopo il nome della classe.
 
-Una classe dichiarata `final` non può essere usata come superclasse; non è possibile derivarne una sottoclasse.
+Una classe dichiarata `final` non può essere usata come superclasse.
 
 
 ```java
@@ -560,9 +533,7 @@ class Foo extends App {
 ```
 
 
-Una classe dichiarata `abstract` _deve_ essere usata come superclasse; non è possibile istanziarla direttamente.
-
-Note: metodi della classe dichiarati come `abstract` devono ricevere una implementazione nelle sottoclassi pena l'obbligo di dichiarare anch'esse astratte.
+Una classe dichiarata `abstract` _deve_ essere usata come superclasse; non è possibile istanziarla direttamente. Metodi della classe dichiarati come `abstract` devono ricevere una implementazione nelle sottoclassi, pena l'obbligo di dichiarare anch'esse astratte.
 
 
 ```java
@@ -582,11 +553,9 @@ App foo = new Foo(); // OK
 ```
 
 
-Sebbene classicamente l'ereditarietà nasca come metodo principe per il riuso del codice e per l'organizzazione dei tipi nell'OOP, già il GOF evidenziava i limiti di questo approccio suggerendo maggiore enfasi sull'uso della _composizione_ in tutti i casi in cui ciò sia possibile.
+Sebbene l'ereditarietà nasca come metodo principe per il riuso del codice e per l'organizzazione dei tipi nell'OOP, già il classico libro di testo _"Design Patterns"_ della _Gang of Four_ evidenziava i limiti di questo approccio suggerendo maggiore enfasi sull'uso della _composizione_ in tutti i casi in cui ciò sia possibile.
 
 All'ereditarietà vengono lasciate solo quelle casistiche che le competono più strettamente.
-
-Note: interagendo (o evitando di farlo) con alcune librerie standard o meno di Java potremo notare come, nel tempo, questa indicazione sia stata più o meno seguita. GOF = "Gang of Four", ovvero il testo "Design Patterns" Gamma, Helm, Jonhson, Vlissides (1994)
 
 
 Tutti gli oggetti in Java discendono implicitamente da `java.lang.Object`, ereditandone alcuni metodi fondamentali:
@@ -595,7 +564,7 @@ Tutti gli oggetti in Java discendono implicitamente da `java.lang.Object`, eredi
 * `boolean equals(Object o)`
 * `String toString()`
 
-Note: Vedremo come questi metodi siano fondamentali nella maggior parte delle API. Molto spesso, risulta di grande importanza che siano correttamente reimplementati nella semantica precisa del tipo.
+Vedremo come questi metodi siano fondamentali nella maggior parte delle API. Molto spesso, risulta di grande importanza che siano correttamente reimplementati nella semantica precisa del tipo.
 
 ---
 
@@ -608,4 +577,4 @@ Note: Vedremo come questi metodi siano fondamentali nella maggior parte delle AP
 
 https://www.redhat.com/en/command-line-heroes
 
-Note: CLH è un podcast, di ottima produzione, tenuto da Saron Yitbarek, che parla di storia dell'Open Source e dell'informatica in generale con ottime fonti, attenzione a tutti i lati della storia e interviste (alcune delle quali decisamente eccezionali) con i protagonisti. Tutte le stagioni sono consigliatissime.
+CLH è un podcast tenuto da Saron Yitbarek, che parla di storia dell'Open Source e dell'informatica in generale con ottime fonti. Attenzione a tutti i lati della storia e interviste (alcune delle quali decisamente eccezionali) con i protagonisti. Tutte le stagioni sono consigliatissime.
