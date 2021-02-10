@@ -4,9 +4,7 @@
 
 ### Chi sono io
 
-Michele Mauro
-
-Passionate Developer
+Michele Mauro - Passionate Developer
 
 @michelemauro
 
@@ -56,21 +54,21 @@ Più linee di esecuzione contemporanee, asincrone, che condividono l'uso di un i
 
 Più linee di esecuzione contemporanee, asincrone, che eseguono in modo coordinato lo stesso calcolo su di una partizione dei dati di ingresso.
 
-Note: Può essere considerato un sottoinsieme del caso concorrente; usa una parte degli stessi metodi.
+Può essere considerato un sottoinsieme del caso concorrente; usa una parte degli stessi metodi.
 
 
 ### In rete
 
 Collaborazione con altri sistemi attraverso la comunicazione asincrona su di una interfaccia di rete.
 
-Note: Le altre linee di esecuzione non condividono più le stesse risorse (indipendentemente dal fatto che siano o meno sullo stesso nodo di esecuzione) e l'unico strumento è la comunicazione attraverso la rete. L'asincronicità è una necessità. In un certo senso è un'estensione della concorrenza.
+Le altre linee di esecuzione non condividono più le stesse risorse (indipendentemente dal fatto che siano o meno sullo stesso nodo di esecuzione) e l'unico strumento è la comunicazione attraverso la rete. L'asincronicità è una necessità. In un certo senso è un'estensione della concorrenza.
 
 
 ### Distribuzione
 
 Un sistema è costituito da nodi indipendenti che, attraverso una rete non affidabile, devono coordinare l'esecuzione dello stesso lavoro, condividendo il consenso sullo stato complessivo del sistema.
 
-Note: Di questo paradigma vedremo solo alcuni risultati teorici: affrontarlo dal punto di vista pratico richiederebbe un intero corso partendo da una base di nozioni maggiore di quella richiesta qui. Ancora, è un'estensione della concorrenza e della comunicazione in rete.
+Di questo paradigma vedremo solo alcuni risultati teorici: affrontarlo dal punto di vista pratico richiederebbe un intero corso partendo da una base di nozioni maggiore di quella richiesta qui. Ancora, è un'estensione della concorrenza e della comunicazione in rete.
 
 
 ### Reattività
@@ -79,7 +77,7 @@ Un sistema distribuito costruito sulle basi della comunicazione asincrona tramit
 
 Definito dal [Reactive Manifesto](https://www.reactivemanifesto.org/).
 
-Note: Con "reattività" si intende una bassa latenza alla risposta; vale a dire, il sistema risponde sempre molto velocemente, anche in condizioni di utilizzo elevato delle risorse disponibili. Nasce dalla necessità di identificare, e rendere facili da realizzare, le condizioni in cui un sistema distribuito lavora in modo corretto ed efficiente.
+Con "reattività" si intende una bassa latenza alla risposta; vale a dire, il sistema risponde sempre molto velocemente, anche in condizioni di utilizzo elevato delle risorse disponibili. Nasce dalla necessità di identificare, e rendere facili da realizzare, le condizioni in cui un sistema distribuito lavora in modo corretto ed efficiente.
 
 ---
 
@@ -91,12 +89,8 @@ Per studiare questi paradigmi di programmazione useremo il linguaggio Java.
 
 ### Java
 
-![Duke](./imgs/l01/Duke.svg) <!-- .element: style="float: right; width: 25%" -->
+Java è un linguaggio **Object-Oriented**, a **memoria gestita**, con **controllo statico dei tipi**, basato su **Classi ad ereditarietà singola**, con una sintassi simile a C e C++. 
 
-Java è un linguaggio Object-Oriented,  
-a memoria gestita,  
-con controllo statico dei tipi, basato su Classi ad ereditarietà singola,  
-con una sintassi simile a C e C++. <!-- .element: style="float: left; width: 50%" -->
 
 
 Viene compilato in un linguaggio intermedio, detto _bytecode_, interpretato da una piattaforma, la Java Virtual Machine a sua volta implementata per più sistemi operativi.
@@ -124,7 +118,7 @@ Java ben si presta come supporto per lavorare nei paradigmi di nostro interesse 
 * l'impiego in sistemi distribuiti è stato un caso d'uso fin dall'inizio
 * nella sua evoluzione la JVM è diventata una piattaforma di ricerca molto apprezzata
 
-Note: sulla JVM è quindi molto facile trovare implementazioni a supporto delle tecnologie e dei paradigmi di programmazione più avanzati.
+Sulla JVM è quindi molto facile trovare implementazioni a supporto delle tecnologie e dei paradigmi di programmazione più avanzati.
 
 ---
 
@@ -135,7 +129,7 @@ La prima peculiarità di Java è in realtà la sua piattaforma di esecuzione, la
 
 Ad oggi è una specifica aperta e standardizzata, disponibile per tutti i sistemi operativi.
 
-Note: Specifica di Java 15: https://jcp.org/en/jsr/detail?id=390
+La specifica di Java 15 è: https://jcp.org/en/jsr/detail?id=390
 
 
 Nella seconda metà della decade 2000 la JVM diventa uno degli ambienti in cui è più semplice sperimentare e fare ricerca sui linguaggi di programmazione.
@@ -455,11 +449,8 @@ Nell'ecosistema Java i più popolari sono:
 * IntelliJ Idea
 * Microsoft VSCode
 
-Nota: è consigliato sceglierne uno, ma utile provare gli altri.
+È consigliato sceglierne uno, ma utile provare gli altri.
 
----
-
-## Demo
 
 ---
 
@@ -474,14 +465,4 @@ https://www.infoq.com/news/2020/09/java15-released/
 
 https://www.infoq.com/news/2020/05/java-at-25/
 
-
-### Women in tech
-
-Una conferenza gratuita organizzata da  
-Manning Publications
-
-Martedì 13/10 1800-2300 CEST
-
-https://freecontent.manning.com/livemanning-conferences-women-in-tech/
-
-Note: Da segnalare: Olga Makhasoeva, The Art of Asking Questions
+Da segnalare: Olga Makhasoeva, The Art of Asking Questions
