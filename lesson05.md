@@ -26,14 +26,14 @@ Un modulo è un insieme di package e tipi, di cui può controllare l'accesso dal
 
 Si tratta di una unità di organizzazione del codice Java superiore al package.
 
-Note: il progetto iniziale parte da esperienze al tempo molto diffuse, per es. lo standard OSGi.
+Il progetto iniziale parte da esperienze al tempo molto diffuse, per es. lo standard OSGi.
 
 
 Il principale caso d'uso dei moduli è la modularizzazione della piattaforma Java.
 
 I moduli consentono di separare il JDK in parti più piccole e creare delle distribuzioni che contengono solo i moduli necessari, allo scopo di rendere più agevole la pubblicazioni di applicazioni complete.
 
-Note: la revisione dell'architettura del JDK, e di tutte le caratteristiche di visibilità dei package di sistema ha creato non pochi problemi a molte librerie che dipendevano da interfacce non ufficialmente pubbliche, ma accessibili, o che interagivano con parti meno comuni della piattaforma. Questi aspetti rimangono il principale ostacolo al supporto per Java 11 per le librerie e gli strumenti che ancora non sono stati in grado di fare il salto.
+La revisione dell'architettura del JDK, e di tutte le caratteristiche di visibilità dei package di sistema ha creato non pochi problemi a molte librerie che dipendevano da interfacce non ufficialmente pubbliche, ma accessibili, o che interagivano con parti meno comuni della piattaforma. Questi aspetti rimangono il principale ostacolo al supporto per Java 11 per le librerie e gli strumenti che ancora non sono stati in grado di fare il salto.
 
 
 Il progetto è riuscito solo in parte: ad oggi, pochi software fanno effettivo uso dei moduli, e l'evoluzione delle tecniche di distribuzione ha superato quella che era l'intenzione iniziale.
@@ -68,7 +68,7 @@ La libreria standard è organizzata per gerarchia di capacità (le sottoclassi i
 
 Questa versatilità a volte produce una API prolissa e ingombrante, per dare spazio a tutti i punti di accesso per i vari casi d'uso.
 
-Note: La gestione molto precisa di encoding e charset, per esempio, è indispensabile quando necessaria, ma può essere ingombrante in alcuni casi.
+La gestione molto precisa di encoding e charset, per esempio, è indispensabile quando necessaria, ma può essere ingombrante in alcuni casi.
 
 
 ### java.lang.System
@@ -97,19 +97,19 @@ L'interfaccia `Collection` è la radice della libreria. Contiene i metodi più g
 
 Non ci sono implementazioni dirette di questa interfaccia, ma solo interfacce più specializzate.
 
-Note: solo una collezione di tipo `Bag`, cioè una collezione di oggetti con eventuali ripetizioni, potrebbe aver bisogno di implementare direttamente questa interfaccia.
+Solo una collezione di tipo `Bag`, cioè una collezione di oggetti con eventuali ripetizioni, potrebbe aver bisogno di implementare direttamente questa interfaccia.
 
 
 Diversi metodi sono marcati come "opzionali", quindi in realtà le singole implementazioni sono libere di lanciare `UnsupportedOperationException` se non implementano l'operazione: il caso tipico sono le viste non modificabili di altre collezioni, che non permettono la modifica del loro contenuto.
 
-Note: le implementazioni che elenchiamo in questa lezione sono solo alcune. Le restanti sono specifiche per applicazioni concorrenti, e verranno esaminate all'interno di quella parte di corso.
+Le implementazioni che elenchiamo in questa lezione sono solo alcune. Le restanti sono specifiche per applicazioni concorrenti, e verranno esaminate all'interno di quella parte di corso.
 
 
 La maggior parte delle collezioni distingue i contenuti nel senso del metodo `java.lang.Object#equals()`, che quindi è necessario implementare correttamente in questi casi.
 
 L'operatore di confronto `==` non è utilizzabile fra oggetti, in quanto confronta solo l'identità: due istanze di una classe sono sempre diverse anche se rappresentano lo stesso valore.
 
-Note: i record risolvono questo problema fornendo una implementazione coerente di `equals` e `hashCode`
+I record risolvono questo problema fornendo una implementazione coerente di `equals` e `hashCode`
 
 
 ```java
@@ -153,7 +153,7 @@ a == a.twoTimes() // true
   }
 ```
 
-Note: una feature ancora in preview in Java 15 permetterebbe di risparmiare la definizione della variabile `o` spostandola direttamente sul test di `instanceof`.
+Una feature ancora in preview in Java 15 permetterebbe di risparmiare la definizione della variabile `o` spostandola direttamente sul test di `instanceof`.
 
 
 ```java
@@ -176,12 +176,6 @@ La classe `Collections` raccoglie diversi metodi di utilità per applicare algor
 |`emptyTTT`| Collezione vuota |
 |`syncronizedTTT`| Collezione sincronizzata |
 |`unmodifiableTTT`| Vista non modificabile |
-
-Note: Con il controllo del tipo al runtime si intende verificare il contenuto della collezione secondo la sua definizione generica, che come abbiamo già detto non è disponibile come metadato al momento dell'esecuzione. La "sincronizzazione" è un concetto di gestione della concorrenza.
-
-
-|Metodo|Risultato|
-|-|-|
 |`binarySearch`| Ricerca in una lista |
 |`disjoint`| Verifica se disgiunte |
 |`fill`| Riempie una collezione |
@@ -190,6 +184,7 @@ Note: Con il controllo del tipo al runtime si intende verificare il contenuto de
 |`shuffle`| Ordina in modo casuale |
 |`sort`| Ordina la collezione |
 
+Con il "controllo del tipo al runtime" si intende verificare il contenuto della collezione secondo la sua definizione generica, che come abbiamo già detto non è disponibile come metadato al momento dell'esecuzione. La "sincronizzazione" è un concetto di gestione della concorrenza.
 
 La classe `Arrays` raccoglie altri metodi di utilità, concentrati invece sul trattamento degli array. Ci sono metodi che declinano quelli di `Collections` su vari tipi di array primitivi, ed alcuni relativi specificamente agli array.
 
@@ -208,17 +203,12 @@ Una classe `Iterable` può fornire un `Iterator` per essere attraversata.
 |`hasNext`| Verso se ci sono altri elementi |
 |`remove`| Rimuove l'elemento attuale |
 |`forEachRemaining`| Consuma il resto della collezione |
-
-Note: `remove` non è supportato da diverse collezioni. Inoltre, può creare problemi di concorrenza. `forEachRemaining` potrebbe essere più efficiente di ripetere `next` su tutti gli elementi rimanenti.
-
-
-|`Iterable`|Significato|
-|-|-|
 |`forEach`| Applica ad ogni elemento |
 |`iterator`| Fornisci un `Iterator` |
 |`spliterator`| Fornisci uno `Spliterator`|
+`remove` non è supportato da diverse collezioni. Inoltre, può creare problemi di concorrenza. `forEachRemaining` potrebbe essere più efficiente di ripetere `next` su tutti gli elementi rimanenti.
 
-Note: Esamineremo lo `Spliterator` nell'ambito della concorrenza.
+Lo `Spliterator` verrà discusso in dettaglio nella lezione 12.
 
 ---
 
@@ -229,7 +219,7 @@ L'interfaccia `List` rappresenta un elenco ordinato di elementi, indirizzabili p
 
 Fornisce uno specifico iteratore, `ListIterator` capace di movimento bidirezionale e modifiche sulla lista attraversata.
 
-Note: Come gli array, l'indice all'interno di una lista comincia da 0.
+Come gli array, l'indice all'interno di una lista comincia da 0.
 
 
 |Implementazione|Caratteristiche|
@@ -238,7 +228,7 @@ Note: Come gli array, l'indice all'interno di una lista comincia da 0.
 |`LinkedList`| Basata su nodi concatenati |
 |`Vector`| Legacy, basato su array, sincrono |
 
-Note: Vector si può considerare come la prima versione dell'ArrayList. Rimane per compatibilità.
+Vector si può considerare come la prima versione dell'ArrayList. Rimane per compatibilità.
 
 
 L'interfaccia `List` fornisce un comodo metodo `of` per creare rapidamente una lista a partire da un elenco di oggetti.
@@ -247,7 +237,7 @@ L'interfaccia `List` fornisce un comodo metodo `of` per creare rapidamente una l
 var list = List.of(1, 2, 3);
 ```
 
-Note: i tipi degli oggetti devono essere coerenti.
+I tipi degli oggetti devono essere coerenti.
 
 
 ## Set
@@ -257,7 +247,7 @@ L'interfaccia `Set` definisce un insieme, cioè un contenitore di oggetti senza 
 
 È una pessima idea mutare un elemento in un Set in modi che cambiano il suo significato riguardo a `equals`.
 
-Note: è disponibile l'equivalente del metodo `of` dell'interfaccia `List`.
+È disponibile l'equivalente del metodo `of` dell'interfaccia `List`.
 
 
 |Implementazione|Caratteristiche|
@@ -295,7 +285,7 @@ Caratteristica delle `Dequeue` è avere due set di metodi differenti a seconda d
 |`add`,`remove`,`get`| Eccezione |
 |`offer`,`poll`,`peek`| Valore speciale |
 
-Note: la semantica è aggiunta, rimozione ed esame del prossimo elemento. Una `Dequeue` ha le versioni `first` e `last` di ogni metodo che operano rispettivamente su testa e coda. Come valore speciale solitamente si usa `null` o `false` a seconda dei casi.
+La semantica è aggiunta, rimozione ed esame del prossimo elemento. Una `Dequeue` ha le versioni `first` e `last` di ogni metodo che operano rispettivamente su testa e coda. Come valore speciale solitamente si usa `null` o `false` a seconda dei casi.
 
 ---
 
@@ -321,15 +311,11 @@ Ovviamente, in generale non sono permesse chiavi non uniche. Le implementazioni 
 |`HashMap`| Base, chiavi distinte per `hashCode`|
 |`TreeMap`| Chiavi ordinate |
 |`Hashtable`| Implementazione storica, sincrona |
-
-
-|Classe|Implementazione|
-|-|-|
 |`EnumMap`| Specifica per chiavi `enum` |
 |`WeakHashMap`| Chiavi "deboli", non impediscono la GC |
 |`IdentityHashMap`| Specifica basata sull'identità |
 
-Note: I valori di `WeakHashMap` possono essere raccolti dalla Garbage Collection. Si tratta di un comportamento utile in alcune applicazioni di sistema e per cache particolari. `IdentityHashMap` formalmente viola il contratto di `Map` in quanto si basa sull'identità e non su `equals`. Serve in situazioni estremamente particolari.
+I valori di `WeakHashMap` possono essere raccolti dalla Garbage Collection. Si tratta di un comportamento utile in alcune applicazioni di sistema e per cache particolari. `IdentityHashMap` formalmente viola il contratto di `Map` in quanto si basa sull'identità e non su `equals`. Serve in situazioni estremamente particolari.
 
 
 Anche `Map` mette a disposizione un metodo `of` per costruire rapidamente una mappa (immutabile) a partire da un elenco di coppie.
@@ -349,21 +335,21 @@ Una parte importante dell'aggiornamento di Java 8 è stata l'introduzione del co
 
 A molto interfacce è stato aggiunto il metodo `stream()` che permette di trattare le collezioni con questa metafora.
 
-Note: Questo è uno dei principali casi d'uso della sintassi del metodo `default`.
+Questo è uno dei principali casi d'uso della sintassi del metodo `default`.
 
 
 Uno `Stream` è una sequenza di elementi, non necessariamente finita.
 
 L'obiettivo dell'astrazione dello stream è la descrizione dei passi di elaborazione che verranno effettuati sugli elementi, e l'ottimizzazione della loro esecuzione.
 
-Note: Mentre l'obiettivo delle collezioni è l'accesso ottimale ai loro elementi.
+Mentre l'obiettivo delle collezioni è l'accesso ottimale ai loro elementi.
 
 
 Le operazioni sugli Stream vengono _composte_ in sequenza, in una _pipeline_, fino ad arrivare ad una operazione detta _terminale_ che produce il risultato.
 
 Nessuna operazione viene eseguita finché non viene richiamata l'operazione terminale.
 
-Note: In questo senso, la costruzione dello Stream è _lazy_.
+In questo senso, la costruzione dello Stream è _lazy_.
 
 
 Il codice che implementa la pipeline ha ampie libertà su come riordinare e disporre l'esecuzione delle operazioni intermedie. Queste ultime devono:
@@ -373,7 +359,7 @@ Il codice che implementa la pipeline ha ampie libertà su come riordinare e disp
 
 Gli stream possono essere costruiti sia da collezioni di partenza, sia da altri tipi di astrazioni, come file, canali di comunicazione, generatori casuali.
 
-Note: Esistono alcune specializzazioni per gli stream di valori primitivi int, long e double.
+Esistono alcune specializzazioni per gli stream di valori primitivi int, long e double.
 
 
 Le operazioni intermedie sugli stream di dividono in _stateful_ e _stateless_. 
@@ -403,10 +389,6 @@ Il loro uso influenza la costruzione e l'efficienza della _pipeline_ che le cont
 |`all/any/noneMatch`|Vero se uno/tutti/nessuno gli elementi soddisfano il predicato|
 |`collect`|Riduce lo stream ad un risultato|
 |`findAny/First`|Ritorna un o il primo elemento|
-
-
-|Terminale|Significato|
-|-|-|
 |`flatMap`|Trasforma ogni elemento in nuovi elementi|
 |`forEach/Ordered`|Esegue un'operazione per ogni elemento|
 |`min/max`|Minimo o massimo|
@@ -432,14 +414,14 @@ La gestione del tempo è un problema difficile da gestire elgantemente, per tutt
 
 La prima API temporale di Java, che ruota attorno a `java.util.Date`, è stata sostituita in Java 8 (JSR-310) dal package `java.time`, più regolare e preciso.
 
-Note: Le classi di `java.time` sono nate come libreria Open Source "Joda Time", il cui successo (e superiore qualità ed usabilità) è stato tale da essere inclusa nella libreria standard praticamente senza modifiche. Quanti secondi può avere un minuto?
+Le classi di `java.time` sono nate come libreria Open Source "Joda Time", il cui successo (e superiore qualità ed usabilità) è stato tale da essere inclusa nella libreria standard praticamente senza modifiche. Quanti secondi può avere un minuto?
 
 
 `Instant` è un singolo, astratto, instante nel tempo.
 
 `LocalDate`, `LocalTime`, `LocalDateTime` rappresentano una data, un'ora o un istante in uno specifico calendario. `ZonedDateTime` trasporta anche l'informazione del fuso orario.
 
-Note: Queste classi si occupano di permettere solo le conversioni corrette, e di tutti i dettagli del dominio del tempo, come per es. anni bisestili e introduzione dell'ora legale. I leap second non sono gestiti.
+Queste classi si occupano di permettere solo le conversioni corrette, e di tutti i dettagli del dominio del tempo, come per es. anni bisestili e introduzione dell'ora legale. I leap second non sono gestiti.
 
 
 Ci sono inoltre classi specifiche per singole unità temporali (ora, mese, anno, ecc.), e per intervalli di tempo.

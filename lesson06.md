@@ -16,18 +16,18 @@ Per avere un comodo ambiente di esecuzione, e per rendere più interessante l'es
 
 Le fasi del TDD sono:
 
-- Pensa al problema e a come scrivere il test <!-- .element: class="fragment" data-fragment-index="1" -->
-- Scrivi un test <!-- .element: class="fragment" data-fragment-index="2" -->
-- Osservalo fallire <!-- .element: class="fragment" data-fragment-index="3" -->
-- Scrivi il minimo codice necessario a farlo passare <!-- .element: class="fragment" data-fragment-index="4" -->
-- Ristruttura <!-- .element: class="fragment" data-fragment-index="5" -->
-- Ripeti <!-- .element: class="fragment" data-fragment-index="6" -->
+- Pensa al problema e a come scrivere il test
+- Scrivi un test
+- Osservalo fallire
+- Scrivi il minimo codice necessario a farlo passare
+- Ristruttura
+- Ripeti
 
-Note: Cfr. http://wiki.c2.com/?TestDrivenDevelopment
+Cfr. http://wiki.c2.com/?TestDrivenDevelopment
 
 ---
 
-## Fibonacci
+### Fibonacci
 
 
 La serie di Fibonacci è una sequenza numerica definita ricorsivamente:
@@ -38,9 +38,6 @@ La serie di Fibonacci è una sequenza numerica definita ricorsivamente:
 
 ---
 
-![Kata](./imgs/l06/kata3.jpg)
-
-
 ### Kata
 
 Nelle arti marziali giapponesi, _kata_ (forma) indica la forma pura ed essenziale di una singola mossa o colpo, studiata singolarmente allo scopo di ricercarne l'esecuzione perfetta.
@@ -50,7 +47,7 @@ Esercitarsi nei _kata_ significa quindi ripetere deliberatamente lo stesso movim
 
 Ispirandosi a questo concetto, Dave Thomas nel libro "The Pragmatic Programmer" descrive il kata nella programmazione come l'esercizio deliberato di risolvere un problema più volte ponendo attenzione sul processo che ci porta alla soluzione piuttosto che sul risultato.
 
-Note: la ripetizione, oltre a permetterci di provare strade diverse, ci consente di analizzare come il procedimento cambia nel tempo. Dopo poche ripetizioni, il problema in sè diventa irrilevante, ed un mero pretesto per analizzare la pratica con cui viene risolto.
+La ripetizione, oltre a permetterci di provare strade diverse, ci consente di analizzare come il procedimento cambia nel tempo. Dopo poche ripetizioni, il problema in sè diventa irrilevante, ed un mero pretesto per analizzare la pratica con cui viene risolto.
 
 
 ### Bowling
@@ -74,21 +71,21 @@ Se abbatte i 10 birilli in due tiri, ottiene uno _spare_, e conta come bonus il 
 
 ![Bowling-3](./imgs/l06/bowling3.png)
 
-Note: il frame 3 vale 18: 10+8 del primo tiro del frame 4.
+Il frame 3 vale 18: 10+8 del primo tiro del frame 4.
 
 
 Se abbatte i 10 birilli in un solo tiro, ottiene uno _strike_ e conta come bonus il numero di birilli abbattuti nei due tiri seguenti. Si segna con una sola 'X' nel frame.
 
 ![Bowling-4](./imgs/l06/bowling4.png)
 
-Note: Il frame 5 vale 24: 10+10+4. Il frame 6 vale 19: 10+4+5.
+Il frame 5 vale 24: 10+10+4. Il frame 6 vale 19: 10+4+5.
 
 
 Nel decimo frame, se ottiene uno strike o uno spare nei primi due tiri, ha un terzo tiro con cui calcolare il bonus per il punto segnato.
 
 ![Bowling-5](./imgs/l06/bowling5.png)
 
-Note: Il frame 10 vale 16: 10+6
+Il frame 10 vale 16: 10+6
 
 
 Lo scopo del Kata è produrre una classe `BowlingGame` che produca, con un metodo `score()` il punteggio della partita.
@@ -98,7 +95,7 @@ Lo scopo del Kata è produrre una classe `BowlingGame` che produca, con un metod
 ## Link Interessanti
 
 
-![SevenMinutes](./imgs/l06/sevenmin.png) <!-- .element: style="float: left; width: 40%" -->
+![SevenMinutes](./imgs/l06/sevenmin.png)
 
 **7 minutes 26 seconds and the Fundamental Theorem of Agile Software Development**
 https://www.youtube.com/watch?v=WSes_PexXcA
