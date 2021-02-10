@@ -198,10 +198,6 @@ Il teorema **CAP** definisce tre caratteristiche di un database distribuito:
 | - | -- | -- |
 | C | Consistenza | Ogni lettura riceve o il valore più recente o un errore |
 | A | Disponibilità (_Availability_)| Ogni richiesta riceve una risposta valida (ma non necessariamente l'ultimo valore) |
-
-
-|   | Nome | Descrizione |
-| - | -- | -- |
 | P | Tolleranza alla separazione  (_Partition tolerance_) | Il sistema funziona anche se la rete fallisce per un insieme di nodi, cioè viene _partizionata_ |
 
 
@@ -344,51 +340,19 @@ Note: nel senso che la consistenza si ottiene in termini e in contesti different
 ## Approfondimenti
 
 
-### Perspectives on the CAP Theorem
-
-(Gilbert, Lynch 2012)
-
+* Perspectives on the CAP Theorem (Gilbert, Lynch 2012)
 `papers/l18/Brewer2.pdf`
-
-
-### The Byzantine Generals Problem
-
-(Lamport, Shostak, Pease 1982)
-
+* The Byzantine Generals Problem (Lamport, Shostak, Pease 1982)
 `papers/l18/byz.pdf`
-
-
-### The Part-Time Parliament
-
-(Lamport 1998)
-
+* The Part-Time Parliament (Lamport 1998)
 `papers/l18/lamport-paxos.pdf`
-
-
-### Paxos Made Simple
-
-(Lamport 2001)
-
+* Paxos Made Simple (Lamport 2001)
 `papers/l18/paxos-simple.pdf`
-
-
-### In Search of an Understandable Consensus Algorithm (Ext. Ver.)
-
-(Ongaro, Ousterhout 2014)
-
+* In Search of an Understandable Consensus Algorithm (Ext. Ver.) (Ongaro, Ousterhout 2014)
 `papers/l18/raft.pdf`
-
-
-### A comprehensive study of Convergent and Commutative Replicated Data Types
-
-(Shapiro, Preguiça, Baquero, Zawirski 2011)
-
+* A comprehensive study of Convergent and Commutative Replicated Data Types (Shapiro, Preguiça, Baquero, Zawirski 2011)
 `papers/l18/techreport.pdf`
-
-
 ### What happened to DPLs?
-
-![Miller](imgs/l18/miller.png)
 
 
 https://pwlconf.org/2017/heather-miller/
