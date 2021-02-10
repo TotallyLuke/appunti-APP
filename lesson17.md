@@ -136,7 +136,6 @@ Vediamo che forma prende uno degli esempi delle scorse lezioni implementato con 
 
 Vert.X è la proposta di Eclipse Foundation per la realizzazione di applicazioni web e microservizi scalabili e moderni.  <!-- .element: style="float: right; width: 60%" -->
 
-![VertX](imgs/l17/logo-sm.png) <!-- .element: style="width: 35%" -->
 
 
 Le sue principali caratteristiche sono:
