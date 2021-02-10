@@ -198,6 +198,14 @@ Il teorema **CAP** definisce tre caratteristiche di un database distribuito:
 | - | -- | -- |
 | C | Consistenza | Ogni lettura riceve o il valore più recente o un errore |
 | A | Disponibilità (_Availability_)| Ogni richiesta riceve una risposta valida (ma non necessariamente l'ultimo valore) |
+<<<<<<< HEAD
+=======
+
+
+
+|   | Nome | Descrizione |
+| - | -- | -- |
+>>>>>>> e41dfae... Update lesson 18
 | P | Tolleranza alla separazione  (_Partition tolerance_) | Il sistema funziona anche se la rete fallisce per un insieme di nodi, cioè viene _partizionata_ |
 
 
