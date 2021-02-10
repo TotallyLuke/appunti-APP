@@ -36,7 +36,7 @@ Per "elenco delle mosse disponibili" si intende:
 Per "calcolo del prossimo stato del gioco" si intende:
 * fornita una mossa, produrre un nuovo oggetto contenente lo stato del gioco dopo l'applicazione della mossa
 
-Note: per esigenze legate all'uso concorrente, quest'oggetto dev'essere assolutamente slegato da quello originale.
+Per esigenze legate all'uso concorrente, quest'oggetto dev'essere assolutamente slegato da quello originale.
 
 ---
 
@@ -154,18 +154,6 @@ PS app2020-pub> dir 342258IF.hg
 ## Link Interessanti
 
 
-### Programming Love
-
-![Programming Love](./imgs/l07/programming.png)
-
-https://programming.love/
-
-
-### JLove conference
-
-![JLove](./imgs/l07/jlove.jpg) <!-- .element: style="width: 50%" -->
-
-https://jlove.konfy.care/
-
-0900 CET 4/12 - 0830 CET 6/12 2020
+* Programming Love (https://programming.love/)
+* JLove conference (https://jlove.konfy.care/)
 
