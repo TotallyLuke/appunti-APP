@@ -42,23 +42,18 @@ Il loro uso principale è quello di stabilire un _contratto_ fra le implementazi
 
 È comune, per esempio, che una libreria fornisca un insieme di interfacce per affrontare un certo problema, ed un insieme più ampio di implementazioni con caratteristiche differenti, che possono essere selezionate al runtime a seconda delle circostanze. Il codice utilizzatore non dipende dalla implementazione, ma può usare quella che gli viene fornita. L'assimmetria con l'ereditarietà di classi consente di risolvere le ambiguità.
 
+Una interfaccia può essere estesa solo da un'altra interfaccia. 
 
-Una interfaccia può essere estesa solo da un'altra interfaccia.
-
-Una interfaccia può avere visibilità pubblica o di package.
-
-Tutti i membri di una interfaccia sono pubblici, senza necessità di indicarlo.
-
-Cercare di indicare altrimenti non viene accettato dal compilatore. Per completezza, una interfaccia può essere `static`, `private` o `protected` quando è definita all'interno di un'altra classe.
+Una interfaccia può avere visibilità pubblica o di package. Tutti i membri di una interfaccia sono pubblici, senza necessità di indicarlo. Cercare di indicare altrimenti non viene accettato dal compilatore. Per completezza, una interfaccia può essere `static`, `private` o `protected` quando è definita all'interno di un'altra classe.
 
 
 Una interfaccia può contenere:
 
-* dichiarazioni di costanti
+* dichiarazioni di costanti (ogni variabile dichiarata in una interfaccia è `public static final`, vale a dire costante, senza bisogno di indicarlo esplicitamente)
 * metodi astratti
 * metodi statici
 
-Ogni variabile dichiarata in una interfaccia è implicitamente `public static final`, vale a dire costante. Non è necessario indicare un metodo come `abstract`. Tutti i metodi sono implicitamente `public`. Una interfaccia può contenere anche la definizione di interfacce interne.
+Non è necessario indicare un metodo come `abstract`. Tutti i metodi sono implicitamente `public`. Una interfaccia può contenere anche la definizione di interfacce interne.
 
 
 Dopo Java 8, una interfaccia può contenere anche:
@@ -66,26 +61,25 @@ Dopo Java 8, una interfaccia può contenere anche:
 * metodi di default (da Java 8)
 * metodi privati (da Java 9)
 
-I metodi privati non creano Diamond Problem perché non sono visibili dalle implementazioni. I metodi di default si.
+I metodi privati non possono creare Diamond Problem perché non sono visibili dalle implementazioni. I *metodi di default* sì.
 
 
 #### Metodi di default
 
-Nella realizzazione di Java 8, Brian Goetz e gli altri autori si sono trovati a dover affrontare un problema molto complesso: da un lato, la libreria standard necessitava di un profondo aggiornamento, sia per correggere errori storici che per includere innovazioni stilistiche e cambiamenti nel modo di programmare che si erano accumulati in oltre 15 anni. Dall'altro, per le caratteristiche delle Interfacce e del linking dinamico di Java, non era possibile modificare una interfaccia senza "rompere" tutto il codice che la utilizzava. Nel caso della libreria standard, questo era un problema enorme.
+Nella realizzazione di Java 8, Brian Goetz e gli altri autori si sono trovati a dover affrontare un problema molto complesso: da un lato, la libreria standard necessitava di un profondo aggiornamento, sia per correggere errori storici, che per includere innovazioni stilistiche e cambiamenti nel modo di programmare che si erano accumulati in oltre 15 anni. 
 
-Aggiungere un metodo ad una interfaccia richiedeva di modificare **tutte** le implementazioni, aggiungendo a ciascuna il relativo corpo del nuovo metodo.
+D'altro canto, per le caratteristiche delle Interfacce e del linking dinamico di Java, non era possibile modificare una interfaccia senza "rompere" tutto il codice che la utilizzava. Quando si agginge un metodo in un'interfaccia tutte le classi che implementano l'interfaccia non funzionano più perché manca un metodo. È necessario aggiungere **tutte** le implementazioni. Nel caso della libreria standard, questo era un problema enorme.
 
+La soluzione è diventata parte della JSR335 che introduce il concetto di _default method_. La JSR335 introduce le Lambda Expressions, e il _default method_ ne è un indispensabile abilitatore. La JSR indica tutta una serie di regole per risolvere la compatibilità fra codice scritto prima della modifica di una interfaccia e codice scritto dopo la sua estensione, in modo da rendere più permissive le regole di compatibilità binaria al momento del caricamento.
 
-La soluzione è diventata parte della JSR335 che introduce il concetto di _default method_.
-
-Sebbene avesse come focus l'introduzione delle Lambda Expressions, il _default method_ ne è un indispensabile abilitatore. La JSR indica tutta una serie di regole per risolvere la compatibilità fra codice scritto prima della modifica di una interfaccia e codice scritto dopo la sua estensione, in modo da rendere più permissive le regole di compatibilità binaria al momento del caricamento.
+Per mezzo dei _default method_ una interfaccia può essere modificata con nuovi metodi senza che le implementazioni debbano essere toccate; se il metodo nuovo non è gestito dalla classe, viene usato quanto dichiarato nell'interfaccia.
 
 
 Alle interfacce viene permesso di avere dei _default method_, cioè dei metodi implementati che si comportano in modo simile a quello delle superclassi.
 
-Questo di fatto re-introduce l'ereditarietà multipla in Java.
+Questo di fatto **re-introduce l'ereditarietà multipla** in Java.
 
-Un metodo di default viene prefissato dalla parola chiave `default` e viene fornita la sua implementazione.
+Un metodo di default viene prefissato dalla parola chiave `default` **e viene fornita la sua implementazione**.
 
 
 ```java
@@ -102,13 +96,10 @@ interface Right extends Top {}
 interface Bottom extends Left, Right {}
 ```
 
-In questo caso, `Bottom` usa l'implementazione di `Left` in quanto più vicina in senso ereditario. Le regole per le interfacce sono separate da quelle delle classi.
+In questo caso si presenta il Diamond Problem. Tuttavia, poiché **stiamo parlando di interfacce** la specifica di Java non lascia dubbi su quale implementazione di `name()` venga usata`Bottom` usa l'implementazione di `Left` in quanto più vicina in senso ereditario. 
 
 
-Per mezzo dei _default method_ una interfaccia può essere modificata con nuovi metodi senza che le implementazioni debbano essere toccate; se il metodo nuovo non è gestito dalla classe, viene usato quanto dichiarato nell'interfaccia.
-
-
-Tuttavia, il Diamond Problem si ripresenta:
+Tuttavia nell'esempio sottostante, poiché **stiamo parlando di classi**, il Diamond Problem si ripresenta:
 
 ![Diamond Problem](./imgs/l03/diamondProblem-ann.png)
 
@@ -244,7 +235,7 @@ L'uso più comune di questo costrutto avviene nella libreria standard delle _Col
 L'uso dei generici permette di evitare di duplicare il codice, e di semplificare l'uso delle classi contenitore fornendo al compilatore informazioni riguardo al tipo di ritorno di alcuni metodi.
 
 
-Purtroppo, a causa di problematiche di compatibilità con il codice precedente, le informazioni sui tipi generici vengono cancellate al runtime e non sono più disponbili dopo la compilazione. Questo è stato un grosso cruccio per molte librerie e strumenti che cercavano di implementare algoritmi generalizzati su più tipi.
+Purtroppo, a causa di problematiche di compatibilità con la JVM, le informazioni sui tipi generici vengono cancellate al runtime e non sono più disponbili dopo la compilazione. Questo è stato un grosso cruccio per molte librerie e strumenti che cercavano di implementare algoritmi generalizzati su più tipi.
 
 Nonostante i loro limiti, i tipi generici permettono di realizzare in Java codice particolarmente espressivo in modo molto più semplice che, per esempio, con l'approccio dei template in C++. Con il continuo miglioramento delle capacità di inferenza del compilatore, inoltre, è stata via via ridotta la sintassi necessaria per usarli efficacemente.
 

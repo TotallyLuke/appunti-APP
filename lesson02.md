@@ -22,7 +22,7 @@ class App {
 }
 ```
 
-Per convenzione, le classi Java sono denominate in _Pascal Case_ (noto anche come _Camel Case_.) con l'iniziale maiuscola.
+Per convenzione, le classi Java sono denominate in _Pascal Case_ (noto anche come _Camel Case_) con l'iniziale maiuscola.
 
 
 Una classe appartiene ad un _Package_, che permette di organizzare le classi in gruppi gerarchici.
@@ -38,7 +38,7 @@ class App {
 La parola chiave `package` se presente **deve** essere la prima riga di codice del file. Se è assente, la classe di dice appartenente al package `default`. In caso di codice "di prova" non è un problema, ma alcuni strumenti o librerie vedono di cattivo occhio classi nel package di default. È assolutamente sconsigliato in caso di codice condiviso con altri o distribuito.
 
 
-Se la classe pubblica `App` viene definita all'interno del package `it.unipd.app2020`, il suo file sorgente **deve** trovarsi all'interno della directory `it/unipd/app2020` rispetto al CLASSPATH:
+Se la classe pubblica `App` viene definita all'interno del package `it.unipd.app2020`, il suo file sorgente **deve** trovarsi all'interno della directory `it/unipd/app2020` rispetto al CLASSPATH (radice dei sorgenti):
 
 ```
 it/unipd/app2020/App.java
@@ -47,7 +47,7 @@ it/unipd/app2020/App.java
 
 Per convenzione, i _package_ sono denominati con nomi di dominio, in ordine inverso (_org.apache.commons_)
 
-Seguire questa convenzione è critico in caso di codice pubblico, cioè distribuito per la condivisione e l'uso da parte di terze parti. il riferimento ad un nome DNS permette di garantire l'unicità del nome stesso.
+Seguire questa convenzione è critico in caso di codice pubblico, cioè distribuito per la condivisione e l'uso da parte di terze parti. Il riferimento ad un nome DNS permette di garantire l'unicità del nome stesso.
 
 I package `java`, `javax` sono riservati.
 
@@ -267,13 +267,9 @@ La tupla formata da:
 Tecnicamente, una classe può avere una variabile ed un metodo con lo stesso nome: il compilatore è in grado di distinguere i due usi; tuttavia questo è fortemente scoraggiato a livello stilistico.
 
 
-Il tipo di ritorno `void` indica al compilatore che il metodo non ritorna nessun risultato.
+Il tipo di ritorno `void` indica al compilatore che il metodo non ritorna nessun risultato. Se il metodo ha un tipo di ritorno, il compilatore considera un errore la presenza di un percorso del codice in cui non venga ritornato al chiamante nessun valore, o un valore di tipo non compatibile con quello dichiarato.
 
-Se il metodo ha un tipo di ritorno, il compilatore considera un errore la presenza di un percorso del codice in cui non venga ritornato al chiamante nessun valore, o un valore di tipo non compatibile con quello dichiarato.
-
-Un metodo dichiarato `static` è legato alla classe: non può essere richiamato su di un oggetto, e non ha accesso alle variabili di istanza.
-
-In realtà un metodo `static` può essere richiamato su di un oggetto ma viene normalmente segnalato come minimo come cattiva pratica. Potrebbe diventare in futuro un errore sintattico.
+Un metodo dichiarato `static` è legato alla classe: non può essere richiamato su di un oggetto, e non ha accesso alle variabili di istanza (in realtà un metodo `static` può essere richiamato su di un oggetto ma viene normalmente segnalato come minimo come cattiva pratica. Potrebbe diventare in futuro un errore sintattico).
 
 I metodi seguono le stesse classi di visibilità delle variabili: `public`, `protected`, `default`, `private`.
 
@@ -463,9 +459,7 @@ public class App {
 ```
 
 
-Valgono le note per gli inizializzatori statici.
-
-Inoltre, le interazioni con l'ereditarietà e i costruttori raccomandano ancora maggiore cautela.
+Valgono le note per gli inizializzatori statici. Inoltre, le interazioni con l'ereditarietà e i costruttori raccomandano ancora maggiore cautela. Un caso d'uso è quello di racchiudere codice comune a tutti i costruttori.
 
 
 Scrivere codice che dipende dall'ordine di inizializzazione delle classi o delle istanze è una ricetta _sicura_ per ottenere _errori inattesi_ nei momenti meno opportuni.
@@ -475,9 +469,9 @@ Scrivere codice che dipende dall'ordine di inizializzazione delle classi o delle
 ## Ereditarietà
 
 
-Java, come linguaggio OO, mette a disposizione un meccanismo di ereditarietà singola: una classe può avere una sola superclasse, di cui eredita codice e (parte) dello stato.
+Java, come linguaggio OO, mette a disposizione un meccanismo di ereditarietà singola: una classe può avere **una sola** superclasse, di cui eredita codice e (parte) dello stato.
 
-Una sottoclasse ha accesso ai membri pubblici, `package` e `protected` della superclasse, ma non ai membri `private`.
+Una sottoclasse ha accesso ai membri `public`, `package` e `protected` della superclasse, ma non ai membri `private`.
 
 
 ```java
@@ -502,7 +496,7 @@ Limitandosi all'ereditarietà singola, Java ha evitato (in passato) il "Diamond 
 
 Parte dei vantaggi dell'ereditarietà multipla viene recuperata con altri meccanismi.
 
-L'introduzione dei metodi di default nelle interfacce, necessaria per alcune innovazioni di Java 8 e successivi, ha però fatto rientrare il Diamond Problem, realizzando una ereditarietà multipla dove in caso di ambiguità viene lanciato un errore di compilazione.
+L'introduzione dei metodi di default nelle interfacce, necessaria per alcune innovazioni di Java 8 e successivi, ha però fatto rientrare il Diamond Problem, realizzando una ereditarietà multipla dove in caso di ambiguità viene lanciato un errore di compilazione (si veda lezione 03).
 
 
 Una sottoclasse è anche un _sottotipo_ della classe che estende. Può cioè essere usata in ogni posto in cui viene richiesta la classe superiore.
@@ -572,8 +566,6 @@ Vedremo come questi metodi siano fondamentali nella maggior parte delle API. Mol
 
 
 #### Command Line Heroes
-
-![Command Line Heroes](./imgs/l02/clh.png)
 
 https://www.redhat.com/en/command-line-heroes
 

@@ -4,11 +4,11 @@
 
 ## Channels
 
-
 Per completare la panoramica sui metodi di gestione dei `Socket` ci manca un'astrazione che ci permetta di ascoltare e reagire a più richieste di connessione.
 
+Nella revisione dei metodi di I/O introdotta con il package `java.nio` in Java 1.4 nel 2002, viene introdotto un'intero albero di tipi dedicati alla gestione della comunicazione nel modo più generico (ovvero: finalizzato a gestire più canali `differenti`). Questa astrazione viene chiamata `Channel`
 
-Nella revisione dei metodi di I/O introdotta con il package `java.nio` in Java 1.4 nel 2002, viene introdotto un'intero albero di tipi dedicati alla gestione della comunicazione nel modo più generico.
+> A channel represents an open connection to an entity such as a hardware device, a file, a network socket, or a program component that is capable of performing one or more distinct I/O operations, for example reading or writing.  
 
 
 ```java
@@ -66,7 +66,7 @@ Ci permette, in modo asincrono, di accettare connessioni e gestirle.
 interface CompletionHandler< V,A >
 ```
 
-Note: abbiamo bisogno di specificare anche questa interfaccia. Essendo la modalità asincrona, questa interfaccia ci permette di indicare al sistema l'azione da effettuare al completamento della successiva interazione.
+L'interfaccia `CompletionHandler` permette di indicare al sistema l'azione da effettuare al completamento della successiva interazione.
 
 
 `CompletionHandler` è l'interfaccia che deve implementare un oggetto che gestisce la ricezione di un'operazione di I/O asincrona.
@@ -100,20 +100,14 @@ void failed(Throwable exc, A attachment)
 ```
 
 
-Il compito del metodo `failed` è, ovviamente, gestire il caso in cui un'interazione ha incontrato una eccezione.
+Il compito del metodo `failed` è gestire il caso in cui un'interazione ha incontrato una eccezione.
 
 
-Implementando un `CompletionHandler` possiamo esprimere il comportamento del server alla prossima interazione, in maniera asincrona.
+Implementando un `CompletionHandler` possiamo esprimere il comportamento del server alla prossima interazione, in maniera asincrona. _Asincrona_ nel senso non sincronizzata con il nostro codice. Indichiamo al sistema quale codice eseguire quando si completa un certo evento.
 
-Note: asincrona nel senso non sincronizzata con il nostro codice. Indichiamo al sistema quale codice eseguire quando si completa un certo evento.
+Il parametro generico `attachment` ci permette di far circolare le informazioni di contesto riguardo allo stato della conversazione. Il sistema invia questo oggetto a ogni handler ogni volta che questo deve gestire una interazione. 
 
-
-Il parametro generico `attachment` ci permette di far circolare le informazioni di contesto riguardo allo stato della conversazione.
-
-
-I vari handler potrebbero essere chiamati da `Thread` diversi, in momenti imprevedibili; da qui la necessità di gestire esplicitamente il passaggio del contesto.
-
-Note: perché le varie linee di esecuzione non avrebbero altrimenti modo di scambiarsi dati correttamente.
+I vari handler potrebbero essere chiamati da `Thread` diversi, in momenti imprevedibili; da qui la necessità di gestire esplicitamente il passaggio del contesto. Perché le varie linee di esecuzione non avrebbero altrimenti modo di scambiarsi dati correttamente.
 
 
 La gestione delle operazioni di I/O richiede quindi di specificare sempre l'attachment da far circolare ed il `CompletitionHandler` che gestisce il completamento.
@@ -169,7 +163,7 @@ public final < A > void write(ByteBuffer src, A attachment,
 ```
 
 
-Questo richiede di riorganizzare (pesantemente) il nostro codice, ma ci permette di gestire molte più connessioni.
+(16:40) Questo richiede di riorganizzare (pesantemente) il nostro codice, ma ci permette di gestire molte più connessioni.
 
 
 Un'alternativa all'uso di un `CompletionHandler` è data dalla versione dei metodi che ritorna un `Future`.
@@ -217,8 +211,11 @@ public abstract Future< Integer > write(ByteBuffer src)
 
 La struttura a cui questo approccio porta è duale alla precedente: il contesto è dato dal blocco in cui viene eseguito gestito il `Future`.
 
-
 La principale differenza è che in questo caso, se il blocco di codice è unico per tutta la conversazione, il thread che la gestisce è unico e rimane allocato per l'intera durata della conversazione.
+
+
+
+Con il `CompletionHandler` il numero di Thread è gestito dal canale e noi dobbiamo solo preoccuparci di rendere il `CompletionHandler` il meno bloccante possibile. Utilizzando i `Future` ad una singola operazione è associato un Thread. Possiamo gestire noi i Thread, ma questi rimangono bloccati tra un evento di IO e gli altri.
 
 ---
 
