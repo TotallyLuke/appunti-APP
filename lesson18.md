@@ -333,15 +333,11 @@ Note: nel senso che la consistenza si ottiene in termini e in contesti different
 ### What happened to DPLs?
 
 
-https://pwlconf.org/2017/heather-miller/
-
-Heather Miller è professore ordinario di Computer Science alla Carnegie Mellon University.
-
-In questo talk ripercorre una breve storia dei linguaggi per la programmazione distribuita, cercando il motivo del successo di Java e C++.
-
-Note: Il suo lavoro riguarda sopratutto i sistemi distribuiti. In passato è stata fondatrice ed Executive Director dello Scala Center - École polytechnique fédérale de Lausanne.
 
 
-Il testo di riferimento del suo corso di programmazione distribuita è su GitHub:
+Heather Miller è professore ordinario di Computer Science alla Carnegie Mellon University. Il suo lavoro riguarda sopratutto i sistemi distribuiti. In passato è stata fondatrice ed Executive Director dello Scala Center - École Polytechnique Fédérale de Lausanne.
 
-https://github.com/heathermiller/dist-prog-book
+In questo talk (https://pwlconf.org/2017/heather-miller/) ripercorre una breve storia dei linguaggi per la programmazione distribuita, cercando il motivo del successo di Java e C++.
+
+
+Il testo di riferimento del suo corso di programmazione distribuita è su GitHub: https://github.com/heathermiller/dist-prog-book
