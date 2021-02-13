@@ -176,20 +176,25 @@ Questo vale sia per le API web come quella che stiamo per discutere, sia per le 
 
 `GET /`
 
-HTML: Pagina HTML di benvenuto
+* HTML: Pagina HTML di benvenuto
 
-Con "HTML" intendiamo "risposta se il formato richiesto dal client è `text/html`". Solo il caso d'uso del browser è interessato a questa pagina; l'accesso via API può iniziare direttamente dalla chiamata successiva.
+Con "HTML" intendiamo "risposta se il formato richiesto dal client è `text/html`". 
+
+Solo il caso d'uso del browser è interessato a questa pagina; l'accesso via API può iniziare direttamente dalla chiamata successiva.
 
 
 ### Ingresso al gioco
 
 `POST /game`
 
-HTML: redirect al form di gioco
+- HTML: redirect al form di gioco
 
-JSON: url dove ottenere lo stato del gioco
+- JSON: url dove ottenere lo stato del gioco
 
-Con "JSON" intendiamo "risposta se il formato richiesto dal client è `application/json`". Notate come la risposta in questo caso è molto differente nei due casi: questo è dovuto alla differente modalità di interazione fra un umano davanti ad un browser ed una macchina che colloquia direttamente con l'API. Quest'ultima non ha bisogno del documento di benvenuto.
+
+Con "JSON" intendiamo "risposta se il formato richiesto dal client è `application/json`". 
+
+Notate come la risposta in questo caso è molto differente nei due casi: questo è dovuto alla differente modalità di interazione fra un umano davanti ad un browser ed una macchina che colloquia direttamente con l'API. Quest'ultima non ha bisogno del documento di benvenuto.
 
 
 ### Mossa in un gioco
@@ -198,9 +203,10 @@ Con "JSON" intendiamo "risposta se il formato richiesto dal client è `applicati
 
 `move=x`
 
-HTML: form con lo stato di gioco
+- HTML: form con lo stato di gioco
 
-JSON: stato del gioco
+- JSON: stato del gioco
+
 
 In questo caso il risultato è simmetrico: dopo che abbiamo fatto una mossa otteniamo lo stato risultante del gioco. Dobbiamo attendere l'esecuzione della mossa da parte dell'avversario, quindi dovremo interrogare lo stato per verificare se sia il nostro turno.
 
@@ -219,13 +225,16 @@ $ curl -H "Accept: application/json" \
 
 ### Strumenti utili
 
-cURL - https://curl.haxx.se/
+- cURL - https://curl.haxx.se/
 
-jq - https://stedolan.github.io/jq/
+- jq - https://stedolan.github.io/jq/
 
-La prima versione di `cURL` è stata rilasciata nel 1997; ad oggi è un tool universale per effettuare da linea di comando richieste a server in una varietà di protocolli. 
 
-jq è un tool estremamente comodo per trattare, filtrare e leggere, a linea di comando, dati in formato JSON.
+La prima versione di `cURL` è stata rilasciata nel 1997. Ad oggi è un tool universale per effettuare da linea di comando richieste a server in una grande varietà di protocolli. 
+
+`jq` è un tool estremamente comodo per trattare, filtrare e leggere, a linea di comando, dati in formato JSON (possibilmente recuperati tramite cURL).
+
+Consigliatissimo imparare entrambi gli strumenti.
 
 ---
 
@@ -418,10 +427,10 @@ L'approccio del framework Vert.X è tipico dei framework asincroni: ci viene for
 
 Le conseguenze sono:
 
-* con un po' di disciplina, possiamo mantenere il codice che interagisce con il framework all'interno dell'handler
-* gli handler compiono effetti collaterali, non sono quindi funzioni pure
-* la struttura dichiarativa costringe ad esternalizzare l'organizzazione del codice
-* è in carico a noi la gestione coerente dello stato condiviso
+* con un po' di disciplina, possiamo mantenere il codice che interagisce con il framework all'interno dell'handler (quindi possiamo mantenere il codice il più indipendente possibile);
+* gli handler compiono effetti collaterali, non sono quindi funzioni pure;
+* la struttura dichiarativa costringe ad esternalizzare l'organizzazione del codice;
+* è in carico a noi la gestione coerente dello stato condiviso.
 
 Rispetto ad altri approcci, abbiamo qualche aiuto in più a mantenere il nostro codice isolato dai tipi del framework, e quindi più riutilizzabile.
 Ovviamente, essendo gli handler asincroni, non sappiamo da quale thread saranno chiamati.
@@ -436,15 +445,15 @@ Un framework fornisce un ambiente all'interno del quale un insieme di casi d'uso
 
 Un framework per applicazioni web, per esempio, rende facile:
 
-* specificare le rotte a cui rispondere
-* costruire le risposte
+* specificare le rotte a cui rispondere;
+* costruire le risposte.
 
 
 Lo stesso framework web, cercherà di rendere trasparente, ed eventualmente configurabile:
 
-* la gestione dei dettagli del protocollo
-* la sicurezza nel trattamento della comunicazione
-* la suddivisione delle risorse fra le varie parti del sistema
+* la gestione dei dettagli del protocollo;
+* la sicurezza nel trattamento della comunicazione;
+* la suddivisione delle risorse fra le varie parti del sistema.
 
 
 Gli autori del framework scelgono le loro priorità fra semplicità d'uso, sicurezza ed efficienza.
