@@ -1,4 +1,4 @@
-## 2: Classi e Tipi (1/2)
+# 2: Classi e Tipi (1/2)
 
 ---
 

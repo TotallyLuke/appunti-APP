@@ -1,5 +1,3 @@
-
-
 # 11: Sincronizzazione
 
 ---
@@ -14,7 +12,9 @@ Tuttavia, non tutto è modellabile con una struttura dati: a volte quello di cui
 
 
 `it.unipd.app2020.sync.SimpleCounter`
-```java
+
+```
+java
 /**
 * A simple interface to a counter.
 */
@@ -28,6 +28,7 @@ interface SimpleCounter {
 
 
 `it.unipd.app2020.sync.UnsyncCounter`
+
 ```java
 class UnsyncCounter implements SimpleCounter {
   private int state = 0;
@@ -46,6 +47,7 @@ class UnsyncCounter implements SimpleCounter {
 
 
 `it.unipd.app2020.sync.Incrementer`
+
 ```java
 class Incrementer implements Callable< Boolean > {
   private SimpleCounter counter;
@@ -62,6 +64,7 @@ class Incrementer implements Callable< Boolean > {
 
 
 `it.unipd.app2020.sync.RunCounter`
+
 ```java
 ExecutorService executor = Executors.newFixedThreadPool(1);
 
@@ -94,7 +97,9 @@ La soluzione è impedire a più Thread di trovarsi insieme nella sezione critica
 
 Proviamo a sostituire dall'esempio sopra la classe UnsyncCounter con SyncCounter
 `it.unipd.app2020.sync.SyncCounter`
-```java
+
+```
+java
 class SyncCounter implements SimpleCounter {
   private int state = 0;
   syncronized public void add() {
@@ -135,7 +140,9 @@ Tutti i `monitor` sono `reentrant`: un Thread può acquisire lo stesso `monitor 
 
 Segue un esempio che modella due attori che si salutano con un inchino. Per evitare che due attori si salutino contemporaneamente (sbattendo la testa), rendiamo `syncronized` i metodi di saluto, così un attore può essere salutato (metodo `bow()` da un solo thread alla volta.:
 `it.unipd.app2020.sync.SimpleFriend`
-```java
+
+```
+java
 class SimpleFriend {
   private final String name;
 
@@ -156,7 +163,9 @@ Syncronized non è la soluzione a tutti i mali.
 
 
 `it.unipd.app2020.sync.SimpleFriend`
-```java
+
+```
+java
 public class SimpleFriends {
 
   public static void main(String[] args) {
@@ -222,7 +231,8 @@ void notifyAll();
 
 
 `it.unipd.app2020.sync.Named`
-```java
+
+``` java
 class Named {
   public final String name;
   private boolean red = false;
@@ -230,10 +240,7 @@ class Named {
   Named(String name) {
     this.name = name;
   }
-```
 
-
-```java
 synchronized void perform() throws InterruptedException {
   if (!red) {
     red = true;
@@ -243,13 +250,15 @@ synchronized void perform() throws InterruptedException {
     this.notify();
   }
 }
-```
+``` 
 
 Un solo thread alla volta può entrare in questo metodo. Se il flag è falso, viene posto a vero ed il thread si mette in attesa su questo oggetto (liberando il monitor). Se il flag è vero, viene posto a falso e un thread in attesa viene notificato che può proseguire.
 
 
 `it.unipd.app2020.sync.Waiter`
-```java
+
+```
+java
 class Waiter implements Runnable {
   private final Named first, second;
 
