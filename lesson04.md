@@ -336,6 +336,7 @@ La selezione fra più valori è anch'essa mutuata dal C, con qualche estensione.
 
 
 L'espressione di selezione può essere:
+
 * un cosiddetto _tipo scalare_: byte, char, short, int, long
 * un corrispettivo _boxed_: Byte, Character, Short, Integer, long
 * una costante stringa

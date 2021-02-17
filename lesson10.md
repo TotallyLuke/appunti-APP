@@ -497,6 +497,7 @@ Ovviamente, in `forEach` l'effetto collaterale è lo scopo della funzione. Le pr
 
 
 Per ogni algoritmo vi sono varie versioni:
+
 * con una trasformazione opzionale prima dell'uso del valore
 * iterazione solo sulle chiavi o solo sui valori
 * con risultati primitivi (`int`, `double` ecc.)

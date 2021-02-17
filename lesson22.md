@@ -68,6 +68,7 @@ Le conseguenze di questo approccio sul modello di esecuzione sono profonde, il r
 L'elaborazione di grandi moli di dati asincroni, spesso modellati come eventi, è il tipo di problema in cui questo paradigma si esprime al meglio, abilitando risultati molto difficili da raggiungere in modo differente.
 
 ---
+
 ## Problematiche
 
 
@@ -90,6 +91,7 @@ L'interazione non può fare assolutamente nessuna ipotesi né sull'ordine della 
 Questo costringe a dover considerare attentamente il modello del risultato e le varie possibilità di fallimento. La facilità e l'economicità del fallimento mitigano solo in parte il lavoro necessario per prevederlo.
 
 ---
+
 ## Akka
 
 Sulla JVM, la più diffusa implementazione del modello ad attori è il framework Akka 
@@ -117,6 +119,7 @@ Riassumendi Akka permette di realizzare un sistema per l'elaborazione reattiva b
 * in cui i messaggi che non hanno ricevuto risposta possono essere individuati.
 
 ---
+
 ## Esempio
 
 
@@ -327,4 +330,5 @@ public static void main(String[] args) {
       greeterMain.terminate(); 
   } 
 }
-```
+``` 
+

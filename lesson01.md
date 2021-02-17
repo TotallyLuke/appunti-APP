@@ -96,7 +96,7 @@ Java è un linguaggio **Object-Oriented**, a **memoria gestita**, con **controll
 Viene compilato in un linguaggio intermedio, detto _bytecode_, interpretato da una piattaforma, la Java Virtual Machine a sua volta implementata per più sistemi operativi.
 
 
-L'obiettivo della piattaforma è WORA:<br /> **W**rite **O**nce **R**un **A**nywhere.
+L'obiettivo della piattaforma è WORA: **W**rite **O**nce **R**un **A**nywhere.
 
 La portabilità della piattaforma garantisce la portabilità del codice.
 
@@ -153,8 +153,6 @@ Oggi la JVM implementa alcune delle tecniche più avanzate di compilazione e ges
 
 * Gestione del mix fra codice nativo e interpretato a seconda della statistica di esecuzione
 * Compilazione in anticipo in eseguibile nativo
-
-
 * Implementazioni specifiche per applicazioni particolari
 * Esecuzione su silicio (in passato) e su GPU/FPGA e architetture eterogenee
 
@@ -244,8 +242,6 @@ Note: Ma anche questo può voler dire molte cose: per esempio, sistemi operativi
 Il caricamento del codice è demandato ad una gerarchia di `ClassLoader`. Questo consente:
 
 * dividere chiaramente il caricamento delle classi di libreria da quelle delle classi "di estensione" (globali per una installazione) e da quello delle classi dell'applicazione
-
-
 * separare la visibilità di classi particolari in modo che solo codice di un certo tipo o di una certa provenienza possa raggiungerlo.
 * caricare il codice da origini differenti, per es. da una URL, da un archivio, da una classe sul filesystem.
 
@@ -265,6 +261,7 @@ Il suo compito è trasformare un file sorgente (`.java`) in un file bytecode (`.
 
 
 I file sorgenti _devono_ essere organizzati in questo modo:
+
 * Ogni file deve chiamarsi come l'oggetto che contiene: `NomeClasse.java`
 * Il percorso delle directory deve corrispondere al package in cui l'oggetto si trova
 * Nei sorgenti, o nel CLASSPATH devono esserci tutti i tipi nominati dai sorgenti
@@ -376,6 +373,7 @@ Per Maven il progetto è descritto da un `POM`
 Project Object Model
 
 Dichiarativamente, vengono elencati:
+
 * nome e metadati del progetto
 * dipendenze
 * plugin e loro configurazioni
@@ -412,6 +410,7 @@ E lo stesso procedimento è ormai standard (e sottointeso come indispensabile) p
 Nel 2007 viene rilasciata la prima versione di **Gradle** una alternativa a Maven che punta a migliorare alcuni suoi limiti.
 
 In particolare:
+
 * non più XML, ma un linguaggio di programmazione (Groovy) per definire il progetto
 * non più una struttura fissa, ma task che dipendono l'uno dall'altro a formare un DAG
 
@@ -439,12 +438,14 @@ Il fatto che nel corso sarà adottato Gradle è, in realtà, ininfluente: la scr
 
 
 Un Integrated Development Environment è un programma che mette a disposizione degli strumenti specifici per rendere più efficace l'attività dello sviluppo software:
+
 * editor specializzati per linguaggio
 * integrazione con strumenti di build
 * integrazione con debugger ed esecutori di test
 
 
 Nell'ecosistema Java i più popolari sono:
+
 * Eclipse
 * IntelliJ Idea
 * Microsoft VSCode

@@ -24,9 +24,12 @@
 *.fls
 *.xtr
 *.zip
+*.tex
 .tags
 .tags_sorted_by_file
 *.synctex.gz
 *.synctex*
 *.zip
+book.md
+
 Makefile

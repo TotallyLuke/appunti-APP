@@ -298,6 +298,7 @@ Gli oggetti usati come chiavi devono avere la coppia `equals`/`hashCode` corrett
 
 
 L'interfaccia mette a disposizione tre diverse viste sui suoi contenuti:
+
 * un elenco di `Entry`, cioè le coppie chiave-valore
 * l'insieme delle chiavi
 * l'elenco dei valori
@@ -353,6 +354,7 @@ In questo senso, la costruzione dello Stream è _lazy_.
 
 
 Il codice che implementa la pipeline ha ampie libertà su come riordinare e disporre l'esecuzione delle operazioni intermedie. Queste ultime devono:
+
 * non interferire, cioè non modificare gli elementi dello stream
 * (nella maggior parte dei casi) non avere uno stato interno
 

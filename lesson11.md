@@ -334,7 +334,6 @@ L'uso di un `Lock` ci permette di slegare l'acquisizione ed il rilascio di una r
 */
 void lock();
 ```
-
 Questa chiamata ovviamente blocca se il lock non è disponibile.
 
 
@@ -373,9 +372,8 @@ class LockedFriend {
 
   public String getName() {
     return this.name;
-  }
-```
-
+  } 
+``` 
 Risolviamo il problema dei due attori che si salutano. Si noti che il metodo si chiama `impendingBow`, (_accenna_ all'inchino). Il metodo prova averificare la disponibilità di ambo i lock. Se uno dei due non è libero l'attore rilascia il proprio lock.
 
 
@@ -687,11 +685,13 @@ public static void main(String[] args) {
 ```
 
 Come sempre succede, da grandi poteri derivano grandi responsabilità. Maneggiando direttamente i `Lock` si chiede al sistema di delegarci un notevole potere, ed insieme ne riceviamo una corrispondente responsabilità.
+
 * quando si salta una chiamata `signal()` si rischia deadlock, perché qualcuno rimane in attesa di una risposta
 * quando è presente un `await()` di troppo, si rischia il deadlock, perché qualcuno può conservare il lock;
 * quando è presente un'eccezione non gestita, si rischia il deadlock, perché si potrebbe saltare un `unlock()`
 
 ---
+
 ## Semaphores
 
 

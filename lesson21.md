@@ -67,6 +67,7 @@ Anche Reactive Streams parte da una modello semantico (propone delle interfacce 
 Mentre ReactiveX è poliglotta, Reactive Streams è multi-implementazione ma concentrato su JVM e JavaScript.
 
 Esistono molteplici implementazioni che soddisfano il TCK:
+
 * Akka Streams
 * MongoDB java Driver
 * RxJava
@@ -77,6 +78,7 @@ Alcune di queste implementazioni fanno riferimento alle stesse interfacce in mod
 
 
 Il modello concettuale di Reactive Streams è compatto tanto quanto quello di ReactiveX:
+
 * Publisher
 * Subscriber
 * Subscription

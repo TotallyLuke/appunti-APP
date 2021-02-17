@@ -18,22 +18,26 @@ Il gioco del TicTacToe è il classico gioco a due giocatori in cui bisogna mette
 
 
 Per gli esercizi successivi, abbiamo bisogno di una oggetto che gestisca una partita. Necessitiamo di:
+
 * stato attuale del gioco
 * elenco delle mosse disponibili
 * calcolo del prossimo stato del gioco data una mossa
 
 
 Per "stato attuale del gioco" si intende:
+
 * una stringa che rappresenta il piano di gioco
 * se il gioco è in corso o terminato (e come)
 * il giocatore di turno
 
 
 Per "elenco delle mosse disponibili" si intende:
+
 * un elenco da cui un giocatore (umano o non) può scegliere esclusivamente le mosse valide per proseguire il gioco
 
 
 Per "calcolo del prossimo stato del gioco" si intende:
+
 * fornita una mossa, produrre un nuovo oggetto contenente lo stato del gioco dopo l'applicazione della mossa
 
 Per esigenze legate all'uso concorrente, quest'oggetto dev'essere assolutamente slegato da quello originale.

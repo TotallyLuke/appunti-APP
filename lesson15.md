@@ -513,6 +513,7 @@ Realizzare quindi un client che gioca scegliendo una casella libera a caso.
 
 
 Il server deve:
+
 * rispondere alla prima connessione salutando il primo giocatore
 * rispondere alla seconda connessione salutando il secondo giocatore
 * richiedere la mossa da ciascun giocatore al suo turno mostrandogli lo stato del gioco
@@ -520,6 +521,7 @@ Il server deve:
 
 
 Il client deve:
+
 * collegarsi al server
 * interpretare la risposta con lo stato della partita
 * effettuare una mossa a caso fra quelle legali

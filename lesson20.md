@@ -62,6 +62,7 @@ System.out.println("Defined");
 ```
 
 Il risultato è:
+
 * una semantica più ricca
 * maggiore regolarità nella composizione
 * indipendenza dal modello di esecuzione (sincrono/asincrono)
@@ -92,6 +93,7 @@ Un `Subject` può consumare uno o più `Observable` per poi comportarsi esso ste
 
 
 Lo schema concettuale proposto da Rx è estremamente utile per:
+
 * costruire stream di elaborazione complessi e asincroni
 * fornire un'interfaccia semplice e facilmente componibile per trattare successioni di eventi nel tempo
 * scrivere algoritmi facili da portare da un linguaggio all'altro
