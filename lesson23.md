@@ -241,7 +241,7 @@ Se invece è presente, stiamo rispondendo ad una richiesta `POST /game/123456`.
   return HttpResponse.ok().body(result);
 }
 ```
-Il resto del metodo è molto simile a VertX, ma è un metodo non una lambda e risponde in maniera differente: non chiama metodi per mutare il contesto construisce un metodo `HttpResponse` e lo restituisce.
+Il resto del metodo è molto simile a VertX, ma è un metodo non una lambda e risponde in maniera differente: non chiama metodi per mutare il contesto costruisce un metodo `HttpResponse` e lo restituisce.
 
 Allo stesso modo per l'API che risponde in formato JSON.
 

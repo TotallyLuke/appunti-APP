@@ -28,7 +28,7 @@ package java.net;
 public class Socket implements Closeable;
 ```
 
-Per invocare il costruttore di un socket è necessario specificare indirizzo e porta remoti, ed è possibile indicare indirizzo e porta propri. Gli _indirizzi_ hanno tipo `InetAddress` dunque sono indirizzi IP e possibilmente host name, le _porte_ devono avere valore numerico compreso tra 0 e 65535. Possono essere lanciate eccezioni di sicurezza a causa del numero della porta o dell'indirizzo specificato. Ad esempio non è possibile utilizare una porta con indirizzo minore di 1024 se non si è un servizio privilegiato
+Per invocare il costruttore di un socket è necessario specificare indirizzo e porta remoti, ed è possibile indicare indirizzo e porta propri. Gli _indirizzi_ hanno tipo `InetAddress` dunque sono indirizzi IP e possibilmente host name, le _porte_ devono avere valore numerico compreso tra 0 e 65535. Possono essere lanciate eccezioni di sicurezza a causa del numero della porta o dell'indirizzo specificato. Ad esempio non è possibile utilizzare una porta con indirizzo minore di 1024 se non si è un servizio privilegiato
 
 ```java
 /**

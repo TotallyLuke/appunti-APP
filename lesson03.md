@@ -40,7 +40,7 @@ Le interfacce in Java permettono di avere una sorta di ereditarietà multipla mi
 
 Il loro uso principale è quello di stabilire un _contratto_ fra le implementazioni e l'utilizzatore, consentendo di sostituire implementazioni differenti senza impatti sul codice che le usa.
 
-È comune, per esempio, che una libreria fornisca un insieme di interfacce per affrontare un certo problema, ed un insieme più ampio di implementazioni con caratteristiche differenti, che possono essere selezionate al runtime a seconda delle circostanze. Il codice utilizzatore non dipende dalla implementazione, ma può usare quella che gli viene fornita. L'assimmetria con l'ereditarietà di classi consente di risolvere le ambiguità.
+È comune, per esempio, che una libreria fornisca un insieme di interfacce per affrontare un certo problema, ed un insieme più ampio di implementazioni con caratteristiche differenti, che possono essere selezionate al runtime a seconda delle circostanze. Il codice utilizzatore non dipende dalla implementazione, ma può usare quella che gli viene fornita. L'asimmetria con l'ereditarietà di classi consente di risolvere le ambiguità.
 
 Una interfaccia può essere estesa solo da un'altra interfaccia. 
 

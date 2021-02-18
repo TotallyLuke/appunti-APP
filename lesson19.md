@@ -111,7 +111,7 @@ Il componente Receiver deve creare e rimanere in ascolto del DatagramSocket. Qua
 
 Anche in questo caso servirà un Thread concorrente, che in un loop controllato da un flag di chiusura, attende l'arrivo di un messaggio e ne estrae il contenuto.
 
-Note: Ne aprofittiamo per vedere una opzione particolare di `DatagramSocket`. Quiz: perché mettere il messaggio in coda e non memorizzarlo direttamente?
+Note: Ne approfittiamo per vedere una opzione particolare di `DatagramSocket`. Quiz: perché mettere il messaggio in coda e non memorizzarlo direttamente?
 
 
 ### Store

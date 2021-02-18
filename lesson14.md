@@ -171,7 +171,7 @@ Innanzitutto ci sono le classiche primitive del modello TCP/IP, oggetto della le
 * **Socket**s (Connessioni TCP)
 * **Datagram**s (Pacchetti UDP)
 
-Di recente (Java 14-15) l'implementazione di queste primitive è stata aggiornata per allinearla a standard più moderni e per prepararla ad interagire con il risultato di [Project Loom](https://openjdk.java.net/projects/loom/), ovvero con il modello di concorrrenza delle _fiber_. Le fiber sono uno dei principali ambiti di applicazione della concorrenza a granularità più bassa del livello dei thread. Uno dei filoni di ricerca più attivi nel campo delle fiber è quello relativo all'efficienza dell'IO, vale a dire la gestione dell'attesa e dellala ricezione di molte connessioni o molti datagram con la minore latenza e consumendo meno risorse possibili.
+Di recente (Java 14-15) l'implementazione di queste primitive è stata aggiornata per allinearla a standard più moderni e per prepararla ad interagire con il risultato di [Project Loom](https://openjdk.java.net/projects/loom/), ovvero con il modello di concorrenza delle _fiber_. Le fiber sono uno dei principali ambiti di applicazione della concorrenza a granularità più bassa del livello dei thread. Uno dei filoni di ricerca più attivi nel campo delle fiber è quello relativo all'efficienza dell'IO, vale a dire la gestione dell'attesa e della ricezione di molte connessioni o molti datagram con la minore latenza e consumando meno risorse possibili.
 
 
 L'astrazione `Channel` verrà trattata nella lezione 16, e serve ad unificare le operazioni di I/O su _canali differenti_ (file, rete, hardware). Funziona in maniera _asincrona_, quindi la dichiarazione del channel svincola il programmatore dalla scrittura del codice che attende una connessione o un datagram.

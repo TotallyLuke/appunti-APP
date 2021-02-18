@@ -6,7 +6,7 @@
 
 Per completare la panoramica sui metodi di gestione dei `Socket` ci manca un'astrazione che ci permetta di ascoltare e reagire a più richieste di connessione.
 
-Nella revisione dei metodi di I/O introdotta con il package `java.nio` in Java 1.4 nel 2002, viene introdotto un'intero albero di tipi dedicati alla gestione della comunicazione nel modo più generico (ovvero: finalizzato a gestire più canali `differenti`). Questa astrazione viene chiamata `Channel`
+Nella revisione dei metodi di I/O introdotta con il package `java.nio` in Java 1.4 nel 2002, viene introdotto un intero albero di tipi dedicati alla gestione della comunicazione nel modo più generico (ovvero: finalizzato a gestire più canali `differenti`). Questa astrazione viene chiamata `Channel`
 
 > A channel represents an open connection to an entity such as a hardware device, a file, a network socket, or a program component that is capable of performing one or more distinct I/O operations, for example reading or writing.  
 
@@ -163,7 +163,7 @@ public final < A > void write(ByteBuffer src, A attachment,
 ```
 
 
-(16:40) Questo richiede di riorganizzare (pesantemente) il nostro codice, ma ci permette di gestire molte più connessioni.
+Questo richiede di riorganizzare (pesantemente) il nostro codice, ma ci permette di gestire molte più connessioni.
 
 
 Un'alternativa all'uso di un `CompletionHandler` è data dalla versione dei metodi che ritorna un `Future`.

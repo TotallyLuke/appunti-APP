@@ -47,7 +47,7 @@ Esercitarsi nei _kata_ significa quindi ripetere deliberatamente lo stesso movim
 
 Ispirandosi a questo concetto, Dave Thomas nel libro "The Pragmatic Programmer" descrive il kata nella programmazione come l'esercizio deliberato di risolvere un problema più volte ponendo attenzione sul processo che ci porta alla soluzione piuttosto che sul risultato.
 
-La ripetizione, oltre a permetterci di provare strade diverse, ci consente di analizzare come il procedimento cambia nel tempo. Dopo poche ripetizioni, il problema in sè diventa irrilevante, ed un mero pretesto per analizzare la pratica con cui viene risolto.
+La ripetizione, oltre a permetterci di provare strade diverse, ci consente di analizzare come il procedimento cambia nel tempo. Dopo poche ripetizioni, il problema in sé diventa irrilevante, ed un mero pretesto per analizzare la pratica con cui viene risolto.
 
 
 ### Bowling
