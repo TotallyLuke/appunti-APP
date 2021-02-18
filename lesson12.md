@@ -139,8 +139,8 @@ Una pipeline **SIZED** garantisce una dimensione nota. Se inoltre è **SUBSIZED*
 
 Le operazioni che passiamo ai passi intermedi devono essere:
 
-* non invasive: non devono modificare od interferire con gli elementi dello stream
-* (nella maggior parte dei casi) prive di stato interno: devono essere cioè _funzioni pure_
+* non invasive: non devono modificare o interferire con gli elementi dello stream;
+* (nella maggior parte dei casi) prive di stato interno: devono essere cioè _funzioni pure_.
 
 
 Alcune operazioni sono identificate come  *short-circuiting*: significa che possono interrompere l'esecuzione della pipeline prima dell'esame di tutti gli elementi.

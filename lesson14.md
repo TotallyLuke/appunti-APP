@@ -184,9 +184,7 @@ L'ecosistema Java mette a disposizione una grande scelta di robuste ed efficaci 
 
 - **OkHttp**: semplice gestione di chiamate HTTP
 - **Jackson**: un/marshalling di dati JSON
-
 - **Netty**: I/O asincrono ad eventi
-
 - **Thrift**: RPC scalabile, efficiente, sicuro (viene da una donazione di Facebook)
 - **gRPC**: Serializzazione e RPC efficace (progetto Google, usato in modo molto diffuso)
 

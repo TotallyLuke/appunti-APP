@@ -488,6 +488,7 @@ Infine la funzione `forEach` permette di eseguire un _effetto collaterale_ (side
 
 
 Le funzioni usate nei metodi di trasformazione delle mappe devono:
+
 * non dipendere dall'ordinamento
 * non dipendere da uno stato condiviso durante il calcolo
 

@@ -361,7 +361,7 @@ Il codice che implementa la pipeline ha ampie libertà su come riordinare e disp
 
 Gli stream possono essere costruiti sia da collezioni di partenza, sia da altri tipi di astrazioni, come file, canali di comunicazione, generatori casuali.
 
-Esistono alcune specializzazioni per gli stream di valori primitivi int, long e double.
+Esistono alcune specializzazioni per gli stream di valori primitivi `int`, `long` e `double`.
 
 
 Le operazioni intermedie sugli stream di dividono in _stateful_ e _stateless_. 
@@ -416,7 +416,7 @@ La gestione del tempo è un problema difficile da gestire elgantemente, per tutt
 
 La prima API temporale di Java, che ruota attorno a `java.util.Date`, è stata sostituita in Java 8 (JSR-310) dal package `java.time`, più regolare e preciso.
 
-Le classi di `java.time` sono nate come libreria Open Source "Joda Time", il cui successo (e superiore qualità ed usabilità) è stato tale da essere inclusa nella libreria standard praticamente senza modifiche. Quanti secondi può avere un minuto?
+Le classi di `java.time` sono nate come libreria Open Source "Joda Time", il cui successo (e superiore qualità ed usabilità) è stato tale da essere inclusa nella libreria standard praticamente senza modifiche. Quanti secondi può avere un minuto? Risposta: 62 
 
 
 `Instant` è un singolo, astratto, instante nel tempo.
@@ -434,8 +434,6 @@ Il package `java.time.format` contiene classi molto efficaci per leggere e forma
 
 ## Link Interessanti
 
-
-![DevFest](./imgs/l05/devfest.png)
 
 17-18/10/2020 https://www.devfest.it/
 

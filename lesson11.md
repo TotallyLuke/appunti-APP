@@ -117,6 +117,7 @@ Sostituire questa classe alla precedente nel metodo main per verificare come il 
 
 
 `syncronized` può decorare due tipi di raggruppamenti di istruzioni:
+
 * un blocco di istruzioni semplice `{ ... }`
 * un metodo
 
@@ -694,7 +695,7 @@ public static void main(String[] args) {
 
 Come sempre succede, da grandi poteri derivano grandi responsabilità. Maneggiando direttamente i `Lock` si chiede al sistema di delegarci un notevole potere, ed insieme ne riceviamo una corrispondente responsabilità.
 
-* quando si salta una chiamata `signal()` si rischia deadlock, perché qualcuno rimane in attesa di una risposta
+* quando si salta una chiamata `signal()` si rischia deadlock, perché qualcuno rimane in attesa di una risposta;
 * quando è presente un `await()` di troppo, si rischia il deadlock, perché qualcuno può conservare il lock;
 * quando è presente un'eccezione non gestita, si rischia il deadlock, perché si potrebbe saltare un `unlock()`
 
@@ -781,10 +782,10 @@ protected void reducePermits(int reduction)
 ```
 
 
-La maggior parte dei metodi di `Semaphore`
+La maggior parte dei metodi di `Semaphore`:
 
 * può lanciare `InterruptedException` se il thread viene interrotto durante l'attesa;
-* lancia `IllegalArgumentException` se il parametro è negativo (non si può acquisire un numero negativo di permessi).
+* lancia `IllegalArgumentException` se il parametro è negativo (non si può acquisire un numero negativo di permessi!).
 
 
 ```java

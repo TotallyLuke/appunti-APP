@@ -94,9 +94,6 @@ Lo scopo del Kata è produrre una classe `BowlingGame` che produca, con un metod
 
 ## Link Interessanti
 
-
-![SevenMinutes](./imgs/l06/sevenmin.png)
-
 **7 minutes 26 seconds and the Fundamental Theorem of Agile Software Development**
 https://www.youtube.com/watch?v=WSes_PexXcA
 

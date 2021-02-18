@@ -503,8 +503,10 @@ while (executor.getCompletedTaskCount() < futures.size()) {
 ```
 Si noti che in questo caso quando tutti i compiti sono completati stiamo ancora osservando, dunque l'executor non termina. Bisogna invocare `executor.shutdown()` per terminare.
 
-Con a disposizione una lista di `Callables`, un `ExecutorService` ci permette di: 
+Con a disposizione una lista di `Callable`s, un `ExecutorService` ci permette di: 
+
 * ottenere un risultato di un `Future` che ha terminato (non necessariamente il primo, ma probabilmente uno dei primi) . Questo comportamento può essere ottenuto con la chiamata `invokeAny()`. Quando `invokeAny()` ritorna non tutti i `Callable` hanno completato l'esecuzione.
+
 ```java 
 /** 
  * Executes the given tasks, returning the 
@@ -518,6 +520,7 @@ Con a disposizione una lista di `Callables`, un `ExecutorService` ci permette di
 
 
 * ottenere una lista di `Future` nel momento in cui sono tutti completati (risparmiando il busy-waiting).  Questo comportamento può essere ottenuto con la chiamata `invokeAll()`.
+
 ```java
 /**
  * Executes the given tasks, returning a list of Futures

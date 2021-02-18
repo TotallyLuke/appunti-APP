@@ -16,8 +16,6 @@ La macchina di Von Neumann è un modello utile nella ricerca teorica. Dal punto 
 
 Emergono molto presto opportunità per raggiungere una maggiore efficienza al costo di complessità architetturale e allontanamento dalla teoria. 
 
-![Von Neumann](imgs/l08/VonNeumann.jpg) 
-
 All'inizio degli anni sessanta, l'innovazione dei "channels" nei mainframe IBM permette di avere operazioni di I/O senza occupare la CPU: le periferiche diventano "intelligenti" e possono leggere i nastri o stampare risultati mentre la CPU fa altre operazioni. Meno tempi di attesa di I/O significa maggiore sfruttamento della CPU e in definitiva prestazioni migliori a parità di tempo; in un regime di noleggio questo è un incentivo economico non indifferente.
 
 
@@ -175,10 +173,10 @@ Rimuovere la _mutua esclusione_ può non essere fattibile per certe risorse. Ric
 Rimuovere _l'attesa_ può portare a situazioni di starvation o attesa indefinita. Richiede un qualche sistema transazionale per ottenere più risorse contemporaneamente. Programmare tutte le possibili casistiche di attesa e prenotazione di multiple risorse, e le varie modalità di fallimento, può diventare più complesso del compito che si sta cercando di parallelizzare, e molto più difficile da dimostrare corretto.
 
 Introdurre _la pre-emption_ può essere estremamente costoso o impossibile. Oltre agli algoritmi lock- e wait-free una soluzione può essere l'uso di una forma di _optimistic concurrency control_.
-Il costo computazionale e di comunicazione per realizzare un sistema transazionale di questo tipo lo rende economico non a livello di sistema operativo, ma a livello applicativo specializzato: un esempio classico sono i database relazionali, dove vari tipi di controllo della concorrenza permettono di scegliere con continuità fra performance e correttezza. Si tratta comunque di costi in termini di performance; cospicui, all'interno di una singola macchina, enormi in un sistema distribuito.
+Il costo computazionale e di comunicazione per realizzare un sistema transazionale di questo tipo lo rende economico non a livello di sistema operativo, ma a livello applicativo specializzato: un esempio classico sono i database relazionali, dove vari tipi di controllo della concorrenza permettono di scegliere con continuità fra performance e correttezza. Si tratta comunque di costi in termini di performance;:cospicui all'interno di una singola macchina, enormi in un sistema distribuito.
 
 
-Rimuovere _la circolarità_ richiede imporre un'ordinamento fra le risorse e la sequenza di acquisizione	. Non sempre è facile da individuare o creare (Dijkstra propone un algoritmo). Ma questo significa anche che il sistema ed i threads devono essere coscienti gli uni degli altri, e delle rispettive caratteristiche: questo non sempre è possibile a priori, e può essere molto complesso da risolvere nel caso generale.
+Rimuovere _la circolarità_ richiede imporre un'ordinamento fra le risorse e la sequenza di acquisizione. Non sempre è facile da individuare o creare (Dijkstra propone un algoritmo). Ma questo significa anche che il sistema ed i threads devono essere coscienti gli uni degli altri, e delle rispettive caratteristiche: questo non sempre è possibile a priori, e può essere molto complesso da risolvere nel caso generale.
 
 ---
 
@@ -316,6 +314,7 @@ public Thread get() {
 ```
 
 Punti notevoli:
+
 - la lambda che viene riconosciuta come implementazione di `Runnable`
 - l'uso di metodi statici di `Thread` per controllare il comportamento del thread corrente
 - l'uso di una lambda come strategia (nel senso del pattern Strategy) di generazione dei tempi di attesa.
@@ -336,8 +335,9 @@ public static void main(String[] args) {
 ```
 
 Punti di attenzione:
-- il programma non termina dopo la conclusione di main(), ma attende che il thread completi la sua esecuzione.
-- un semplice import static java.lang.System.out; ci permette di accorciare le istruzioni di stampa.
+
+- il programma non termina dopo la conclusione di `main()`, ma attende che il thread completi la sua esecuzione.
+- un semplice `import static java.lang.System.out;` ci permette di accorciare le istruzioni di stampa.
 
 
 `it.unipd.app2020.threads.ManyThreads`:
