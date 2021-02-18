@@ -570,3 +570,4 @@ Vedremo come questi metodi siano fondamentali nella maggior parte delle API. Mol
 https://www.redhat.com/en/command-line-heroes
 
 CLH è un podcast tenuto da Saron Yitbarek, che parla di storia dell'Open Source e dell'informatica in generale con ottime fonti. Attenzione a tutti i lati della storia e interviste (alcune delle quali decisamente eccezionali) con i protagonisti. Tutte le stagioni sono consigliatissime.
+

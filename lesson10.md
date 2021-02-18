@@ -818,3 +818,4 @@ Questo main lancia diversi `Runnable` che condividono la medesima istanza di `Lo
 
 
 Le variabili `ThreadLocal` hanno il difetto di assomigliare molto a delle variabili globali. Usare con cautela.
+

@@ -467,3 +467,4 @@ https://www.infoq.com/news/2020/09/java15-released/
 https://www.infoq.com/news/2020/05/java-at-25/
 
 Da segnalare: Olga Makhasoeva, The Art of Asking Questions
+

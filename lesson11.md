@@ -867,3 +867,4 @@ int getPrinter() {
 ```
 
 La selezione di una stampante libera richiede, all'interno di una sezione critica, di cercare un valore `true` nell'array dello stato delle stampanti. Abbiamo la garanzia che ce ne sia almeno uno perché siamo protetti dal semaforo. Trovata la stampante libera, la segnamo occupata e ritorniamo il suo indice al chiamante uscendo dalla sezione critica.
+

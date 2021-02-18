@@ -556,3 +556,4 @@ Note: http://blog.agiledeveloper.com/2016/06/infinite-streams-may-remove-acciden
 Parallel and Asynchronous Programming with Streams and CompletableFuture by Venkat Subramaniam (Devoxx 2017)
 
 https://www.youtube.com/watch?v=IwJ-SCfXoAU
+

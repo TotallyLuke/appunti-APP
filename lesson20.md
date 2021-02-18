@@ -1,6 +1,6 @@
 
 # 20: Reattività
-# Reactive Extensions
+## Reactive Extensions
 
 
 Sono astrazioni di livello più alto con cui gestire, in modo coordinato, le problematiche di sistemi concorrenti e distribuiti.
@@ -102,7 +102,7 @@ Lo schema concettuale proposto da Rx è estremamente utile per:
 
 ---
 
-# Reactive Manifesto
+## Reactive Manifesto
 
 
 Le Reactive Extensions avviano presto un nuovo filone di ricerca per studiare come il modello da loro proposto si adatta alle necessità emergenti delle applicazioni di elaborazione di stream di dati, che dagli anni 2010 sono ormai comuni.

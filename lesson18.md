@@ -341,3 +341,4 @@ In questo talk (https://pwlconf.org/2017/heather-miller/) ripercorre una breve s
 
 
 Il testo di riferimento del suo corso di programmazione distribuita è su GitHub: https://github.com/heathermiller/dist-prog-book
+
