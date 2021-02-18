@@ -130,7 +130,7 @@ Si tratta di un problema ingannevolmente semplice: in realtà è molto complesso
 Note: confrontare con la Legge di Postel: "Be conservative in what you do, be liberal in what you accept from others" https://tools.ietf.org/html/rfc761#section-2.10
 
 
-Java ha fin dalla versione 1.1 un meccanismo di serializzazione nativo, tramite l'interfaccia `java.io.Serializable`. Si tratta di un'interfaccia senza metodi. È una cosiddetta "Marker interface", ovvero un'interfaccia senza metodi che indica che un oggetto deve essere trattato in un certo modo (in Java 1.1 non esistevano le annotazioni). Tuttavia la sua natura di "marker interface" e le cautele necessarie ad usarla fanno capire quanto il suo uso non sia semplice: sono imposte una serie di condizioni (presenza di un UUID con determinate caratteristiche per riconoscere le versioni di un oggetti, restrizioni sui tipi dei campi ecc.) unicamente come "convenzioni", non controllabili dal compilatore, che possono portare a errori runtime.
+Java ha fin dalla versione 1.1 un meccanismo di serializzazione nativo, tramite l'interfaccia `java.io.Serializable`. È una cosiddetta "Marker interface", ovvero un'interfaccia senza metodi che indica che un oggetto deve essere trattato in un certo modo (in Java 1.1 non esistevano le annotazioni). Tuttavia la sua natura di "marker interface" e le cautele necessarie ad usarla fanno capire quanto il suo uso non sia semplice: sono imposte una serie di condizioni (presenza di un UUID con determinate caratteristiche per riconoscere le versioni di un oggetti, restrizioni sui tipi dei campi ecc.) unicamente come "convenzioni", non controllabili dal compilatore, che possono portare a errori runtime.
 
 
 Le problematiche che la serializzazione deve affrontare sono:
@@ -167,6 +167,7 @@ In seguito sono elencate le parti più importanti della libreria standard da usa
 
 
 Innanzitutto ci sono le classiche primitive del modello TCP/IP, oggetto della lezione 15:
+
 * **Socket**s (Connessioni TCP)
 * **Datagram**s (Pacchetti UDP)
 
