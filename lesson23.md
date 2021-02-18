@@ -52,7 +52,7 @@ Si è più svincolati dal livello fisico e si può scalare orizzontalmente, e no
 
 Oggi, un servizio cloud cosiddetto _serverless_ (cosiddetto perché il server esiste comunque, ma non è una singola macchina imponente) permette di acquisire le risorse necessarie all'esecuzione di una sola richiesta, pagando unicamente i millisecondi usati per costruire la risposta.
 
-Non  si ha più un server in attesa delle richeste: o meglio, non lo abbiamo noi, ce l'ha il fornitore di servizi server (AWS etc.). Per noi il server viene avviato a richiesta ed esiste per il tempo strettamente necessario ad erogare una sola risposta.
+Non si ha più un server in attesa delle richeste: o meglio, non lo abbiamo noi, ce l'ha il fornitore di servizi server (AWS etc.). Per noi il server viene avviato a richiesta ed esiste per il tempo strettamente necessario ad erogare una sola risposta.
 
 Il tempo di startup e la dimensione di un application server, modalità tipiche di erogazione di molti tipi di applicazioni, diventano uno svantaggio. Pertanto Java non è la prima scelta per applicazioni serverless, per il tempo di startup della JVM. Sebbene le prestazioni a regime siano di ottimo livello, lo diventano solo dopo diversi secondi di attività, quindi Java viene usato solo per elaborazioni più complesse.
 

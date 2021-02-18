@@ -24,7 +24,7 @@ Il problema stava cambiando: da un lato le moli di dati stavano diventando più 
 Analizzare in un notturna una grande mole di fast data è inutile perché in alcuni domini (analisi di rischio e analisi anti-truffa) sapere l'esito di un evento (è avvenuto una transazione sospetta?) 12-24 ore dopo è inutile; bisogna saperlo in pochi minuti, (o secondi o millisecondi). Esempio simile di _fast data_ sono le transazioni automatiche in Borsa.
 
 
-Qualche autore comincia a chiamare il problema  **Fast Data**: dati di dimensioni paragonabili ai Big Data, in arrivo continuo.  Persistere ed elaborare questi dati a partire dal supporto di salvataggio è impensabile (mole troppo grande) e inutile (esauriscono la loro utilità dopo pochissimo tempo).
+Qualche autore comincia a chiamare il problema  **Fast Data**: dati di dimensioni paragonabili ai Big Data, in arrivo continuo. Persistere ed elaborare questi dati a partire dal supporto di salvataggio è impensabile (mole troppo grande) e inutile (esauriscono la loro utilità dopo pochissimo tempo).
 
 Per il loro volume, per la velocità di arrivo, e la bassa latenza richiesta nel reagire alle informazioni estratte, è necessario trattarli _in diretta_ man mano che si presentano.
 

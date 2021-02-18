@@ -126,7 +126,7 @@ Thread.sleep(1000);
 assertEquals(4, list.size());
 ```
 
-Ma `ArrayList`non è thread-safe e dichiara ([nella documentazione](https://docs.oracle.com/en/java/javase/15/docs/api/java.base/java/util/ArrayList.html)) che il suo iteratore lancia una `java.util.concurrentModificationException` se la collezione viene modificata durante l'attraversamento. A lezione è stato eseguito una volta il codice ed è stato superato con jsuccesso il test, ma è stata anche lanciata un'eccezione. Questo insegna che alcuni strumenti di testing non sono adatti a testare ambiente concorrente.
+Ma `ArrayList`non è thread-safe e dichiara ([nella documentazione](https://docs.oracle.com/en/java/javase/15/docs/api/java.base/java/util/ArrayList.html)) che il suo iteratore lancia una `java.util.concurrentModificationException` se la collezione viene modificata durante l'attraversamento. A lezione è stato eseguito una volta il codice ed è stato superato con successo il test, ma è stata anche lanciata un'eccezione. Questo insegna che alcuni strumenti di testing non sono adatti a testare ambiente concorrente.
 
 
 Video di approfondimento consigliati:
@@ -145,21 +145,15 @@ In conclusione se abbiamo la necessità di condividere dati fra più thread, abb
 Se il nostro caso d'uso riguarda semplicemente l'incremento di un contatore, una possibile soluzione sono le classi del package `java.concurrent.atomic`
 
 
-|tipo|singolo|
-|--|----|
-|Integer|`AtomicInteger`|
-|Long|`AtomicLong`|
-|Object|`AtomicReference`|
-
-
-|tipo|array|
-|--|----|
-|Integer|`AtomicIntegerArray`|
-|Long|`AtomicLongArray`|
-|Object|`AtomicReferenceArray`|
+|tipo|singolo|array|
+|--|----|----|
+|Integer|`AtomicInteger`|`AtomicIntegerArray`|
+|Long|`AtomicLong`|`AtomicLongArray`|
+|Object|`AtomicReference`|`AtomicReferenceArray`|
 
 
 Queste classi garantiscono:
+
 * che la modifica del valore che contengono sia "atomica" e thread-safe
 * che la modifica (quasi sempre) non blocchi il thread che la sta eseguendo
 

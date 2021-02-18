@@ -22,9 +22,9 @@ Le principali motivazioni che storicamente hanno portato ad ideare la distribuzi
 
 * **Affidabilità**: quando alcuni nodi sono fermi o in errore le attività possono proseguire sui nodi che sono (ancora) in linea  (ARPANET nasce per questo preciso scopo).
 * **Suddivisione del carico**: una mole di lavoro più grande delle capacità di una sola macchina può essere suddivisa fra più nodi per essere eseguita in modo concorrente.
-* **Diffusione**: gli utenti di più macchine possono accedere ai risultati del lavoro da uno qualsiasi dei nodi Ai tempi in cui dell'architettura mainframe/terminale questo era un argomento importante. Oggi questo argomento sta tornando ad essere importante, nella storia l'importanza è cresciuta e diminuita.
+* **Diffusione**: gli utenti di più macchine possono accedere ai risultati del lavoro da uno qualsiasi dei nodi. Ai tempi dell'architettura mainframe/terminale questo era un argomento importante. Oggi questo argomento sta tornando ad essere importante, nella storia l'importanza è cresciuta e diminuita.
 
-Le caratteristiche di un Algoritmo distribuito sono le seguenti:
+Le caratteristiche di un algoritmo distribuito sono le seguenti:
 
 * **Concorrenza dei componenti**: i vari nodi di esecuzione operano contemporaneamente. Non hanno problemi di condivisione delle risorse perché ciascun nodo è separato dagli altri. Tuttavia tutti i nodi avanzano in contemporanea.
 * **Totale asincronia**: l'ordine temporale degli eventi non è strettamente condiviso, e se importante deve essere imposto con opportuni mezzi (non c'è un _global clock_ su cui allinearsi). Imporre la sincronia è costoso, perché richiede l'invio di messaggi, il quale è ordini di grandezza più lento dell'elaborazione interna.
@@ -190,12 +190,12 @@ L'ecosistema Java mette a disposizione una grande scelta di robuste ed efficaci 
 
 Oltre a tutto questo c'è lo standard JEE, che introduce un framework per lo sviluppo di applicazioni client/server e web basato su astrazioni di livello più alto, dove il nostro codice non deve preoccuparsi della connettività. 
 
-JEE definisce in modo molto accurato un ecosistema di interfaccie per comunicare tramite messaggi, per realizzare architetture server/client, per realizzare server web che comunicano con protocolli binari e per realizzare interfacce per demandare a terzi la gestione dell'applicazione. Lo scopo di queste interfacce è permettere a diversi gruppi o diversi venditori di implementarle per fornire servizi definiti da questo standard. Questo permette agli sviluppatori di scegliere un application server e scrivere il codice che utilizza servizi già implementati.  L'application server fornisce inoltre caratteristiche di osservabilità e monitoraggio che disaccoppiano scrittura di applicazione e gestione dell'esecuzione.
+JEE definisce in modo molto accurato un ecosistema di interfaccie per comunicare tramite messaggi, per realizzare architetture server/client, per realizzare server web che comunicano con protocolli binari e per realizzare interfacce per demandare a terzi la gestione dell'applicazione. Lo scopo di queste interfacce è permettere a diversi gruppi o diversi venditori di implementarle per fornire servizi definiti da questo standard. Questo permette agli sviluppatori di scegliere un application server e scrivere il codice che utilizza servizi già implementati. L'application server fornisce inoltre caratteristiche di osservabilità e monitoraggio che disaccoppiano scrittura di applicazione e gestione dell'esecuzione.
 
 JEE era una distribuzione aggiuntiva orientata all'Enterprise, dopodiché è stato donato alla Eclipse Foundation e ha cambiato nome in JEE.
 
 
-Java ricopre una posizione di primo piano nell'attuale mercato dello sviluppo di applicazioni di rete e web, con un ricchissimo panorama di soluzioni disponibili. Questo per tutte le soluzioni mostrate sopra, perché costa poco dotarsi di un'infrastruttura che usa Java per servire applicazioni, perché è semplice trovare sviluppatori che conoscono Java e  perché la JVM permette di raggiungere prestazioni simili a quelle di linguaggi a più basso livello, nascondendone la complessità.  Praticamente ogni innovazione nel campo viene quasi immediatamente portata in Java, se non è sviluppata direttamente sulla JVM.
+Java ricopre una posizione di primo piano nell'attuale mercato dello sviluppo di applicazioni di rete e web, con un ricchissimo panorama di soluzioni disponibili. Questo per tutte le soluzioni mostrate sopra, perché costa poco dotarsi di un'infrastruttura che usa Java per servire applicazioni, perché è semplice trovare sviluppatori che conoscono Java e perché la JVM permette di raggiungere prestazioni simili a quelle di linguaggi a più basso livello, nascondendone la complessità.  Praticamente ogni innovazione nel campo viene quasi immediatamente portata in Java, se non è sviluppata direttamente sulla JVM.
 
 
 Un interessante punto di partenza per esplorare questo panorama sono i [benchmark TechEnpower](https://www.techempower.com/benchmarks/)
