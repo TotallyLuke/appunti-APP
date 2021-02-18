@@ -128,6 +128,7 @@ Abbiamo visto come costruire manualmente un server ed un client di rete.
 
 
 Normalmente però non si lavora ad un livello così basso, ma si usano delle astrazioni:
+
 - per semplificare la struttura del codice
 - per sfruttare implementazioni già testate e corrette
 
@@ -504,3 +505,4 @@ https://www.humblebundle.com/books/java-programming-more-oreilly-books
 ### 97 things every programmer should know
 
 https://97-things-every-x-should-know.gitbooks.io/97-things-every-programmer-should-know/en/
+
