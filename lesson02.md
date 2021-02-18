@@ -226,6 +226,7 @@ Fanno eccezione le variabili `static final`: esse sono, a tutti gli effetti, cos
 Una classe organizza il codice in Metodi.
 
 Un metodo è definito da:
+
 * **alcuni modificatori** (opzionali);
 * **un tipo di ritorno** (richiesto, con una eccezione);
 * **un nome** (minuscolo, con una eccezione);
@@ -258,6 +259,7 @@ Un _costruttore_ viene chiamato quando si richiede la creazione di un oggetto de
 
 
 La tupla formata da:
+
 * nome del metodo;
 * parametri di tipo;
 * elenco dei tipi degli argomenti;

@@ -125,6 +125,7 @@ public OutputStream getOutputStream()
 
 
 Questi stream sono sottoposti a diverse regole:
+
 * sono thread-safe, ma _un solo thread può scrivere o leggere per volta_, pena eccezioni;
 * i buffer sono limitati e in alcuni casi i dati in eccesso possono essere silenziosamente scartati;
 * lettura e scrittura possono bloccare il thread (un `inputStream` può bloccare finché non c'è spazio per scrivere, un `outputStream` finché non ci sono dati da inviare);

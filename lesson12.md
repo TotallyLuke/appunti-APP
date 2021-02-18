@@ -298,6 +298,7 @@ boolean tryAdvance(Consumer< ? super T > action)
 
 
 `Splititerator` aumenta l'espressività di `Iterator` aggiungendo metodi per:
+
 * stimare gli elementi rimanenti;
 * esplicitare le caratteristiche della sorgente;
 * attraversare in massa gli elementi rimanenti;

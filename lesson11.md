@@ -13,8 +13,7 @@ Tuttavia, non tutto è modellabile con una struttura dati: a volte quello di cui
 
 `it.unipd.app2020.sync.SimpleCounter`
 
-```
-java
+```java
 /**
 * A simple interface to a counter.
 */
@@ -98,8 +97,7 @@ La soluzione è impedire a più Thread di trovarsi insieme nella sezione critica
 Proviamo a sostituire dall'esempio sopra la classe UnsyncCounter con SyncCounter
 `it.unipd.app2020.sync.SyncCounter`
 
-```
-java
+```java
 class SyncCounter implements SimpleCounter {
   private int state = 0;
   syncronized public void add() {
@@ -203,6 +201,7 @@ Per operare sul monitor dell'oggetto il Thread deve "averlo a disposizione", cio
 
 
 Un Thread può farlo:
+
 * eseguendo un metodo `synchronized` dell'oggetto
 * eseguendo un blocco `synchronized` all'interno dell'oggetto
 * se l'oggetto una `Class`, eseguendone un metodo `synchronized static`
@@ -772,7 +771,6 @@ Il valore iniziale del semaforo non è un limite: può essere superato, e può e
 
 A differenza di un lock, un `semaphore` può essere rilasciato da un Thread diverso da quello che lo ha acquisito (ad esempio, un Thread differente può aumentare i permessi).
 
-
 ```java
 /**
 * Shrinks the number of available permits by the
@@ -784,6 +782,7 @@ protected void reducePermits(int reduction)
 
 
 La maggior parte dei metodi di `Semaphore`
+
 * può lanciare `InterruptedException` se il thread viene interrotto durante l'attesa;
 * lancia `IllegalArgumentException` se il parametro è negativo (non si può acquisire un numero negativo di permessi).
 

@@ -134,6 +134,7 @@ Java ha fin dalla versione 1.1 un meccanismo di serializzazione nativo, tramite 
 
 
 Le problematiche che la serializzazione deve affrontare sono:
+
 * gestire il cambiamento strutturale (versioni) delle classi;
 * serializzare grafi di oggetti;
 * indicare oggetti che non possono/non devono essere serializzati;

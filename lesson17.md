@@ -69,10 +69,11 @@ La diffusione delle reti ha portato, ovviamente, a maggiori opportunità per gli
 
 
 Se il contenuto del messaggio ha una qualche importanza o trasporta qualche informazione minimamente confidenziale, il protocollo deve essere reso sicuro:
-- autenticato
-- autorizzato
-- integro
-- confidenziale
+
+* autenticato
+* autorizzato
+* integro
+* confidenziale
 
 
 ## Topology doesn’t change
@@ -225,9 +226,9 @@ $ curl -H "Accept: application/json" \
 
 ### Strumenti utili
 
-- cURL - https://curl.haxx.se/
+* cURL - https://curl.haxx.se/
 
-- jq - https://stedolan.github.io/jq/
+* jq - https://stedolan.github.io/jq/
 
 
 La prima versione di `cURL` è stata rilasciata nel 1997. Ad oggi è un tool universale per effettuare da linea di comando richieste a server in una grande varietà di protocolli. 

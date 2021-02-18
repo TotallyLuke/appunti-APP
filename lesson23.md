@@ -164,9 +164,7 @@ public String welcome() {
 Le annotazioni indicano i metodi che devono servire le varie richieste, specificando
 
 * il pattern di URL a cui rispondono;
-
 * i formati trattati;
-
 * l'interfacciamento con la richiesta.
 
 

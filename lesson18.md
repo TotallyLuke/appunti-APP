@@ -6,17 +6,17 @@
 
 
 Abbiamo giustificato la necessità di realizzare un sistema distribuito con la ricerca di:
-- affidabilità
-- suddivisione del carico
-- distribuzione dei risultati
+
+* affidabilità
+* suddivisione del carico
+* distribuzione dei risultati
 
 
 Le stesse caratteristiche possono essere desiderabili per un insieme di dati:
 
-
-- disponibili continuamente, anche in presenza di guasti
-- quantità superiore a quella gestibile da una sola macchina
-- accessibilità da parte di più posizioni geografiche
+* disponibili continuamente, anche in presenza di guasti
+* quantità superiore a quella gestibile da una sola macchina
+* accessibilità da parte di più posizioni geografiche
 
 
 Un insieme di dati gestito da un sistema distribuito è disponibile, accessibile e coerente solo nella misura in cui i singoli nodi riescono a rimanere  allineati, coordinati e concordi fra loro.
@@ -89,9 +89,8 @@ Questa modalità di gestione dello stato (detta _sharping_) non è sempre applic
 
 Se il requisito principale è la resistenza ai fallimenti o le prestazioni particolarmente elevate (in spazio o velocità) non abbiamo altra scelta che replicare lo stato in più di un nodo, in modo da avere che:
 
-
-- un guasto non porti a perdita di dati
-- aggiungendo nodi aumenti la capacità di risposta del sistema (scalabilità orizzontale)
+* un guasto non porti a perdita di dati
+* aggiungendo nodi aumenti la capacità di risposta del sistema (scalabilità orizzontale)
 
 
 Ma avendo più nodi che contengono lo stesso dato, nasce il problema del **consenso**, ovvero di garantire che tutti i nodi del sistema contengano la stessa versione di un dato.
@@ -128,11 +127,12 @@ Nonostante alcuni lavori precedenti molti simili, è considerato il primo algori
 
 
 Nell'algoritmo PAXOS i nodi assumono dei precisi ruoli:
-- leader
-- votanti
-- ascoltatori
-- proponente
-- client
+
+* leader
+* votanti
+* ascoltatori
+* proponente
+* client
 
 
 Il Proponente inoltra la richiesta del Client ai Votanti per raggiungere un Quorum. Una volta che un sufficiente numero di votanti appartiene ad un Quorum, la richiesta è stata accolta.
@@ -176,7 +176,7 @@ Il teorema **CAP** definisce tre caratteristiche di un database distribuito:
 
 
 |   | Nome | Descrizione |
-| - | -- | -- |
+| * | -* | -* |
 | C | Consistenza | Ogni lettura riceve o il valore più recente o un errore |
 | A | Disponibilità (_Availability_)| Ogni richiesta riceve una risposta valida (ma non necessariamente l'ultimo valore) |
 | P | Tolleranza alla separazione  (_Partition tolerance_) | Il sistema funziona anche se la rete fallisce per un insieme di nodi, cioè viene _partizionata_ |
@@ -191,8 +191,8 @@ Siccome ogni rete può fallire, in pratica il teorema afferma che:
 
 Vale a dire che un database distribuito può essere costruito in due modi. In caso di partizione di rete:
 
-- la consistenza viene garantita ma alcune richieste non possono essere soddisfatte e vanno in errore;
-- tutte le richieste ritornano un valore, ma alcune potrebbero non ritornare l'ultimo valore scritto.
+* la consistenza viene garantita ma alcune richieste non possono essere soddisfatte e vanno in errore;
+* tutte le richieste ritornano un valore, ma alcune potrebbero non ritornare l'ultimo valore scritto.
 
 
 Il teorema è stato enunciato da Eric Brewer nel 1998 prima come principio, poi come congettura, ed infine dimostrato nel 2002.
@@ -206,9 +206,8 @@ Il CAP theorem si concentra sui casi di _guasto_, in assenza dei guasti il siste
 
 Una estensione del teorema, *PACELC*, considera anche il caso dell'operatività normale:
 
-
-- in caso di [P] Partizione (o guasto), si deve scegliere fra [A] disponibilità e [C] consistenza (fin qui come il CAP)
-- [E] altrimenti, fra [L] latenza e [C] consistenza
+* in caso di [P] Partizione (o guasto), si deve scegliere fra [A] disponibilità e [C] consistenza (fin qui come il CAP)
+* [E] altrimenti, fra [L] latenza e [C] consistenza
 
 
 La maggior parte dei sistemi NoSQL si orienta verso PA/EL. PA/EL favorisce disponibilità in caso di partizione, e minore latenza nel caso normale, a scapito della consistenza.
@@ -224,25 +223,28 @@ Finora abbiamo lavorato nell'ipotesi che il sistema distribuito conservi dati ch
 
 
 In alcuni sistemi distribuiti invece è normale che ogni nodo abbia nuove informazioni da fornire e che queste vadano riconciliate e riunite con quelle prodotte indipendentemente da un altro nodo:
-- sistemi di telepresenza/chat
-- editor collaborativi
-- eventi in real-time con molti partecipanti
+
+* sistemi di telepresenza/chat
+* editor collaborativi
+* eventi in real-time con molti partecipanti
 
 
 In questi sistemi l'esigenza non è quella di raggiungere un consenso su di un dato. Al contrario, ogni nodo produce nuove versioni dello stesso dato che ogni altro nodo deve riunire a quelle prodotte localmente.
 
 
 Ci sono in letteratura due soluzioni a questo problema, approfondite di seguito:
-- Operational Transformation
-- *Conflict-Free Replicated Data-Type*
+
+* Operational Transformation
+* *Conflict-Free Replicated Data-Type*
 
 
 ### Operational Transformation
 
 L'approccio delle OT è il seguente:
-- ogni nodo produce delle modifiche al documento in corso di elaborazione;
-- le modifiche sono propagate agli altri nodi;
-- ogni nodo trasforma le modifiche ricevute in modo da applicarle al suo stato del documento.
+
+* ogni nodo produce delle modifiche al documento in corso di elaborazione;
+* le modifiche sono propagate agli altri nodi;
+* ogni nodo trasforma le modifiche ricevute in modo da applicarle al suo stato del documento.
 
 
 Sebbene abbia alcune implementazioni di successo (*Google Wave*, *Google Docs*), le OT non hanno preso piede: l'approccio sembra mancare di generalità e si rivela molto complesso da implementare.
@@ -259,18 +261,20 @@ Ad esempio un flag booleano che possa solo passare da `false` a `true` è una ba
 
 
 Diverse strutture dati con queste caratteristiche sono note ed implementate:
-- Grow-only Counter
-- Positive-Negative Counter
-- Grow-only Set
-- 2-Phase Set
-- Last-Write-Wins Set
+
+* Grow-only Counter
+* Positive-Negative Counter
+* Grow-only Set
+* 2-Phase Set
+* Last-Write-Wins Set
 
 
-Progetti che usano implementano CRDT:
-- Akka (modulo Akka Data)
-- Riak
-- Redis Enterprise
-- Facebook Apollo
+Progetti che implementano CRDT:
+
+* Akka (modulo Akka Data)
+* Riak
+* Redis Enterprise
+* Facebook Apollo
 
 ---
 
@@ -335,7 +339,7 @@ Note: nel senso che la consistenza si ottiene in termini e in contesti different
 
 
 
-Heather Miller è professore ordinario di Computer Science alla Carnegie Mellon University. Il suo lavoro riguarda sopratutto i sistemi distribuiti. In passato è stata fondatrice ed Executive Director dello Scala Center - École Polytechnique Fédérale de Lausanne.
+Heather Miller è professore ordinario di Computer Science alla Carnegie Mellon University. Il suo lavoro riguarda sopratutto i sistemi distribuiti. In passato è stata fondatrice ed Executive Director dello Scala Center * École Polytechnique Fédérale de Lausanne.
 
 In questo talk (https://pwlconf.org/2017/heather-miller/) ripercorre una breve storia dei linguaggi per la programmazione distribuita, cercando il motivo del successo di Java e C++.
 
