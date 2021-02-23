@@ -47,45 +47,28 @@ Note: Alcuni attacchi per esempio richiedono che l'agente malevolo distribuisca 
 Note: al posto della prossimità fornita dal protocollo Bluetooth, useremo messaggi UDP in broadcast.
 
 
-Un sistema come il dp-3T è strutturato vagamente in questo modo:
+Un sistema come il dp-3T è composto di uno o più nodi, che rappresentano le singole persone interessate dal tracciamento. Ogni nodo è diviso in componenti funzionali indipendenti e concorrenti. Il sistema è strutturato vagamente in questo modo:
 
 ![System](imgs/l19/system.png)<!-- .element: style="width: 75%" -->
 
-
-Il sistema è composto di uno o più nodi, che rappresentano le singole persone interessate dal tracciamento. Ogni nodo è diviso in componenti funzionali indipendenti e concorrenti.
 
 Un server centralizzato raccoglie e distribuisce le segnalazioni.
 
 Note: il server non riceve dati dai nodi; gestisce solo segnalazioni da propagare.
 
-
 Il componente _Beacon_ emette dei messaggi broadcast indirizzati a tutti gli indirizzi della rete cui appartiene.
-
-![Beacon](imgs/l19/beacon.png) <!-- .element: style="width: 75%" -->
 
 Note: ovviamente l'interesse per noi è verificare il funzionamento dei Datagram inviati in broadcast. Il generatore di numeri casuali non è strettamente necessario.
 
-
 Il componente _Receiver_ ascolta sulla porta indicata, e accoda ogni messaggio ricevuto.
-
-![Receiver](imgs/l19/receiver.png) <!-- .element: style="width: 75%" -->
 
 Note: quiz: riceve anche i messaggi inviati dal suo beacon?
 
-
 Il componente _Store_ conserva i messaggi ricevuti, e permette di controllare se un messaggio segnalato è stato notato in passato.
-
-![Store](imgs/l19/store.png) <!-- .element: style="width: 40%" -->
-
 
 L'ultimo componente del nodo, il componente _Reader_, a intervalli regolari interroga il servizio centrale e legge i messaggi segnalati.
 
-![Reader](imgs/l19/reader.png) <!-- .element: style="width: 35%" -->
-
-
 Abbiamo bisogno anche di un server centrale, in grado di pubblicare una lista di messaggi segnalati.
-
-![Server](imgs/l19/server.png)<!-- .element: style="width: 25%" -->
 
 ---
 

@@ -7,16 +7,16 @@
 
 Abbiamo giustificato la necessità di realizzare un sistema distribuito con la ricerca di:
 
-* affidabilità
-* suddivisione del carico
-* distribuzione dei risultati
+* affidabilità;
+* suddivisione del carico;
+* distribuzione dei risultati.
 
 
 Le stesse caratteristiche possono essere desiderabili per un insieme di dati:
 
-* disponibili continuamente, anche in presenza di guasti
-* quantità superiore a quella gestibile da una sola macchina
-* accessibilità da parte di più posizioni geografiche
+* disponibili continuamente, anche in presenza di guasti;
+* in quantità superiore a quella gestibile da una sola macchina;
+* accessibili da parte di più posizioni geografiche.
 
 
 Un insieme di dati gestito da un sistema distribuito è disponibile, accessibile e coerente solo nella misura in cui i singoli nodi riescono a rimanere  allineati, coordinati e concordi fra loro.
@@ -96,7 +96,7 @@ Se il requisito principale è la resistenza ai fallimenti o le prestazioni parti
 Ma avendo più nodi che contengono lo stesso dato, nasce il problema del **consenso**, ovvero di garantire che tutti i nodi del sistema contengano la stessa versione di un dato.
 
 
-Il problema è stato denominato da Leslie Lamport come il problema dei _Generali Bizantini (il termine "bizantino" è stato scelto per non offendere nessuna nazione esistente).
+Il problema è stato denominato da Leslie Lamport come il problema dei _Generali Bizantini_ (il termine "bizantino" è stato scelto per non offendere nessuna nazione esistente).
 
 
 Diversi generali di un esercito Bizantino assediano una città. Devono raggiungere un consenso unanime su di una decisione: attaccare o ritirarsi. Un attacco parziale è molto più svantaggioso di un attacco coordinato o di una ritirata completa.
@@ -174,9 +174,8 @@ Ma quali sono i limiti ed i compromessi che dobbiamo prevedere di dover fare in 
 
 Il teorema **CAP** definisce tre caratteristiche di un database distribuito:
 
-
-|   | Nome | Descrizione |
-| * | -* | -* |
+|      | Nome | Descrizione |
+| -- | ---- | ----------- |
 | C | Consistenza | Ogni lettura riceve o il valore più recente o un errore |
 | A | Disponibilità (_Availability_)| Ogni richiesta riceve una risposta valida (ma non necessariamente l'ultimo valore) |
 | P | Tolleranza alla separazione  (_Partition tolerance_) | Il sistema funziona anche se la rete fallisce per un insieme di nodi, cioè viene _partizionata_ |
@@ -257,7 +256,7 @@ Una più recente soluzione a questo tipo di problema è una classe di strutture 
 Una CRDT può essere replicata su più nodi di un sistema, modificata indipendentemente, ma fornisce la garanzia che esiste un modo di riconciliare tutte le possibili modifiche risolvendo ogni possibile conflitto.
 
 
-Ad esempio un flag booleano che possa solo passare da `false` a `true` è una banale CRDT. Anche se più nodi effettuano la modifica, il risultato può essere tranquillamente replicato senza che si siano problemi a riunire le differenti versioni.
+Ad esempio un flag booleano che possa solo passare da `false` a `true` è una banale CRDT. Anche se più nodi effettuano la modifica, il risultato può essere tranquillamente replicato senza che vi siano problemi a riunire le differenti versioni.
 
 
 Diverse strutture dati con queste caratteristiche sono note ed implementate:
@@ -334,10 +333,8 @@ Note: nel senso che la consistenza si ottiene in termini e in contesti different
 `papers/l18/raft.pdf`
 * A comprehensive study of Convergent and Commutative Replicated Data Types (Shapiro, Preguiça, Baquero, Zawirski 2011)
 `papers/l18/techreport.pdf`
+
 ### What happened to DPLs?
-
-
-
 
 Heather Miller è professore ordinario di Computer Science alla Carnegie Mellon University. Il suo lavoro riguarda sopratutto i sistemi distribuiti. In passato è stata fondatrice ed Executive Director dello Scala Center * École Polytechnique Fédérale de Lausanne.
 
