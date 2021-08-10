@@ -8,7 +8,15 @@ Sicuramente gli appunti contengono errori. Qualcuno contribuisca negli anni futu
 ## Genarazione del PDF
 Requisiti:
 
-- pandoc
-- MiKTeX (forse va bene anche TexLive)
+- *pandoc*
+- *MiKTeX* o *TexLive* installati in locale
 
-Aprire un terminale nella directory `appunti-APP` ed eseguire il comando `./build.sh`
+Aprire un terminale nella directory `Appunti-APP` ed eseguire il comando `./build.sh`
+
+
+### Conversione svg in png
+
+Nella cartella `imgs/` dovrebbero essere caricate entrambe le versioni per le immagini caricate dal professore come svg. Qualora la build desse problemi di file png non trovato è probabile che sia caricata solo la versione png. Lanciare dunque 'svg\_to\_png.sh'.
+Questo richiede avere installato *inkscape* in locale. Se la repo è mantenuta come dio comanda questo paragrafo dovrebbe essere inutile per i non manutentori/caricatori.
+
+

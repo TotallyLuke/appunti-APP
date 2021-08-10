@@ -4,12 +4,12 @@ author: [Luca Veronese]
 date: ""
 subject: "Altri Paradigmi di Programmazione"
 keywords: [Java, Programmazione Concorrente, Programmazione Distribuita]
-subtitle: "Versione libro delle slides del corso di A.P.P., con inserimento di errori. \nSe avete un minimo di dignità leggete le slides del prof piuttosto che sta roba."
+subtitle: "Versione libro delle slides del corso di A.P.P.,  non ufficiale."
 lang: "it"
 titlepage: true
 toc: true
-header-left: "\hspace{1cm}"
-header-right: "\hspace{1cm}"
-footer-left: "\\rightmark"
+toc-own-page: true
+header-left: "\\hspace{1cm}"
+footer-left: "\\sectionmark"
 footer-right: "\\thepage"
 ...
