@@ -1,5 +1,5 @@
 # appunti-APP
-Appunti del corso "Altri Paradigmi di Programmazione" tenuto da Michele Mauro nell'anno accademico 2020-21. Principalemente ottenuti estraendo il markdown dai sorgenti reveal.js del professore, aggiungendo testo (le cose più superflue) e togliendone pure un poco (le parti più importanti)
+Appunti del corso "Altri Paradigmi di Programmazione" tenuto da Michele Mauro nell'anno accademico 2020-21. Principalemente ottenuti estraendo il markdown dai sorgenti reveal.js del professore, aggiungendo testo (le cose più superflue) e togliendone pure un poco (le parti più importanti).
 
 Invito a preferire le fonti ufficiali che il professore vi fornisce gentilmente, sebbene sia ben noto che dispense in prosa >> slides (ma queste sono slides in prosa, quindi il principio non si applica).
 
@@ -11,7 +11,7 @@ Requisiti:
 - *pandoc*
 - *MiKTeX* o *TexLive* installati in locale
 
-Aprire un terminale nella directory `Appunti-APP` ed eseguire il comando `./build.sh`
+Aprire un terminale nella directory `appunti-APP` ed eseguire il comando `./build.sh`
 
 
 ### Conversione SVG in PNG
