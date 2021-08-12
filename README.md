@@ -14,9 +14,7 @@ Requisiti:
 Aprire un terminale nella directory `Appunti-APP` ed eseguire il comando `./build.sh`
 
 
-### Conversione svg in png
+### Conversione SVG in PNG
 
-Nella cartella `imgs/` dovrebbero essere caricate entrambe le versioni per le immagini caricate dal professore come svg. Qualora la build desse problemi di file png non trovato è probabile che sia caricata solo la versione png. Lanciare dunque 'svg\_to\_png.sh'.
-Questo richiede avere installato *inkscape* in locale. Se la repo è mantenuta come dio comanda questo paragrafo dovrebbe essere inutile per i non manutentori/caricatori.
-
-
+Nella cartella `imgs/` dovrebbero essere caricate entrambe le versioni per le immagini caricate dal professore come .svg. Qualora la build desse problemi di file .png non trovato è probabile che sia caricata solo la versione .svg. Lanciare dunque 'svg\_to\_png.sh'.
+Questo richiede avere installato *inkscape* in locale. Se la repo è mantenuta come dio comanda allora questo paragrafo dovrebbe essere inutile per i non manutentori/caricatori.
